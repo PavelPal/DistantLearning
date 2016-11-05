@@ -8,7 +8,7 @@ using DataAccessProvider;
 namespace distantlearning.Migrations
 {
     [DbContext(typeof(DomainModelContext))]
-    [Migration("20161105120940_DataMigration")]
+    [Migration("20161105220001_DataMigration")]
     partial class DataMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,9 +39,9 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.ChildParent", b =>
                 {
-                    b.Property<int>("ParentId");
+                    b.Property<string>("ParentId");
 
-                    b.Property<int>("StudentId");
+                    b.Property<string>("StudentId");
 
                     b.HasKey("ParentId", "StudentId");
 
@@ -63,7 +63,7 @@ namespace distantlearning.Migrations
 
                     b.Property<int>("TestId");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
@@ -81,7 +81,7 @@ namespace distantlearning.Migrations
 
                     b.Property<int>("DayOfWeek");
 
-                    b.Property<int>("TeacherId");
+                    b.Property<string>("TeacherId");
 
                     b.Property<TimeSpan>("Time");
 
@@ -121,7 +121,7 @@ namespace distantlearning.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("TeacherId");
+                    b.Property<string>("TeacherId");
 
                     b.HasKey("Id");
 
@@ -243,23 +243,11 @@ namespace distantlearning.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("Domain.Model.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("Domain.Model.TeacherDiscipline", b =>
                 {
                     b.Property<int>("DisciplineId");
 
-                    b.Property<int>("TeacherId");
+                    b.Property<string>("TeacherId");
 
                     b.Property<DateTime>("UpdatedTimestamp");
 
@@ -289,7 +277,7 @@ namespace distantlearning.Migrations
 
                     b.Property<DateTime?>("StartedDate");
 
-                    b.Property<int>("TeacherId");
+                    b.Property<string>("TeacherId");
 
                     b.Property<DateTime>("UpdatedTimestamp");
 
@@ -315,7 +303,7 @@ namespace distantlearning.Migrations
 
                     b.Property<DateTime>("UpdatedTimestamp");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserId");
 
                     b.Property<int>("Wrong");
 
@@ -330,38 +318,65 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
-                    b.Property<string>("Email");
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Email")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
 
-                    b.Property<bool>("IsEmailConfirmed");
-
-                    b.Property<bool>("IsLocked");
-
                     b.Property<string>("LastName");
 
-                    b.Property<int?>("ParentId");
+                    b.Property<bool>("LockoutEnabled");
 
-                    b.Property<string>("Password");
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.Property<string>("ParentId");
+
+                    b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<byte[]>("Photo");
 
                     b.Property<string>("PhotoType");
 
-                    b.Property<int?>("StudentId");
+                    b.Property<string>("SecurityStamp");
 
-                    b.Property<int?>("TeacherId");
+                    b.Property<string>("StudentId");
+
+                    b.Property<string>("TeacherId");
+
+                    b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<DateTime>("UpdatedTimestamp");
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserName")
+                        .HasAnnotation("MaxLength", 256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex");
 
                     b.HasIndex("ParentId")
                         .IsUnique();
@@ -372,14 +387,14 @@ namespace distantlearning.Migrations
                     b.HasIndex("TeacherId")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Domain.Model.UserMark", b =>
                 {
                     b.Property<int>("MarkId");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("MarkId", "UserId");
 
@@ -392,27 +407,11 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.UserParent", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.HasKey("Id");
 
                     b.ToTable("UserParents");
-                });
-
-            modelBuilder.Entity("Domain.Model.UserRole", b =>
-                {
-                    b.Property<int>("RoleId");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("RoleId", "UserId");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Domain.Model.UserSetting", b =>
@@ -424,7 +423,7 @@ namespace distantlearning.Migrations
 
                     b.Property<DateTime>("UpdatedTimestamp");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserId");
 
                     b.Property<string>("Value");
 
@@ -437,8 +436,7 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.UserStudent", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.Property<int>("GroupId");
 
@@ -451,12 +449,118 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.UserTeacher", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.HasKey("Id");
 
                     b.ToTable("UserTeachers");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Name")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .HasName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider");
+
+                    b.Property<string>("ProviderKey");
+
+                    b.Property<string>("ProviderDisplayName");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("RoleId");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("LoginProvider");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("Domain.Model.Answer", b =>
@@ -489,24 +593,21 @@ namespace distantlearning.Migrations
 
                     b.HasOne("Domain.Model.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.Model.Consultation", b =>
                 {
                     b.HasOne("Domain.Model.UserTeacher", "Teacher")
                         .WithMany("Consultations")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("Domain.Model.Document", b =>
                 {
                     b.HasOne("Domain.Model.UserTeacher", "Teacher")
                         .WithMany("Documents")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("Domain.Model.Journal", b =>
@@ -573,8 +674,7 @@ namespace distantlearning.Migrations
 
                     b.HasOne("Domain.Model.UserTeacher", "Teacher")
                         .WithMany("Tests")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("Domain.Model.TestResult", b =>
@@ -586,8 +686,7 @@ namespace distantlearning.Migrations
 
                     b.HasOne("Domain.Model.UserStudent", "User")
                         .WithMany("TestResults")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.Model.User", b =>
@@ -618,25 +717,11 @@ namespace distantlearning.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Domain.Model.UserRole", b =>
-                {
-                    b.HasOne("Domain.Model.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.Model.User", "User")
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Domain.Model.UserSetting", b =>
                 {
                     b.HasOne("Domain.Model.User", "User")
                         .WithMany("UserSettings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.Model.UserStudent", b =>
@@ -644,6 +729,43 @@ namespace distantlearning.Migrations
                     b.HasOne("Domain.Model.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                        .WithMany("Claims")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Domain.Model.User")
+                        .WithMany("Claims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Domain.Model.User")
+                        .WithMany("Logins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Model.User")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

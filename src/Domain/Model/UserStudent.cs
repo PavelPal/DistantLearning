@@ -10,7 +10,7 @@ namespace Domain.Model
             TestResults = new List<TestResult>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public User User { get; set; }
 
         public Group Group { get; set; }

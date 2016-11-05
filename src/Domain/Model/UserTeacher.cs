@@ -12,7 +12,7 @@ namespace Domain.Model
             Consultations = new List<Consultation>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public User User { get; set; }
 
         public List<TeacherDiscipline> Disciplines { get; set; }

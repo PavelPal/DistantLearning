@@ -17,7 +17,7 @@ namespace DataAccessProvider
             _logger = loggerFactory.CreateLogger("DataAccessProvider");
         }
 
-        public void AddEventRecord(T record)
+        public void Add(T record)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace DataAccessProvider
             }
         }
 
-        public void UpdateEventRecord(T record)
+        public void Update(T record)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace DataAccessProvider
             }
         }
 
-        public void DeleteEventRecord(int recordId)
+        public void Delete(int recordId)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace DataAccessProvider
             }
         }
 
-        public T GetEventRecord(int recordId)
+        public T Get(int recordId)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace DataAccessProvider
             }
         }
 
-        public IEnumerable<T> GetAllEventRecord()
+        public IEnumerable<T> GetAll()
         {
             try
             {

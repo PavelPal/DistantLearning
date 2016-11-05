@@ -12,7 +12,7 @@ namespace Domain.Model
 
         public int Id { get; set; }
         public UserTeacher Teacher { get; set; }
-        public int TeacherId { get; set; }
+        public string TeacherId { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public bool IsLocked { get; set; }

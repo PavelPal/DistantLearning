@@ -1,8 +1,10 @@
 ﻿using DataAccessProvider;
+using DistantLearning.Services;
 using Domain;
 using Domain.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,12 +23,16 @@ namespace DistantLearning
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddJsonFile("config.json", true, true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+                builder.AddUserSecrets();
+
+            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var sqlConnectionString = Configuration.GetConnectionString("DistantLearningDb");
@@ -37,6 +43,10 @@ namespace DistantLearning
                         b => b.MigrationsAssembly("distantlearning")
                     )
             );
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<DomainModelContext>()
+                .AddDefaultTokenProviders();
 
             services.AddScoped<IDataAccessProvider<Answer>, DataAccessProvider<Answer>>();
             services.AddScoped<IDataAccessProvider<ChildParent>, DataAccessProvider<ChildParent>>();
@@ -50,14 +60,12 @@ namespace DistantLearning
             services.AddScoped<IDataAccessProvider<Mark>, DataAccessProvider<Mark>>();
             services.AddScoped<IDataAccessProvider<Quarter>, DataAccessProvider<Quarter>>();
             services.AddScoped<IDataAccessProvider<Question>, DataAccessProvider<Question>>();
-            services.AddScoped<IDataAccessProvider<Role>, DataAccessProvider<Role>>();
             services.AddScoped<IDataAccessProvider<TeacherDiscipline>, DataAccessProvider<TeacherDiscipline>>();
             services.AddScoped<IDataAccessProvider<Test>, DataAccessProvider<Test>>();
             services.AddScoped<IDataAccessProvider<TestResult>, DataAccessProvider<TestResult>>();
             services.AddScoped<IDataAccessProvider<User>, DataAccessProvider<User>>();
             services.AddScoped<IDataAccessProvider<UserMark>, DataAccessProvider<UserMark>>();
             services.AddScoped<IDataAccessProvider<UserParent>, DataAccessProvider<UserParent>>();
-            services.AddScoped<IDataAccessProvider<UserRole>, DataAccessProvider<UserRole>>();
             services.AddScoped<IDataAccessProvider<UserSetting>, DataAccessProvider<UserSetting>>();
             services.AddScoped<IDataAccessProvider<UserStudent>, DataAccessProvider<UserStudent>>();
             services.AddScoped<IDataAccessProvider<UserTeacher>, DataAccessProvider<UserTeacher>>();
@@ -65,9 +73,11 @@ namespace DistantLearning
             services.AddMvc()
                 .AddJsonOptions(
                     options => { options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
+
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -76,6 +86,7 @@ namespace DistantLearning
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
             else
@@ -84,6 +95,8 @@ namespace DistantLearning
             }
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {

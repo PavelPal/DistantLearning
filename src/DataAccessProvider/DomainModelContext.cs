@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Domain.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessProvider
 {
-    public class DomainModelContext : DbContext
+    public class DomainModelContext : IdentityDbContext<User>
     {
         public DomainModelContext(DbContextOptions<DomainModelContext> options) : base(options)
         {
@@ -28,7 +29,6 @@ namespace DataAccessProvider
             builder.Entity<Mark>().HasKey(mark => mark.Id);
             builder.Entity<Quarter>().HasKey(quarter => quarter.Id);
             builder.Entity<Question>().HasKey(question => question.Id);
-            builder.Entity<Role>().HasKey(role => role.Id);
             builder.Entity<TeacherDiscipline>()
                 .HasKey(discipline => new {discipline.DisciplineId, discipline.TeacherId});
             builder.Entity<Test>().HasKey(test => test.Id);
@@ -37,7 +37,6 @@ namespace DataAccessProvider
             builder.Entity<UserMark>()
                 .HasKey(um => new {um.MarkId, um.UserId});
             builder.Entity<UserParent>().HasKey(user => user.Id);
-            builder.Entity<UserRole>().HasKey(role => new {role.RoleId, role.UserId});
             builder.Entity<UserSetting>().HasKey(setting => setting.Id);
             builder.Entity<UserStudent>().HasKey(user => user.Id);
             builder.Entity<UserTeacher>().HasKey(user => user.Id);
@@ -186,23 +185,10 @@ namespace DataAccessProvider
                 .HasOne(parent => parent.User)
                 .WithOne(user => user.Parent);
 
-            builder.Entity<UserRole>()
-                .HasOne(ur => ur.Role)
-                .WithMany(role => role.Users)
-                .HasForeignKey(ur => ur.RoleId);
-            builder.Entity<UserRole>().HasIndex(ur => ur.RoleId);
-
-            builder.Entity<UserRole>()
-                .HasOne(ur => ur.User)
-                .WithMany(user => user.Roles)
-                .HasForeignKey(ur => ur.UserId);
-            builder.Entity<UserRole>().HasIndex(ur => ur.UserId);
-
             builder.Entity<UserSetting>()
                 .HasOne(us => us.User)
                 .WithMany(user => user.UserSettings)
                 .HasForeignKey(us => us.UserId);
-            builder.Entity<UserRole>().HasIndex(us => us.UserId);
 
             builder.Entity<UserStudent>()
                 .HasOne(student => student.User)
@@ -277,14 +263,11 @@ namespace DataAccessProvider
         public DbSet<Mark> Marks { get; set; }
         public DbSet<Quarter> Quarters { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<TeacherDiscipline> TeacheDisciplines { get; set; }
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestResult> TestResults { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<UserMark> UserMarks { get; set; }
         public DbSet<UserParent> UserParents { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserSetting> UserSettings { get; set; }
         public DbSet<UserStudent> UserStudents { get; set; }
         public DbSet<UserTeacher> UserTeachers { get; set; }
