@@ -1,0 +1,76 @@
+.dl-sidenav { width: 300px; }
+
+.dl-sidenav.md-locked-open {
+    background-color: #fafafa;
+    z-index: 1;
+}
+
+.dl-sidenav.md-locked-open .md-button .md-list-item-inner .md-list-item-text p { margin: 5px 0; }
+
+.dl-sidenav md-content { background-color: #fafafa; }
+
+.dl-sidenav .md-button .md-list-item-inner .material-icons {
+    height: auto;
+    margin: 0 20px 0 10px;
+    min-height: 0;
+}
+
+.dl-sidenav .md-button .md-list-item-inner .md-list-item-text p { margin: 10px 0; }
+
+.md-toolbar-tools { position: relative; }
+
+.md-toolbar-tools h3 { width: 284px; }
+
+.md-toolbar-tools .md-icon-button { flex-shrink: 0; }
+
+.md-toolbar-tools .toolbar-search-box { margin-left: 16px; }
+
+.md-toolbar-tools .toolbar-search-box form {
+    align-items: center;
+    display: flex;
+}
+
+.md-toolbar-tools .toolbar-search-box form input {
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    border-radius: 0;
+    color: #000;
+    flex: 1 1 auto;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    order: 2;
+    outline: none;
+    padding: 12px 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+.md-toolbar-tools .toolbar-search-box form input::-webkit-input-placeholder { color: #fff; }
+
+.md-toolbar-tools .toolbar-search-box form input::-moz-placeholder { color: #fff; }
+
+.md-toolbar-tools .toolbar-search-box form input:-ms-input-placeholder { color: #fff; }
+
+.md-toolbar-tools .toolbar-search-box form input:-moz-placeholder { color: #fff; }
+
+.md-toolbar-tools .toolbar-search-box form input:focus {
+    background: #fff;
+    height: 100%;
+    left: 0;
+    padding: 10px 15px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.md-toolbar-tools .toolbar-search-box form input:focus::-webkit-input-placeholder { color: #959595; }
+
+.md-toolbar-tools .toolbar-search-box form input:focus::-moz-placeholder { color: #959595; }
+
+.md-toolbar-tools .toolbar-search-box form input:focus:-ms-input-placeholder { color: #959595; }
+
+.md-toolbar-tools .toolbar-search-box form input:focus:-moz-placeholder { color: #959595; }
+
+@media screen and (max-width: 959px) and (min-width: 669px) {
+    .md-toolbar-tools .toolbar-search-box form input { padding: 10px 15px; }
+}

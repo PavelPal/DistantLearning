@@ -1,0 +1,38 @@
+﻿.dl-sidenav {
+    width: 300px;
+
+    &.md-locked-open {
+        z-index: 1;
+        background-color: rgb(250,250,250);
+
+        .md-button {
+            .md-list-item-inner {
+                .md-list-item-text {
+                    p {
+                        margin: 5px 0;
+                    }
+                }
+            }
+        }
+    }
+
+    md-content {
+        background-color: rgb(250,250,250);
+    }
+
+    .md-button {
+        .md-list-item-inner {
+            .material-icons {
+                margin: 0 20px 0 10px;
+                height: auto;
+                min-height: 0;
+            }
+
+            .md-list-item-text {
+                p {
+                    margin: 10px 0;
+                }
+            }
+        }
+    }
+}
