@@ -1,0 +1,67 @@
+﻿<form name="signUpForm" novalidate>
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{title}}</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div layout-gt-sm="row">
+                <div data-ng-hide="message == ''"
+                     data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+                    {{message}}
+                </div>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>имя</label>
+                    <input type="text" ng-model="registration.firstName" required>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>фамилия</label>
+                    <input type="text" ng-model="registration.lastName" required>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>email</label>
+                    <input type="email" ng-model="registration.email" required ng-pattern="validation.email">
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>пароль</label>
+                    <input type="password" ng-model="registration.password" required>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>подтверждение пароля</label>
+                    <input type="password" ng-model="registration.confirmPassword" required>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-radio-group ng-model="registration.type">
+
+                    <md-radio-button value="0">учитель</md-radio-button>
+                    <md-radio-button value="1">ученик</md-radio-button>
+                    <md-radio-button value="2">родитель</md-radio-button>
+
+                </md-radio-group>
+            </div>
+        </md-card-content>
+        <md-card-actions layout="column" layout-align="center center">
+            <md-button class="md-primary" ng-click="signUp()">{{title}}</md-button>
+            <p class="md-body-1"><a ui-sref="login">Войти</a>, если уже есть аккаунт.
+            </p>
+        </md-card-actions>
+    </md-card>
+</form>

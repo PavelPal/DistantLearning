@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DataAccessProvider;
 using DistantLearning.Models.AccountViewModels;
 using DistantLearning.Services;
 using Domain.Model;
@@ -12,10 +14,11 @@ using Microsoft.Extensions.Logging;
 
 namespace DistantLearning.Controllers
 {
-    [Route("account")]
     [Authorize]
+    [Route("api/account")]
     public class AccountController : Controller
     {
+        private readonly DomainModelContext _context;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly SignInManager<User> _signInManager;
@@ -27,40 +30,35 @@ namespace DistantLearning.Controllers
             SignInManager<User> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            DomainModelContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
-        }
-
-        [Route("login")]
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Login()
-        {
-            return View();
+            _context = context;
         }
 
         [Route("login")]
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<object> Login([FromBody] LoginViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+                throw new Exception(ModelState.Keys.Aggregate("", (current, key) => current + key + ","));
+
             var result =
                 await
-                    _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
             if (result.Succeeded)
             {
                 _logger.LogInformation(1, "User logged in.");
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             if (result.RequiresTwoFactor)
-                return RedirectToAction(nameof(SendCode), new {model.RememberMe});
+                return RedirectToAction(nameof(SendCode), new {model});
             if (result.IsLockedOut)
             {
                 _logger.LogWarning(2, "User account locked out.");
@@ -73,40 +71,69 @@ namespace DistantLearning.Controllers
         }
 
         [Route("register")]
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        [Route("register")]
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<object> Register([FromBody] RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                throw new Exception(ModelState.Keys.Aggregate("", (current, key) => current + key + ","));
+
+            var user = new User
             {
-                var user = new User {UserName = model.Email, Email = model.Email};
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                }
-                AddErrors(result);
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
+
+            switch (model.Type)
+            {
+                case 0:
+                    user.Teacher.Add(new UserTeacher
+                    {
+                        Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
+                        {
+                            Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
+                        }).ToList()
+                    });
+                    break;
+                case 1:
+                    user.Student.Add(new UserStudent
+                    {
+                        Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
+                    });
+                    break;
+                case 2:
+                    user.Parent.Add(new UserParent
+                    {
+                        Children = model.Children.Select(child => new UserStudent
+                        {
+                            Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
+                        }).ToList().Select(student => new ChildParent
+                        {
+                            Student = student
+                        }).ToList()
+                    });
+                    break;
+                default:
+                    throw new Exception("Некорректный тип");
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+                throw new Exception(result.Errors.Aggregate("", (current, error) => current + error + ","));
+
+            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+            // Send an email with this link
+            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+            //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+            //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+
+            await _signInManager.SignInAsync(user, false);
+            _logger.LogInformation(3, "User created a new account with password.");
+            return Ok();
         }
 
         [HttpPost]
