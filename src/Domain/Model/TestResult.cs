@@ -6,7 +6,7 @@
         public Test Test { get; set; }
         public int TestId { get; set; }
         public UserStudent User { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public int Correct { get; set; }
         public int Wrong { get; set; }
         public int InComplete { get; set; }

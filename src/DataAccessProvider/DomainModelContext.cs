@@ -157,18 +157,6 @@ namespace DataAccessProvider
                 .HasForeignKey(tr => tr.UserId);
             builder.Entity<TestResult>().HasIndex(tr => tr.UserId);
 
-            builder.Entity<User>()
-                .HasOne(user => user.Teacher)
-                .WithOne(teacher => teacher.User);
-
-            builder.Entity<User>()
-                .HasOne(user => user.Student)
-                .WithOne(student => student.User);
-
-            builder.Entity<User>()
-                .HasOne(user => user.Parent)
-                .WithOne(parent => parent.User);
-
             builder.Entity<UserMark>()
                 .HasOne(um => um.Mark)
                 .WithMany(mark => mark.Users)
@@ -183,20 +171,30 @@ namespace DataAccessProvider
 
             builder.Entity<UserParent>()
                 .HasOne(parent => parent.User)
-                .WithOne(user => user.Parent);
+                .WithMany(user => user.Parent)
+                .HasForeignKey(parent => parent.UserId);
+            builder.Entity<UserParent>().HasIndex(parent => parent.UserId)
+                .IsUnique(true);
 
             builder.Entity<UserSetting>()
                 .HasOne(us => us.User)
                 .WithMany(user => user.UserSettings)
                 .HasForeignKey(us => us.UserId);
+            builder.Entity<UserSetting>().HasIndex(us => us.UserId);
 
             builder.Entity<UserStudent>()
                 .HasOne(student => student.User)
-                .WithOne(user => user.Student);
+                .WithMany(user => user.Student)
+                .HasForeignKey(student => student.UserId);
+            builder.Entity<UserStudent>().HasIndex(student => student.UserId)
+                .IsUnique(true);
 
             builder.Entity<UserTeacher>()
                 .HasOne(teacher => teacher.User)
-                .WithOne(user => user.Teacher);
+                .WithMany(user => user.Teacher)
+                .HasForeignKey(teacher => teacher.UserId);
+            builder.Entity<UserTeacher>().HasIndex(teacher => teacher.UserId)
+                .IsUnique(true);
 
             #region UpdatedTimestamp Property
 

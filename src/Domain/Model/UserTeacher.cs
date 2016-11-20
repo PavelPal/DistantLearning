@@ -12,8 +12,9 @@ namespace Domain.Model
             Consultations = new List<Consultation>();
         }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         public User User { get; set; }
+        public string UserId { get; set; }
 
         public List<TeacherDiscipline> Disciplines { get; set; }
         public List<Test> Tests { get; set; }

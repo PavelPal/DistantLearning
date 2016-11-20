@@ -16,7 +16,7 @@ namespace Domain.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public UserTeacher Teacher { get; set; }
-        public string TeacherId { get; set; }
+        public int TeacherId { get; set; }
         public Discipline Discipline { get; set; }
         public int DisciplineId { get; set; }
         public bool IsLocked { get; set; }
