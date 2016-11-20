@@ -44,20 +44,31 @@ namespace distantlearning.Migrations
                 constraints: table => { table.PrimaryKey("PK_Quarters", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                "UserParents",
+                "AspNetUsers",
                 table => new
                 {
-                    Id = table.Column<string>(nullable: false)
+                    Id = table.Column<string>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    Photo = table.Column<byte[]>(nullable: true),
+                    PhotoType = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    UpdatedTimestamp = table.Column<DateTime>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_UserParents", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                "UserTeachers",
-                table => new
-                {
-                    Id = table.Column<string>(nullable: false)
-                },
-                constraints: table => { table.PrimaryKey("PK_UserTeachers", x => x.Id); });
+                constraints: table => { table.PrimaryKey("PK_AspNetUsers", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 "AspNetRoles",
@@ -105,11 +116,54 @@ namespace distantlearning.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                "UserParents",
+                table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserParents", x => x.Id);
+                    table.ForeignKey(
+                        "FK_UserParents_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                "UserSettings",
+                table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Key = table.Column<string>(nullable: true),
+                    UpdatedTimestamp = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSettings", x => x.Id);
+                    table.ForeignKey(
+                        "FK_UserSettings_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 "UserStudents",
                 table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    GroupId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GroupId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,108 +174,72 @@ namespace distantlearning.Migrations
                         "Groups",
                         "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                "Consultations",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DayOfWeek = table.Column<int>(nullable: false),
-                    TeacherId = table.Column<string>(nullable: true),
-                    Time = table.Column<TimeSpan>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Consultations", x => x.Id);
                     table.ForeignKey(
-                        "FK_Consultations_UserTeachers_TeacherId",
-                        x => x.TeacherId,
-                        "UserTeachers",
+                        "FK_UserStudents_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
                         "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                "Documents",
+                "UserTeachers",
                 table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(nullable: false),
-                    File = table.Column<byte[]>(nullable: true),
-                    FileType = table.Column<string>(nullable: true),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    TeacherId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Documents", x => x.Id);
+                    table.PrimaryKey("PK_UserTeachers", x => x.Id);
                     table.ForeignKey(
-                        "FK_Documents_UserTeachers_TeacherId",
-                        x => x.TeacherId,
-                        "UserTeachers",
+                        "FK_UserTeachers_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
                         "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                "TeacheDisciplines",
+                "AspNetUserClaims",
                 table => new
                 {
-                    DisciplineId = table.Column<int>(nullable: false),
-                    TeacherId = table.Column<string>(nullable: false),
-                    UpdatedTimestamp = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeacheDisciplines", x => new {x.DisciplineId, x.TeacherId});
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        "FK_TeacheDisciplines_Disciplines_DisciplineId",
-                        x => x.DisciplineId,
-                        "Disciplines",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        "FK_TeacheDisciplines_UserTeachers_TeacherId",
-                        x => x.TeacherId,
-                        "UserTeachers",
+                        "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
                         "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "Tests",
+                "AspNetUserLogins",
                 table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClosedDate = table.Column<DateTime>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    DisciplineId = table.Column<int>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    StartedDate = table.Column<DateTime>(nullable: true),
-                    TeacherId = table.Column<string>(nullable: true),
-                    UpdatedTimestamp = table.Column<DateTime>(nullable: false)
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tests", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new {x.LoginProvider, x.ProviderKey});
                     table.ForeignKey(
-                        "FK_Tests_Disciplines_DisciplineId",
-                        x => x.DisciplineId,
-                        "Disciplines",
+                        "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
                         "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        "FK_Tests_UserTeachers_TeacherId",
-                        x => x.TeacherId,
-                        "UserTeachers",
-                        "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -241,6 +259,30 @@ namespace distantlearning.Migrations
                         "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         x => x.RoleId,
                         "AspNetRoles",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                "AspNetUserRoles",
+                table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new {x.UserId, x.RoleId});
+                    table.ForeignKey(
+                        "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        x => x.RoleId,
+                        "AspNetRoles",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
                         "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -303,8 +345,8 @@ namespace distantlearning.Migrations
                 "ChildParents",
                 table => new
                 {
-                    ParentId = table.Column<string>(nullable: false),
-                    StudentId = table.Column<string>(nullable: false)
+                    ParentId = table.Column<int>(nullable: false),
+                    StudentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -324,52 +366,155 @@ namespace distantlearning.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                "AspNetUsers",
+                "Consultations",
                 table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    ParentId = table.Column<string>(nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    Photo = table.Column<byte[]>(nullable: true),
-                    PhotoType = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    StudentId = table.Column<string>(nullable: true),
-                    TeacherId = table.Column<string>(nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UpdatedTimestamp = table.Column<DateTime>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DayOfWeek = table.Column<int>(nullable: false),
+                    TeacherId = table.Column<int>(nullable: false),
+                    Time = table.Column<TimeSpan>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_Consultations", x => x.Id);
                     table.ForeignKey(
-                        "FK_AspNetUsers_UserParents_ParentId",
-                        x => x.ParentId,
-                        "UserParents",
-                        "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        "FK_AspNetUsers_UserStudents_StudentId",
-                        x => x.StudentId,
-                        "UserStudents",
-                        "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        "FK_AspNetUsers_UserTeachers_TeacherId",
+                        "FK_Consultations_UserTeachers_TeacherId",
                         x => x.TeacherId,
                         "UserTeachers",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                "Documents",
+                table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    File = table.Column<byte[]>(nullable: true),
+                    FileType = table.Column<string>(nullable: true),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    TeacherId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Documents", x => x.Id);
+                    table.ForeignKey(
+                        "FK_Documents_UserTeachers_TeacherId",
+                        x => x.TeacherId,
+                        "UserTeachers",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                "TeacheDisciplines",
+                table => new
+                {
+                    DisciplineId = table.Column<int>(nullable: false),
+                    TeacherId = table.Column<int>(nullable: false),
+                    UpdatedTimestamp = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeacheDisciplines", x => new {x.DisciplineId, x.TeacherId});
+                    table.ForeignKey(
+                        "FK_TeacheDisciplines_Disciplines_DisciplineId",
+                        x => x.DisciplineId,
+                        "Disciplines",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        "FK_TeacheDisciplines_UserTeachers_TeacherId",
+                        x => x.TeacherId,
+                        "UserTeachers",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                "Tests",
+                table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ClosedDate = table.Column<DateTime>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    DisciplineId = table.Column<int>(nullable: false),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    StartedDate = table.Column<DateTime>(nullable: true),
+                    TeacherId = table.Column<int>(nullable: false),
+                    UpdatedTimestamp = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tests", x => x.Id);
+                    table.ForeignKey(
+                        "FK_Tests_Disciplines_DisciplineId",
+                        x => x.DisciplineId,
+                        "Disciplines",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        "FK_Tests_UserTeachers_TeacherId",
+                        x => x.TeacherId,
+                        "UserTeachers",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                "UserMarks",
+                table => new
+                {
+                    MarkId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMarks", x => new {x.MarkId, x.UserId});
+                    table.ForeignKey(
+                        "FK_UserMarks_Marks_MarkId",
+                        x => x.MarkId,
+                        "Marks",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        "FK_UserMarks_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                "Comments",
+                table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Body = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    TestId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        "FK_Comments_Tests_TestId",
+                        x => x.TestId,
+                        "Tests",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        "FK_Comments_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
                         "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -406,7 +551,7 @@ namespace distantlearning.Migrations
                     InComplete = table.Column<int>(nullable: false),
                     TestId = table.Column<int>(nullable: false),
                     UpdatedTimestamp = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
                     Wrong = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -422,145 +567,6 @@ namespace distantlearning.Migrations
                         "FK_TestResults_UserStudents_UserId",
                         x => x.UserId,
                         "UserStudents",
-                        "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                "Comments",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Body = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
-                    TestId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
-                    table.ForeignKey(
-                        "FK_Comments_Tests_TestId",
-                        x => x.TestId,
-                        "Tests",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        "FK_Comments_AspNetUsers_UserId",
-                        x => x.UserId,
-                        "AspNetUsers",
-                        "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                "UserMarks",
-                table => new
-                {
-                    MarkId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserMarks", x => new {x.MarkId, x.UserId});
-                    table.ForeignKey(
-                        "FK_UserMarks_Marks_MarkId",
-                        x => x.MarkId,
-                        "Marks",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        "FK_UserMarks_AspNetUsers_UserId",
-                        x => x.UserId,
-                        "AspNetUsers",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                "UserSettings",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Key = table.Column<string>(nullable: true),
-                    UpdatedTimestamp = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
-                    Value = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserSettings", x => x.Id);
-                    table.ForeignKey(
-                        "FK_UserSettings_AspNetUsers_UserId",
-                        x => x.UserId,
-                        "AspNetUsers",
-                        "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                "AspNetUserClaims",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                    table.ForeignKey(
-                        "FK_AspNetUserClaims_AspNetUsers_UserId",
-                        x => x.UserId,
-                        "AspNetUsers",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                "AspNetUserLogins",
-                table => new
-                {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
-                    ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new {x.LoginProvider, x.ProviderKey});
-                    table.ForeignKey(
-                        "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        x => x.UserId,
-                        "AspNetUsers",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                "AspNetUserRoles",
-                table => new
-                {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new {x.UserId, x.RoleId});
-                    table.ForeignKey(
-                        "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        x => x.RoleId,
-                        "AspNetRoles",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        "FK_AspNetUserRoles_AspNetUsers_UserId",
-                        x => x.UserId,
-                        "AspNetUsers",
                         "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -694,24 +700,6 @@ namespace distantlearning.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_AspNetUsers_ParentId",
-                "AspNetUsers",
-                "ParentId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                "IX_AspNetUsers_StudentId",
-                "AspNetUsers",
-                "StudentId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                "IX_AspNetUsers_TeacherId",
-                "AspNetUsers",
-                "TeacherId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 "IX_UserMarks_MarkId",
                 "UserMarks",
                 "MarkId");
@@ -720,6 +708,12 @@ namespace distantlearning.Migrations
                 "IX_UserMarks_UserId",
                 "UserMarks",
                 "UserId");
+
+            migrationBuilder.CreateIndex(
+                "IX_UserParents_UserId",
+                "UserParents",
+                "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_UserSettings_UserId",
@@ -732,9 +726,22 @@ namespace distantlearning.Migrations
                 "GroupId");
 
             migrationBuilder.CreateIndex(
+                "IX_UserStudents_UserId",
+                "UserStudents",
+                "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                "IX_UserTeachers_UserId",
+                "UserTeachers",
+                "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 "RoleNameIndex",
                 "AspNetRoles",
-                "NormalizedName");
+                "NormalizedName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_AspNetRoleClaims_RoleId",
@@ -755,11 +762,6 @@ namespace distantlearning.Migrations
                 "IX_AspNetUserRoles_RoleId",
                 "AspNetUserRoles",
                 "RoleId");
-
-            migrationBuilder.CreateIndex(
-                "IX_AspNetUserRoles_UserId",
-                "AspNetUserRoles",
-                "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -816,25 +818,22 @@ namespace distantlearning.Migrations
                 "Questions");
 
             migrationBuilder.DropTable(
+                "UserParents");
+
+            migrationBuilder.DropTable(
+                "UserStudents");
+
+            migrationBuilder.DropTable(
                 "Marks");
 
             migrationBuilder.DropTable(
                 "AspNetRoles");
 
             migrationBuilder.DropTable(
-                "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 "Tests");
 
             migrationBuilder.DropTable(
                 "Journals");
-
-            migrationBuilder.DropTable(
-                "UserParents");
-
-            migrationBuilder.DropTable(
-                "UserStudents");
 
             migrationBuilder.DropTable(
                 "Disciplines");
@@ -844,6 +843,9 @@ namespace distantlearning.Migrations
 
             migrationBuilder.DropTable(
                 "Groups");
+
+            migrationBuilder.DropTable(
+                "AspNetUsers");
         }
     }
 }
