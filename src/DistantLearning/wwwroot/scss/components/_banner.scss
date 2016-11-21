@@ -1,0 +1,9 @@
+.banner {
+  &.empty {
+    height: 300px;
+  }
+
+  &.blue {
+    background-color: #0288D1;
+  }
+}

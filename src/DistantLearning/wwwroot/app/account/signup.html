@@ -1,67 +1,83 @@
-﻿<form name="signUpForm" novalidate>
-    <md-card>
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">{{title}}</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-            <div layout-gt-sm="row">
-                <div data-ng-hide="message == ''"
-                     data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
-                    {{message}}
-                </div>
-            </div>
+﻿<div class="banner blue empty"></div>
 
-            <div layout-gt-sm="row">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>имя</label>
-                    <input type="text" ng-model="registration.firstName" required>
-                </md-input-container>
-            </div>
+<div flex="none" layout="row" layout-align="center center">
+    <form class="auth-form" name="signUpForm" novalidate flex="none" layout="row">
+        <div>
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{title}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout-gt-sm="row">
+                        <div data-ng-hide="message == ''"
+                             data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+                            {{message}}
+                        </div>
+                    </div>
 
-            <div layout-gt-sm="row">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>фамилия</label>
-                    <input type="text" ng-model="registration.lastName" required>
-                </md-input-container>
-            </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>имя</label>
+                            <input type="text" ng-model="registration.firstName" required>
+                        </md-input-container>
+                    </div>
 
-            <div layout-gt-sm="row">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>email</label>
-                    <input type="email" ng-model="registration.email" required ng-pattern="validation.email">
-                </md-input-container>
-            </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>фамилия</label>
+                            <input type="text" ng-model="registration.lastName" required>
+                        </md-input-container>
+                    </div>
 
-            <div layout-gt-sm="row">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>пароль</label>
-                    <input type="password" ng-model="registration.password" required>
-                </md-input-container>
-            </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>email</label>
+                            <input type="email" ng-model="registration.email" required ng-pattern="validation.email">
+                        </md-input-container>
+                    </div>
 
-            <div layout-gt-sm="row">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>подтверждение пароля</label>
-                    <input type="password" ng-model="registration.confirmPassword" required>
-                </md-input-container>
-            </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>пароль</label>
+                            <input type="password" ng-model="registration.password" required>
+                        </md-input-container>
+                    </div>
 
-            <div layout-gt-sm="row">
-                <md-radio-group ng-model="registration.type">
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>подтверждение пароля</label>
+                            <input type="password" ng-model="registration.confirmPassword" required>
+                        </md-input-container>
+                    </div>
 
-                    <md-radio-button value="0">учитель</md-radio-button>
-                    <md-radio-button value="1">ученик</md-radio-button>
-                    <md-radio-button value="2">родитель</md-radio-button>
+                    <div layout-gt-sm="row">
+                        <md-radio-group ng-model="registration.type">
 
-                </md-radio-group>
-            </div>
-        </md-card-content>
-        <md-card-actions layout="column" layout-align="center center">
-            <md-button class="md-primary" ng-click="signUp()">{{title}}</md-button>
-            <p class="md-body-1"><a ui-sref="login">Войти</a>, если уже есть аккаунт.
-            </p>
-        </md-card-actions>
-    </md-card>
-</form>
+                            <md-radio-button class="radio-button-block md-primary" value="0">учитель</md-radio-button>
+                            <md-radio-button class="radio-button-block md-primary" value="1">ученик</md-radio-button>
+                            <md-radio-button class="radio-button-block md-primary" value="2">родитель</md-radio-button>
+
+                        </md-radio-group>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="column" layout-align="center center">
+                    <md-button ng-click="signUp()">{{title}}</md-button>
+                    <p class="md-body-1"><a ui-sref="login">Войти</a>, если уже есть аккаунт.
+                    </p>
+                </md-card-actions>
+            </md-card>
+
+            <footer>
+                <p class="center-align md-caption">Дистанционное обучение</p>
+                <p class="center-align md-caption">ГУО "Средняя школа №83 г. Минска имени Г. К. Жукова"</p>
+                <p class="center-align md-caption">2016/2017</p>
+            </footer>
+        </div>
+
+        <md-button class="md-fab" ng-click="signUp()">
+            <i class="fa fa-check"></i>
+        </md-button>
+    </form>
+</div>

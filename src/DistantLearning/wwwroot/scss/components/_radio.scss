@@ -1,0 +1,36 @@
+.radio-button-block {
+  padding: 10px 20px 10px 40px;
+  background-color: #eee;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  &:not([disabled]).md-checked {
+    background-color: rgb(2, 119, 189);
+
+    .md-ink-ripple {
+      color: rgba(255, 255, 255, 0.26) !important;
+
+      .md-off {
+        border-color: rgba(255, 255, 255, 0.87);
+      }
+
+      .md-on {
+        background-color: rgba(255, 255, 255, 0.87);
+      }
+    }
+
+    .md-label {
+      color: #fff;
+    }
+  }
+
+  .md-ink-ripple {
+    left: 20px;
+  }
+
+  .md-label {
+    margin-left: 20px;
+  }
+}

@@ -1,9 +1,53 @@
-﻿<form class="form-login" role="form">
-    <h2 class="form-login-heading">Login</h2>
-    <input type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName" required autofocus>
-    <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required>
-    <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="login()">Login</button>
-    <div data-ng-hide="message == ''" class="alert alert-danger">
-        {{message}}
-    </div>
-</form>
+﻿<div class="banner blue empty"></div>
+
+<div flex="none" layout="row" layout-align="center center">
+    <form class="auth-form" name="loginForm" novalidate flex="none" layout="row">
+        <div>
+
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{title}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout-gt-sm="row">
+                        <div data-ng-hide="message == ''"
+                             data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+                            {{message}}
+                        </div>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>email</label>
+                            <input type="email" ng-model="loginData.email" required ng-pattern="validation.email">
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>пароль</label>
+                            <input type="password" ng-model="loginData.password" required>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="column" layout-align="center center">
+                    <md-button ng-click="login()">{{title}}</md-button>
+                    <p class="md-body-1"><a ui-sref="signup">Зарегистрироваться</a>, если еще нет аккаунта.
+                    </p>
+                </md-card-actions>
+            </md-card>
+
+            <footer>
+                <p class="center-align md-caption">Дистанционное обучение</p>
+                <p class="center-align md-caption">ГУО "Средняя школа №83 г. Минска имени Г. К. Жукова"</p>
+                <p class="center-align md-caption">2016/2017</p>
+            </footer>
+        </div>
+
+        <md-button class="md-fab" ng-click="login()">
+            <i class="fa fa-check"></i>
+        </md-button>
+    </form>
+</div>

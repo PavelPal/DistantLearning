@@ -1,0 +1,39 @@
+.auth-form {
+  margin-top: -100px;
+  width: 510px;
+  justify-content: center;
+
+  ._md {
+    width: 400px;
+  }
+
+  .md-fab {
+    margin-top: 70px;
+    display: none;
+  }
+
+  md-card-actions {
+    p.md-body-1 {
+      color: #9e9e9e;
+
+      a {
+        text-decoration: none;
+        color: #2196F3;
+      }
+    }
+  }
+
+  @media screen and (min-width: 647px) {
+    justify-content: space-between;
+
+    .md-fab {
+      display: block;
+    }
+
+    md-card-actions {
+      .md-button {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,8 +1,11 @@
 ﻿app.controller("loginController", loginController);
 
 function loginController($scope, $location, authService) {
+
+    $scope.title = "Войти";
+
     $scope.loginData = {
-        userName: "",
+        email: "",
         password: ""
     };
 
