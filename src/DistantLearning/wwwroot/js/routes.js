@@ -1,65 +1,55 @@
 app.config(routes);
 
-function routes($stateProvider, $routeProvider, $httpProvider, $urlRouterProvider, $locationProvider) {
+function routes($stateProvider, $httpProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("main");
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
-        .state("main",
-        {
+        .state("main", {
             url: "/",
             templateUrl: "/home/index",
-            controller: "mainController"
+            controller: "mainController",
+            abstract: true
         })
-        .state("login",
-        {
+        .state("login", {
             url: "/login",
             templateUrl: "../app/account/login.html",
             controller: "loginController"
         })
-        .state("signup",
-        {
+        .state("signup", {
             url: "/signup",
             templateUrl: "../app/account/signup.html",
             controller: "signupController"
         })
-        .state("profile",
-        {
+        .state("profile", {
             url: "/profile",
             templateUrl: "../app/profile.html"
         })
-        .state("users",
-        {
+        .state("users", {
             url: "/users",
             templateUrl: "../app/users.html"
         })
-        .state("tests",
-        {
+        .state("tests", {
             url: "/tests",
             templateUrl: "../app/tests.html"
         })
-        .state("journal",
-        {
+        .state("journal", {
             url: "/journal",
             templateUrl: "../app/journal.html"
         })
-        .state("results",
-        {
+        .state("results", {
             url: "/results",
             templateUrl: "../app/results.html"
         })
-        .state("documents",
-        {
+        .state("documents", {
             url: "/documents",
             templateUrl: "../app/documents.html"
         })
-        .state("settings",
-        {
+        .state("settings", {
             url: "/settings",
             templateUrl: "../app/settings.html"
         })
-        .state("help",
-        {
+        .state("help", {
             url: "/help",
             templateUrl: "../app/help.html"
         });

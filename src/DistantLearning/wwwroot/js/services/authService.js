@@ -14,70 +14,99 @@ function authService($http, $q, localStorageService) {
         type: ""
     };
 
-    var logOut = function() {
+    var logOut = function () {
         localStorageService.remove("authorizationData");
-        clearData();
+
+        authentication.isAuth = false;
+        authentication.email = "";
+        authentication.emailConfirmed = false;
+        authentication.userName = "";
+        authentication.phoneNumber = "";
+        authentication.firstName = "";
+        authentication.lastName = "";
+        authentication.type = "";
     };
 
-    var saveRegistration = function(model) {
+    var signUp = function (model, callback) {
         logOut();
 
         return $http({
-                url: "/api/account/register",
-                dataType: "json",
-                method: "POST",
-                data: JSON.stringify(model),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .success(function(response) {
-                fromModel(response);
-            })
-            .error(function(error) {
-                throw new Error("Error in authService. " + error);
-            });
-    };
-
-    var login = function(loginData) {
-
-        var deferred = $q.defer();
-
-        $http({
-                url: "/api/account/login",
-                dataType: "json",
-                method: "POST",
-                data: JSON.stringify(loginData),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .success(function(response) {
-                localStorageService.set("authorizationData",
-                {
+            url: "/api/account/register",
+            dataType: "json",
+            method: "POST",
+            data: JSON.stringify(model),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .success(function (response) {
+                localStorageService.set("authorizationData", {
                     token: response.access_token,
-                    email: loginData.email,
-                    emailConfirmed: loginData.emailConfirmed,
-                    userName: loginData.userName,
-                    phoneNumber: loginData.phoneNumber,
-                    firstName: loginData.firstName,
-                    lastName: loginData.lastName,
-                    type: loginData.type
+                    email: response.email,
+                    emailConfirmed: response.emailConfirmed,
+                    userName: response.userName,
+                    phoneNumber: response.phoneNumber,
+                    firstName: response.firstName,
+                    lastName: response.lastName,
+                    type: response.type
                 });
 
-                fromModel(response);
+                authentication.isAuth = true;
+                authentication.email = response.email;
+                authentication.emailConfirmed = response.emailConfirmed;
+                authentication.userName = response.userName;
+                authentication.phoneNumber = response.phoneNumber;
+                authentication.firstName = response.firstName;
+                authentication.lastName = response.lastName;
+                authentication.type = response.type;
 
-                deferred.resolve(response);
+                callback("OK")
             })
-            .error(function(error) {
+            .error(function (error) {
                 logOut();
-                deferred.reject(error);
+                callback(error);
             });
-
-        return deferred.promise;
     };
 
-    var fillAuthData = function() {
+    var login = function (model, callback) {
+
+        $http({
+            url: "/api/account/login",
+            dataType: "json",
+            method: "POST",
+            data: JSON.stringify(model),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .success(function (response) {
+                localStorageService.set("authorizationData", {
+                    token: response.access_token,
+                    email: response.email,
+                    emailConfirmed: response.emailConfirmed,
+                    userName: response.userName,
+                    phoneNumber: response.phoneNumber,
+                    firstName: response.firstName,
+                    lastName: response.lastName,
+                    type: response.type
+                });
+
+                authentication.isAuth = true;
+                authentication.email = response.email;
+                authentication.emailConfirmed = response.emailConfirmed;
+                authentication.userName = response.userName;
+                authentication.phoneNumber = response.phoneNumber;
+                authentication.firstName = response.firstName;
+                authentication.lastName = response.lastName;
+                authentication.type = response.type;
+            })
+            .error(function (error) {
+                logOut();
+                callback(error);
+            });
+    };
+
+    var fillAuthData = function () {
         var authData = localStorageService.get("authorizationData");
         if (authData) {
             authentication.isAuth = true;
@@ -91,29 +120,7 @@ function authService($http, $q, localStorageService) {
         }
     };
 
-    function clearData() {
-        authentication.isAuth = false;
-        authentication.email = "";
-        authentication.emailConfirmed = false;
-        authentication.userName = "";
-        authentication.phoneNumber = "";
-        authentication.firstName = "";
-        authentication.lastName = "";
-        authentication.type = "";
-    }
-
-    function fromModel(model) {
-        authentication.isAuth = true;
-        authentication.email = model.email;
-        authentication.emailConfirmed = model.emailConfirmed;
-        authentication.userName = model.userName;
-        authentication.phoneNumber = model.phoneNumber;
-        authentication.firstName = model.firstName;
-        authentication.lastName = model.lastName;
-        authentication.type = model.type;
-    }
-
-    authServiceFactory.saveRegistration = saveRegistration;
+    authServiceFactory.signUp = signUp;
     authServiceFactory.login = login;
     authServiceFactory.logOut = logOut;
     authServiceFactory.fillAuthData = fillAuthData;

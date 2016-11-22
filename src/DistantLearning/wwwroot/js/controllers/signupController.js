@@ -1,10 +1,12 @@
 ﻿app.controller("signupController", signupController);
 
-function signupController($scope, $location, $timeout, authService) {
+function signupController($scope, $state, authService) {
 
     $scope.title = "Зарегистрироваться";
     $scope.savedSuccessfully = false;
     $scope.message = "";
+
+    authService.logOut();
 
     $scope.registration = {
         firstName: "",
@@ -22,23 +24,16 @@ function signupController($scope, $location, $timeout, authService) {
         email: /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/
     };
 
-    var startTimer = function() {
-        var timer = $timeout(function() {
-                $timeout.cancel(timer);
-                $location.path("/login");
-            },
-            2000);
-    };
-
-    $scope.signUp = function() {
+    $scope.signUp = function () {
         if ($scope.signUpForm.$valid) {
-            authService.saveRegistration($scope.registration,
-                function(result) {
-                    $scope.savedSuccessfully = true;
-                    $scope.message =
-                        "User has been registered successfully, you will be redicted to login page in 2 seconds.";
-                    startTimer();
-                });
+            authService.signUp($scope.registration, function (result) {
+                if (result == "OK") {
+                    $scope.message = "Регистрация прошла успешно.";
+                    $state.go("profile");
+                } else {
+                    $scope.message = result;
+                }
+            });
         }
     };
 }

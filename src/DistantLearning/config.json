@@ -1,6 +1,5 @@
 ﻿{
   "ConnectionStrings": {
-    "DistantLearningDb":
-      "Server=(localdb)\\MSSQLLocalDB;Database=DistantLearningDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DistantLearningDb": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=DistantLearningDb;Integrated Security=True"
   }
 }

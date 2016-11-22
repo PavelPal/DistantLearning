@@ -86,37 +86,44 @@ namespace DistantLearning.Controllers
                 LastName = model.LastName
             };
 
-            switch (model.Type)
+            try
             {
-                case 0:
-                    user.Teacher.Add(new UserTeacher
-                    {
-                        Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
+                switch (model.Type)
+                {
+                    case 0:
+                        user.Teacher.Add(new UserTeacher
                         {
-                            Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
-                        }).ToList()
-                    });
-                    break;
-                case 1:
-                    user.Student.Add(new UserStudent
-                    {
-                        Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
-                    });
-                    break;
-                case 2:
-                    user.Parent.Add(new UserParent
-                    {
-                        Children = model.Children.Select(child => new UserStudent
+                            Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
+                            {
+                                Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
+                            }).ToList()
+                        });
+                        break;
+                    case 1:
+                        user.Student.Add(new UserStudent
                         {
-                            Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
-                        }).ToList().Select(student => new ChildParent
+                            Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
+                        });
+                        break;
+                    case 2:
+                        user.Parent.Add(new UserParent
                         {
-                            Student = student
-                        }).ToList()
-                    });
-                    break;
-                default:
-                    throw new Exception("Некорректный тип");
+                            Children = model.Children.Select(child => new UserStudent
+                            {
+                                Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
+                            }).ToList().Select(student => new ChildParent
+                            {
+                                Student = student
+                            }).ToList()
+                        });
+                        break;
+                    default:
+                        throw new Exception("Некорректный тип");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error: " + e.Message);
             }
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -133,7 +140,7 @@ namespace DistantLearning.Controllers
 
             await _signInManager.SignInAsync(user, false);
             _logger.LogInformation(3, "User created a new account with password.");
-            return Ok();
+            return user;
         }
 
         [HttpPost]
