@@ -90,31 +90,42 @@
     .auth-form {
       justify-content: space-between; }
       .auth-form .md-fab {
-        display: block; }
+        display: flex; }
       .auth-form md-card-actions .md-button {
         display: none; } }
 
-.radio-button-block {
-  padding: 10px 20px 10px 40px;
-  background-color: #eee;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  flex-direction: row; }
-  .radio-button-block:not([disabled]).md-checked {
-    background-color: #0277bd; }
-    .radio-button-block:not([disabled]).md-checked .md-ink-ripple {
-      color: rgba(255, 255, 255, 0.26) !important; }
-      .radio-button-block:not([disabled]).md-checked .md-ink-ripple .md-off {
-        border-color: rgba(255, 255, 255, 0.87); }
-      .radio-button-block:not([disabled]).md-checked .md-ink-ripple .md-on {
-        background-color: rgba(255, 255, 255, 0.87); }
-    .radio-button-block:not([disabled]).md-checked .md-label {
-      color: #fff; }
-  .radio-button-block .md-ink-ripple {
-    left: 20px; }
-  .radio-button-block .md-label {
-    margin-left: 20px; }
+.radio-group-box {
+  padding: 0 0 1px 0; }
+  .radio-group-box .radio-button-block {
+    padding: 10px 20px 10px 40px;
+    background-color: #eee;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: row; }
+    .radio-group-box .radio-button-block:not([disabled]).md-checked {
+      background-color: #0277bd; }
+      .radio-group-box .radio-button-block:not([disabled]).md-checked .md-ink-ripple {
+        color: rgba(255, 255, 255, 0.26) !important; }
+        .radio-group-box .radio-button-block:not([disabled]).md-checked .md-ink-ripple .md-off {
+          border-color: #fff; }
+        .radio-group-box .radio-button-block:not([disabled]).md-checked .md-ink-ripple .md-on {
+          background-color: transparent;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          transform: scale(0.7); }
+          .radio-group-box .radio-button-block:not([disabled]).md-checked .md-ink-ripple .md-on:after {
+            content: '\f00c';
+            font-family: FontAwesome;
+            color: #fff; }
+      .radio-group-box .radio-button-block:not([disabled]).md-checked .md-label {
+        color: #fff; }
+    .radio-group-box .radio-button-block .md-ink-ripple {
+      left: 20px; }
+    .radio-group-box .radio-button-block .md-label {
+      margin-left: 20px; }
 
 .md-primary-invert.md-fab.md-button {
   background-color: #fff; }
@@ -136,3 +147,34 @@ md-input-container.md-block {
 
 .md-fab {
   font-size: 1.5rem; }
+  .md-fab.md-fab-with-loader md-progress-circular path {
+    stroke: #fff; }
+
+.button-with-loader md-progress-circular {
+  margin-right: 10px; }
+
+.dl-select-header .dl-header-search-box {
+  border: none;
+  outline: none;
+  height: 100%;
+  width: 100%;
+  padding: 0; }
+
+.dl-select-header .dl-select-header {
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+  padding-left: 10.667px;
+  height: 48px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: auto; }
+
+.dl-select-header md-content._md {
+  max-height: 240px;
+  padding-top: 0; }
+
+.dl-select .md-select-value > span:first-child {
+  font-size: 14px; }
+  .dl-select .md-select-value > span:first-child * {
+    font-size: 16px; }

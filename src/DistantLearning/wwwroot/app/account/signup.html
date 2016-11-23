@@ -52,7 +52,7 @@
                         </md-input-container>
                     </div>
 
-                    <div layout-gt-sm="row">
+                    <div layout-gt-sm="row" class="radio-group-box">
                         <md-radio-group ng-model="registration.type">
 
                             <md-radio-button class="radio-button-block md-primary" value="0">учитель</md-radio-button>
@@ -61,9 +61,58 @@
 
                         </md-radio-group>
                     </div>
+
+                    <div layout-gt-sm="row" ng-show="registration.type == 0">
+                        <md-input-container class="md-block dl-select" flex-gt-sm>
+                            <label>дисциплины</label>
+                            <md-select ng-model="registration.disciplines"
+                                       md-on-close="clearSearchTerm()"
+                                       data-md-container-class="dl-select-header"
+                                       multiple>
+                                <md-select-header class="dl-select-header">
+                                    <input ng-model="searchTerm"
+                                           type="search"
+                                           placeholder="Поиск..."
+                                           class="dl-header-search-box md-text">
+                                </md-select-header>
+                                <md-optgroup>
+                                    <md-option ng-value="discipline.id"
+                                               ng-repeat="discipline in disciplines | filter:searchTerm">
+                                        {{discipline.name}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row" ng-show="registration.type == 1">
+                        <md-input-container class="md-block dl-select" flex-gt-sm>
+                            <label>класс</label>
+                            <md-select ng-model="registration.group"
+                                       md-on-close="clearSearchTerm()"
+                                       data-md-container-class="dl-select-header">
+                                <md-select-header class="dl-select-header">
+                                    <input ng-model="searchTerm"
+                                           type="search"
+                                           placeholder="Поиск..."
+                                           class="dl-header-search-box md-text">
+                                </md-select-header>
+                                <md-optgroup>
+                                    <md-option ng-value="group.id"
+                                               ng-repeat="group in groups | filter:searchTerm">
+                                        {{group.name}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
+                    </div>
                 </md-card-content>
                 <md-card-actions layout="column" layout-align="center center">
-                    <md-button ng-click="signUp()">{{title}}</md-button>
+                    <md-button class="button-with-loader" ng-click="signUp()" layout="row" layout-align="center center">
+                        <md-progress-circular ng-disabled="!activeLoader" ng-show="activeLoader" md-mode="indeterminate"
+                                              md-diameter="18px"></md-progress-circular>
+                        {{title}}
+                    </md-button>
                     <p class="md-body-1"><a ui-sref="login">Войти</a>, если уже есть аккаунт.
                     </p>
                 </md-card-actions>
@@ -76,8 +125,10 @@
             </footer>
         </div>
 
-        <md-button class="md-fab" ng-click="signUp()">
-            <i class="fa fa-check"></i>
+        <md-button class="md-fab md-fab-with-loader" ng-click="signUp()" layout="row" layout-align="center center">
+            <md-progress-circular ng-show="activeLoader" ng-disabled="!activeLoader" md-diameter="30px"
+                                  md-mode="indeterminate"></md-progress-circular>
+            <i class="fa fa-check" ng-hide="activeLoader"></i>
         </md-button>
     </form>
 </div>

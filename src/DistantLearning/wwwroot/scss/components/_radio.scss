@@ -1,36 +1,52 @@
-.radio-button-block {
-  padding: 10px 20px 10px 40px;
-  background-color: #eee;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
+.radio-group-box {
+  padding: 0 0 1px 0;
 
-  &:not([disabled]).md-checked {
-    background-color: rgb(2, 119, 189);
+  .radio-button-block {
+    padding: 10px 20px 10px 40px;
+    background-color: #eee;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    &:not([disabled]).md-checked {
+      background-color: rgb(2, 119, 189);
+
+      .md-ink-ripple {
+        color: rgba(255, 255, 255, 0.26) !important;
+
+        .md-off {
+          border-color: #fff;
+        }
+
+        .md-on {
+          background-color: transparent;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          transform: scale(.7);
+
+          &:after {
+            content: '\f00c';
+            font-family: FontAwesome;
+            color: #fff;
+          }
+        }
+      }
+
+      .md-label {
+        color: #fff;
+      }
+    }
 
     .md-ink-ripple {
-      color: rgba(255, 255, 255, 0.26) !important;
-
-      .md-off {
-        border-color: rgba(255, 255, 255, 0.87);
-      }
-
-      .md-on {
-        background-color: rgba(255, 255, 255, 0.87);
-      }
+      left: 20px;
     }
 
     .md-label {
-      color: #fff;
+      margin-left: 20px;
     }
   }
-
-  .md-ink-ripple {
-    left: 20px;
-  }
-
-  .md-label {
-    margin-left: 20px;
-  }
 }
+

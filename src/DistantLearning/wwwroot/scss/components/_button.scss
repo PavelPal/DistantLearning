@@ -1,3 +1,17 @@
 .md-fab {
   font-size: 1.5rem;
+
+  &.md-fab-with-loader {
+    md-progress-circular {
+      path {
+        stroke: #fff;
+      }
+    }
+  }
+}
+
+.button-with-loader {
+  md-progress-circular {
+    margin-right: 10px;
+  }
 }
