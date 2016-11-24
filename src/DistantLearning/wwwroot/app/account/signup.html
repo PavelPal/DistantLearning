@@ -21,6 +21,9 @@
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>имя</label>
                             <input type="text" ng-model="registration.firstName" required>
+                            <div ng-messages="registration.firstName.$error">
+                                <div ng-message="required">Введите имя</div>
+                            </div>
                         </md-input-container>
                     </div>
 
@@ -28,6 +31,9 @@
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>фамилия</label>
                             <input type="text" ng-model="registration.lastName" required>
+                            <div ng-messages="registration.lastName.$error">
+                                <div ng-message="required">Введите фамилию</div>
+                            </div>
                         </md-input-container>
                     </div>
 
@@ -35,25 +41,36 @@
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>email</label>
                             <input type="email" ng-model="registration.email" required ng-pattern="validation.email">
+                            <div ng-messages="registration.email.$error">
+                                <div ng-message="required">Введите email</div>
+                            </div>
                         </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>пароль</label>
-                            <input type="password" ng-model="registration.password" required>
+                            <input type="password" ng-model="registration.password" required minlength="6">
+                            <div ng-messages="registration.password.$error">
+                                <div ng-message="required">Введите пароль</div>
+                                <div ng-message="minlength">Коротко! Должен содержать минимум 6 символов</div>
+                            </div>
                         </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>подтверждение пароля</label>
-                            <input type="password" ng-model="registration.confirmPassword" required>
+                            <input type="password" ng-model="registration.confirmPassword" required minlength="6">
+                            <div ng-messages="registration.confirmPassword.$error">
+                                <div ng-message="required">Введите подтверждение пароля</div>
+                                <div ng-message="minlength">Коротко! Должен содержать минимум 6 символов</div>
+                            </div>
                         </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row" class="radio-group-box">
-                        <md-radio-group ng-model="registration.type">
+                        <md-radio-group ng-model="registration.type" required>
 
                             <md-radio-button class="radio-button-block md-primary" value="0">учитель</md-radio-button>
                             <md-radio-button class="radio-button-block md-primary" value="1">ученик</md-radio-button>

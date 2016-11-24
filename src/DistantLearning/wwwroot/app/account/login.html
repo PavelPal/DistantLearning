@@ -3,7 +3,6 @@
 <div flex="none" layout="row" layout-align="center center">
     <form class="auth-form" name="loginForm" novalidate flex="none" layout="row">
         <div>
-
             <md-card>
                 <md-card-title>
                     <md-card-title-text>
@@ -22,18 +21,29 @@
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>email</label>
                             <input type="email" ng-model="loginData.email" required ng-pattern="validation.email">
+                            <div ng-messages="loginData.email.$error" md-auto-hide="true">
+                                <div ng-message="required">Введите email</div>
+                            </div>
                         </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>пароль</label>
-                            <input type="password" ng-model="loginData.password" required>
+                            <input type="password" ng-model="loginData.password" required minlength="6">
+                            <div ng-messages="loginData.password.$error">
+                                <div ng-message="required">Введите пароль</div>
+                                <div ng-message="minlength">Коротко! Должен содержать минимум 6 символов</div>
+                            </div>
                         </md-input-container>
                     </div>
                 </md-card-content>
                 <md-card-actions layout="column" layout-align="center center">
-                    <md-button ng-click="login()">{{title}}</md-button>
+                    <md-button class="button-with-loader" ng-click="login()" layout="row" layout-align="center center">
+                        <md-progress-circular ng-disabled="!activeLoader" ng-show="activeLoader" md-mode="indeterminate"
+                                              md-diameter="18px"></md-progress-circular>
+                        {{title}}
+                    </md-button>
                     <p class="md-body-1"><a ui-sref="signup">Зарегистрироваться</a>, если еще нет аккаунта.
                     </p>
                 </md-card-actions>
@@ -46,8 +56,10 @@
             </footer>
         </div>
 
-        <md-button class="md-fab" ng-click="login()">
-            <i class="fa fa-check"></i>
+        <md-button class="md-fab md-fab-with-loader" ng-click="login()" layout="row" layout-align="center center" aria-label="submit login form">
+            <md-progress-circular ng-show="activeLoader" ng-disabled="!activeLoader" md-diameter="30px"
+                                  md-mode="indeterminate"></md-progress-circular>
+            <i class="fa fa-check" ng-hide="activeLoader"></i>
         </md-button>
     </form>
 </div>
