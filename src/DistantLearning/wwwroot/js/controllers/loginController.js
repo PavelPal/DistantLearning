@@ -1,16 +1,17 @@
 ﻿app.controller("loginController", loginController);
 
-function loginController($scope, $location, authService) {
+function loginController($scope, authService) {
 
     $scope.title = "Войти";
+    $scope.message = "";
     $scope.activeLoader = false;
+
+    authService.logOut();
 
     $scope.loginData = {
         email: "",
         password: ""
     };
-
-    $scope.message = "";
 
     $scope.login = function () {
         if ($scope.loginForm.$valid) {

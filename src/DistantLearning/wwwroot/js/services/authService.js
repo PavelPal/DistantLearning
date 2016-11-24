@@ -1,6 +1,6 @@
 ﻿app.factory("authService", authService);
 
-function authService($http, $q, localStorageService) {
+function authService($http, localStorageService) {
     var authServiceFactory = {};
 
     var authentication = {
@@ -99,6 +99,8 @@ function authService($http, $q, localStorageService) {
                 authentication.firstName = response.firstName;
                 authentication.lastName = response.lastName;
                 authentication.type = response.type;
+
+                callback("OK");
             })
             .error(function (error) {
                 logOut();

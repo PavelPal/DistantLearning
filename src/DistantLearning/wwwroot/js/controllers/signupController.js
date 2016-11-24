@@ -30,33 +30,35 @@ function signupController($scope, $state, $element, authService) {
         group: 0
     };
 
-    $scope.disciplines = [{
-        id: 1,
-        name: "Русский язык"
-    }, {
-        id: 2,
-        name: "Математика"
-    }, {
-        id: 3,
-        name: "Физика"
-    }, {
-        id: 7,
-        name: "Химия"
-    }];
+    $scope.disciplines = [
+        {
+            id: 1,
+            name: "Русский язык"
+        }, {
+            id: 2,
+            name: "Математика"
+        }, {
+            id: 3,
+            name: "Физика"
+        }, {
+            id: 7,
+            name: "Химия"
+        }];
 
-    $scope.groups = [{
-        id: 1,
-        name: "9А"
-    }, {
-        id: 2,
-        name: "8А"
-    }, {
-        id: 3,
-        name: "7А"
-    }, {
-        id: 4,
-        name: "6А"
-    }];
+    $scope.groups = [
+        {
+            id: 1,
+            name: "9А"
+        }, {
+            id: 2,
+            name: "8А"
+        }, {
+            id: 3,
+            name: "7А"
+        }, {
+            id: 4,
+            name: "6А"
+        }];
 
     $scope.validation = {
         email: /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/
