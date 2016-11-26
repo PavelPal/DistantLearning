@@ -1,9 +1,12 @@
-﻿using DataAccessProvider;
+﻿using System;
+using System.Threading.Tasks;
+using DataAccessProvider;
 using DistantLearning.Services;
 using Domain;
 using Domain.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -89,10 +92,8 @@ namespace DistantLearning
                 app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+
+            app.UseStatusCodePages("text/plain", "Ошибка: {0}");
 
             app.UseStaticFiles();
 
@@ -104,6 +105,36 @@ namespace DistantLearning
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DatabaseInitialize(app.ApplicationServices).Wait();
+        }
+
+        private async Task DatabaseInitialize(IServiceProvider serviceProvider)
+        {
+            string[] roles = {"Teacher", "Student", "Parent", "Moderator", "Admin"};
+
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var adminEmail = "admin@admin.com";
+            var password = "Aaa123!";
+
+            foreach (var role in roles)
+                if (await roleManager.FindByNameAsync(role) == null)
+                    await roleManager.CreateAsync(new IdentityRole(role));
+
+            if (await userManager.FindByNameAsync(adminEmail) == null)
+            {
+                var admin = new User
+                {
+                    Email = adminEmail,
+                    UserName = adminEmail,
+                    FirstName = "Администратор"
+                };
+                var result = await userManager.CreateAsync(admin, password);
+                if (result.Succeeded)
+                    await userManager.AddToRoleAsync(admin, "Admin");
+            }
         }
     }
 }

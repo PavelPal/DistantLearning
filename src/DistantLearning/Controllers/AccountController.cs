@@ -47,27 +47,23 @@ namespace DistantLearning.Controllers
         public async Task<object> Login([FromBody] LoginViewModel model)
         {
             if (!ModelState.IsValid)
-                throw new Exception(ModelState.Keys.Aggregate("", (current, key) => current + key + ","));
+                throw new Exception("Некорректные данные.");
 
-            var result =
-                await
-                    _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation(1, "User logged in.");
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-            if (result.RequiresTwoFactor)
-                return RedirectToAction(nameof(SendCode), new {model});
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning(2, "User account locked out.");
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
 
-                // TODO locked page
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(model);
+            //if (result.RequiresTwoFactor)
+            //    return RedirectToAction(nameof(SendCode), new {model});
+
+            //if (result.IsLockedOut)
+            //{
+            //    _logger.LogWarning(2, "User account locked out.");
+            //    // TODO locked page
+            //    return RedirectToAction(nameof(HomeController.Index), "Home");
+            //}
+            if (!result.Succeeded) throw new Exception("При входе произошла ошибка.");
+
+            _logger.LogInformation(1, "User logged in.");
+            return _context.Users.FirstOrDefault(u => u.Email.Equals(model.Email));
         }
 
         [Route("register")]
@@ -76,7 +72,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-                throw new Exception(ModelState.Keys.Aggregate("", (current, key) => current + key + ","));
+                throw new Exception("Некорректные данные.");
 
             var user = new User
             {
@@ -86,74 +82,75 @@ namespace DistantLearning.Controllers
                 LastName = model.LastName
             };
 
-            try
+            switch (model.Type)
             {
-                switch (model.Type)
-                {
-                    case 0:
-                        user.Teacher.Add(new UserTeacher
+                case 0:
+                    user.Teacher.Add(new UserTeacher
+                    {
+                        Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
                         {
-                            Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
-                            {
-                                Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
-                            }).ToList()
-                        });
-                        break;
-                    case 1:
-                        user.Student.Add(new UserStudent
+                            Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
+                        }).ToList()
+                    });
+                    break;
+                case 1:
+                    user.Student.Add(new UserStudent
+                    {
+                        Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
+                    });
+                    break;
+                case 2:
+                    user.Parent.Add(new UserParent
+                    {
+                        Children = model.Children.Select(child => new UserStudent
                         {
-                            Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
-                        });
-                        break;
-                    case 2:
-                        user.Parent.Add(new UserParent
+                            Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
+                        }).ToList().Select(student => new ChildParent
                         {
-                            Children = model.Children.Select(child => new UserStudent
-                            {
-                                Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
-                            }).ToList().Select(student => new ChildParent
-                            {
-                                Student = student
-                            }).ToList()
-                        });
-                        break;
-                    default:
-                        throw new Exception("Некорректный тип");
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error: " + e.Message);
+                            Student = student
+                        }).ToList()
+                    });
+                    break;
+                default:
+                    _logger.LogError("Error with registration.");
+                    throw new Exception("Некорректный тип.");
             }
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
-                throw new Exception(result.Errors.Aggregate("", (current, error) => current + error + ","));
+                throw new Exception("При регистрации произошла ошибка.");
 
-            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-            // Send an email with this link
-            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-            //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-            //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+            switch (model.Type)
+            {
+                case 0:
+                    await _userManager.AddToRoleAsync(user, "Teacher");
+                    break;
+                case 1:
+                    await _userManager.AddToRoleAsync(user, "Student");
+                    break;
+                case 2:
+                    await _userManager.AddToRoleAsync(user, "Parent");
+                    break;
+                default:
+                    _logger.LogError("Error with adding role.");
+                    throw new Exception("Некорректный тип.");
+            }
 
             await _signInManager.SignInAsync(user, false);
             _logger.LogInformation(3, "User created a new account with password.");
             return user;
         }
 
+        [Route("logout")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
+        public async Task LogOff()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        //
-        // POST: /Account/ExternalLogin
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

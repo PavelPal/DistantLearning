@@ -6,13 +6,13 @@ function mainController($scope, $mdSidenav, $location, localStorageService, auth
     $scope.toggleSideNav = toggleSideNav("sideNav");
 
     function toggleSideNav(componentId) {
-        return function () {
+        return function() {
             $mdSidenav(componentId)
                 .toggle();
         };
     }
 
-    $scope.logOut = function () {
+    $scope.logOut = function() {
         authService.logOut();
         $location.path("/main");
     };

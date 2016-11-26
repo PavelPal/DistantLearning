@@ -6,15 +6,17 @@ function signupController($scope, $state, $element, authService) {
     $scope.savedSuccessfully = false;
     $scope.message = "";
     $scope.activeLoader = false;
-    $scope.searchTerm = '';
+    $scope.searchTerm = "";
 
-    $scope.clearSearchTerm = function () {
-        $scope.searchTerm = '';
+    $scope.clearSearchTerm = function() {
+        $scope.searchTerm = "";
     };
 
-    $element.find('input').on('keydown', function (e) {
-        e.stopPropagation();
-    });
+    $element.find("input")
+        .on("keydown",
+            function(e) {
+                e.stopPropagation();
+            });
 
     authService.logOut();
 
@@ -43,7 +45,8 @@ function signupController($scope, $state, $element, authService) {
         }, {
             id: 7,
             name: "Химия"
-        }];
+        }
+    ];
 
     $scope.groups = [
         {
@@ -58,24 +61,26 @@ function signupController($scope, $state, $element, authService) {
         }, {
             id: 4,
             name: "6А"
-        }];
+        }
+    ];
 
     $scope.validation = {
         email: /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/
     };
 
-    $scope.signUp = function () {
+    $scope.signUp = function() {
         if ($scope.signUpForm.$valid) {
             $scope.activeLoader = true;
-            authService.signUp($scope.registration, function (result) {
-                if (result == "OK") {
-                    $scope.message = "Регистрация прошла успешно.";
-                    $scope.activeLoader = false;
-                    $state.go("profile");
-                } else {
-                    $scope.message = result;
-                }
-            });
+            authService.signUp($scope.registration,
+                function(result) {
+                    if (result == "OK") {
+                        $scope.message = "Регистрация прошла успешно.";
+                        $scope.activeLoader = false;
+                        $state.go("profile");
+                    } else {
+                        $scope.message = result;
+                    }
+                });
         }
     };
 }

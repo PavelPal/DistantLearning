@@ -14,7 +14,7 @@ function authService($http, localStorageService) {
         type: ""
     };
 
-    var logOut = function () {
+    var logOut = function() {
         localStorageService.remove("authorizationData");
 
         authentication.isAuth = false;
@@ -27,60 +27,21 @@ function authService($http, localStorageService) {
         authentication.type = "";
     };
 
-    var signUp = function (model, callback) {
+    var signUp = function(model, callback) {
         logOut();
 
         return $http({
-            url: "/api/account/register",
-            dataType: "json",
-            method: "POST",
-            data: JSON.stringify(model),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .success(function (response) {
-                localStorageService.set("authorizationData", {
-                    token: response.access_token,
-                    email: response.email,
-                    emailConfirmed: response.emailConfirmed,
-                    userName: response.userName,
-                    phoneNumber: response.phoneNumber,
-                    firstName: response.firstName,
-                    lastName: response.lastName,
-                    type: response.type
-                });
-
-                authentication.isAuth = true;
-                authentication.email = response.email;
-                authentication.emailConfirmed = response.emailConfirmed;
-                authentication.userName = response.userName;
-                authentication.phoneNumber = response.phoneNumber;
-                authentication.firstName = response.firstName;
-                authentication.lastName = response.lastName;
-                authentication.type = response.type;
-
-                callback("OK")
+                url: "/api/account/register",
+                dataType: "json",
+                method: "POST",
+                data: JSON.stringify(model),
+                headers: {
+                    "Content-Type": "application/json"
+                }
             })
-            .error(function (error) {
-                logOut();
-                callback(error);
-            });
-    };
-
-    var login = function (model, callback) {
-
-        $http({
-            url: "/api/account/login",
-            dataType: "json",
-            method: "POST",
-            data: JSON.stringify(model),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .success(function (response) {
-                localStorageService.set("authorizationData", {
+            .success(function(response) {
+                localStorageService.set("authorizationData",
+                {
                     token: response.access_token,
                     email: response.email,
                     emailConfirmed: response.emailConfirmed,
@@ -102,13 +63,55 @@ function authService($http, localStorageService) {
 
                 callback("OK");
             })
-            .error(function (error) {
+            .error(function(error) {
                 logOut();
                 callback(error);
             });
     };
 
-    var fillAuthData = function () {
+    var login = function(model, callback) {
+
+        $http({
+                url: "/api/account/login",
+                dataType: "json",
+                method: "POST",
+                data: JSON.stringify(model),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .success(function(response) {
+
+                localStorageService.set("authorizationData",
+                {
+                    token: response.access_token,
+                    email: response.email,
+                    emailConfirmed: response.emailConfirmed,
+                    userName: response.userName,
+                    phoneNumber: response.phoneNumber,
+                    firstName: response.firstName,
+                    lastName: response.lastName,
+                    type: response.type
+                });
+
+                authentication.isAuth = true;
+                authentication.email = response.email;
+                authentication.emailConfirmed = response.emailConfirmed;
+                authentication.userName = response.userName;
+                authentication.phoneNumber = response.phoneNumber;
+                authentication.firstName = response.firstName;
+                authentication.lastName = response.lastName;
+                authentication.type = response.type;
+
+                callback("OK");
+            })
+            .error(function(error) {
+                logOut();
+                callback(error);
+            });
+    };
+
+    var fillAuthData = function() {
         var authData = localStorageService.get("authorizationData");
         if (authData) {
             authentication.isAuth = true;
