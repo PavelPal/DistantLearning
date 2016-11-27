@@ -28,8 +28,6 @@ function signupController($scope, $state, $element, authService, disciplineServi
                 e.stopPropagation();
             });
 
-    authService.logOut();
-
     $scope.registration = {
         firstName: "",
         lastName: "",
@@ -57,6 +55,7 @@ function signupController($scope, $state, $element, authService, disciplineServi
                         $state.go("profile");
                     } else {
                         $scope.message = result;
+                        $scope.activeLoader = false;
                     }
                 });
         }

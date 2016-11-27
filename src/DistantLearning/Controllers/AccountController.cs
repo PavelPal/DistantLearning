@@ -47,7 +47,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Login([FromBody] LoginViewModel model)
         {
             if (!ModelState.IsValid)
-                throw new Exception("������������ ������.");
+                throw new Exception("Неверные данные.");
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
 
@@ -60,10 +60,15 @@ namespace DistantLearning.Controllers
             //    // TODO locked page
             //    return RedirectToAction(nameof(HomeController.Index), "Home");
             //}
-            if (!result.Succeeded) throw new Exception("��� ����� ��������� ������.");
+            if (!result.Succeeded) throw new Exception("При входе произошла ошибка.");
 
             _logger.LogInformation(1, "User logged in.");
-            return _context.Users.FirstOrDefault(u => u.Email.Equals(model.Email));
+            var user = _context.Users.FirstOrDefault(u => u.Email.Equals(model.Email));
+            return new
+            {
+                email = user.Email,
+                roles = await _userManager.GetRolesAsync(user)
+            };
         }
 
         [Route("register")]
@@ -72,7 +77,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-                throw new Exception("������������ ������.");
+                throw new Exception("Неверные данные.");
 
             var user = new User
             {
@@ -113,13 +118,13 @@ namespace DistantLearning.Controllers
                     break;
                 default:
                     _logger.LogError("Error with registration.");
-                    throw new Exception("������������ ���.");
+                    throw new Exception("Неверный тип.");
             }
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
-                throw new Exception("��� ����������� ��������� ������.");
+                throw new Exception("При регистрации произошла ошибка.");
 
             switch (model.Type)
             {
@@ -134,12 +139,16 @@ namespace DistantLearning.Controllers
                     break;
                 default:
                     _logger.LogError("Error with adding role.");
-                    throw new Exception("������������ ���.");
+                    throw new Exception("Неверный тип.");
             }
 
             await _signInManager.SignInAsync(user, false);
             _logger.LogInformation(3, "User created a new account with password.");
-            return user;
+            return new
+            {
+                email = user.Email,
+                roles = await _userManager.GetRolesAsync(user)
+            };
         }
 
         [Route("logout")]

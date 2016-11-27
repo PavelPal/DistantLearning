@@ -18,7 +18,7 @@ function authInterceptorService($q, $location, localStorageService) {
 
     var responseError = function(rejection) {
         if (rejection.status === 401) {
-            $location.state("login");
+            $location.path("/");
         }
         return $q.reject(rejection);
     };
