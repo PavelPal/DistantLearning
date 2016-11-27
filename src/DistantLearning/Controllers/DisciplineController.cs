@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DataAccessProvider;
 using Domain.Model;
@@ -24,7 +25,7 @@ namespace DistantLearning.Controllers
         [AllowAnonymous]
         public async Task<List<Discipline>> Disciplines()
         {
-            return await _context.Disciplines.ToListAsync();
+            return await _context.Disciplines.OrderBy(d => d.Name).ToListAsync();
         }
     }
 }

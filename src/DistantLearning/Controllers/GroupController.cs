@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DataAccessProvider;
 using Domain.Model;
@@ -24,7 +25,7 @@ namespace DistantLearning.Controllers
         [AllowAnonymous]
         public async Task<List<Group>> Groups()
         {
-            return await _context.Groups.ToListAsync();
+            return await _context.Groups.OrderBy(g => g.Name).ToListAsync();
         }
     }
 }
