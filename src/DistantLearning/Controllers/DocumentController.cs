@@ -34,26 +34,19 @@ namespace DistantLearning.Controllers
         {
             if (id == null)
                 throw new Exception("Некорректный id.");
-            var document = _context.Documents.FirstOrDefault(d => d.Id == id);
-            if (document == null)
-                throw new Exception("Документ отсутствует.");
-            return document;
+            return _context.Documents.FirstOrDefault(d => d.Id == id);
         }
 
         [Route("byTeacher/{id}")]
         [HttpGet]
-        public async Task<object> TeachersDocuments(string id)
+        public async Task<List<Document>> TeachersDocuments(string id)
         {
             if (id == null)
                 throw new Exception("Некорректный id.");
             var user = _context.Users.Where(u => u.Id.Equals(id)).Include(u => u.Teacher).FirstOrDefault();
             if (user == null)
                 throw new Exception("Пользователь не найден.");
-            var documents =
-                await _context.Documents.Where(d => d.TeacherId == user.Teacher.FirstOrDefault().Id).ToListAsync();
-            if ((documents == null) || (documents.Count == 0))
-                return "Документы отсутствуют.";
-            return documents;
+            return await _context.Documents.Where(d => d.TeacherId == user.Teacher.FirstOrDefault().Id).ToListAsync();
         }
     }
 }
