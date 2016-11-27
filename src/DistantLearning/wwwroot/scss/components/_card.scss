@@ -1,0 +1,76 @@
+.profile-card-wrap {
+  width: 230px;
+  max-width: 230px;
+
+  .profile-card {
+    md-card-title {
+      padding: 16px;
+
+      md-card-title-media {
+        margin: 0;
+
+        .card-media {
+          border-radius: 50%;
+          width: 166px;
+          height: 166px;
+          background: {
+            position: center;
+            size: cover;
+            color: #eeeeee;
+          }
+        }
+      }
+    }
+
+    md-card-actions {
+      margin-top: 0;
+      display: flex;
+      flex-direction: row;
+
+      .md-button {
+        min-width: 36px;
+        flex-shrink: 0;
+
+        &:first-child {
+          flex: 1;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.profile-info-card-wrap {
+  .profile-info-card {
+    md-card-title {
+      padding: 16px;
+    }
+  }
+
+  .consultations-card {
+    md-card-title {
+      padding: 16px;
+
+      .md-title {
+        font-size: 14px;
+      }
+    }
+
+    md-card-content {
+      md-chips {
+        .md-chips {
+          padding: 0;
+          box-shadow: none;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+
+          md-chip {
+            font-size: 12px;
+            margin: 5px 5px 0 0;
+          }
+        }
+      }
+    }
+  }
+}

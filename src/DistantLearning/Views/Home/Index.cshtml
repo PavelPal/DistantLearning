@@ -9,15 +9,17 @@
     <title>{{ title }}</title>
 
     <environment names="Development">
-        <link rel="stylesheet" href="~/lib/normalize-css/normalize.css">
-        <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css">
-        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="~/lib/normalize-css/normalize.css"/>
+        <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css"/>
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="~/lib/ngprogress/ngProgress.css"/>
         <link rel="stylesheet" href="~/css/site.min.css"/>
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/lib/normalize-css/normalize.css">
-        <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css">
-        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="~/lib/normalize-css/normalize.css"/>
+        <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css"/>
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="~/lib/ngprogress/ngProgress.css"/>
         <link rel="stylesheet" href="~/css/site.min.css"/>
     </environment>
 </head>
@@ -34,6 +36,7 @@
     <script src="~/lib/angular-animate/angular-animate.min.js"></script>
     <script src="~/lib/angular-aria/angular-aria.min.js"></script>
     <script src="~/lib/angular-messages/angular-messages.min.js"></script>
+    <script src="~/lib/ngprogress/build/ngprogress.min.js"></script>
     <script src="~/lib/angular-material/angular-material.min.js"></script>
     <script src="~/js/site.min.js"></script>
 </environment>
@@ -48,6 +51,7 @@
     <script src="~/lib/angular-animate/angular-animate.min.js"></script>
     <script src="~/lib/angular-aria/angular-aria.min.js"></script>
     <script src="~/lib/angular-messages/angular-messages.min.js"></script>
+    <script src="~/lib/ngprogress/build/ngprogress.min.js"></script>
     <script src="~/lib/angular-material/angular-material.min.js"></script>
     <script src="~/js/site.min.js"></script>
 </environment>
@@ -68,7 +72,7 @@
     </div>
 </md-toolbar>
 
-<section layout="row" flex>
+<section id="main-container" layout="row" flex>
     <md-sidenav class="md-sidenav-left dl-sidenav"
                 md-component-id="sideNav"
                 md-is-locked-open="$mdMedia('gt-md')"

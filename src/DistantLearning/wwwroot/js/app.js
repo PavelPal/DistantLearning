@@ -7,5 +7,6 @@ var app = angular.module("distantLearning",
     "ngResource",
     "ngMaterial",
     "ui.router",
-    "ngCookies"
+    "ngCookies",
+    "ngProgress"
 ]);
