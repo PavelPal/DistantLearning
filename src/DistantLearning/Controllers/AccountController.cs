@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -47,7 +47,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Login([FromBody] LoginViewModel model)
         {
             if (!ModelState.IsValid)
-                throw new Exception("Некорректные данные.");
+                throw new Exception("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
 
@@ -60,7 +60,7 @@ namespace DistantLearning.Controllers
             //    // TODO locked page
             //    return RedirectToAction(nameof(HomeController.Index), "Home");
             //}
-            if (!result.Succeeded) throw new Exception("При входе произошла ошибка.");
+            if (!result.Succeeded) throw new Exception("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
 
             _logger.LogInformation(1, "User logged in.");
             return _context.Users.FirstOrDefault(u => u.Email.Equals(model.Email));
@@ -72,7 +72,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-                throw new Exception("Некорректные данные.");
+                throw new Exception("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
 
             var user = new User
             {
@@ -113,13 +113,13 @@ namespace DistantLearning.Controllers
                     break;
                 default:
                     _logger.LogError("Error with registration.");
-                    throw new Exception("Некорректный тип.");
+                    throw new Exception("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.");
             }
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
-                throw new Exception("При регистрации произошла ошибка.");
+                throw new Exception("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
 
             switch (model.Type)
             {
@@ -134,7 +134,7 @@ namespace DistantLearning.Controllers
                     break;
                 default:
                     _logger.LogError("Error with adding role.");
-                    throw new Exception("Некорректный тип.");
+                    throw new Exception("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.");
             }
 
             await _signInManager.SignInAsync(user, false);

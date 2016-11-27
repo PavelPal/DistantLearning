@@ -1,9 +1,9 @@
 app.run(run).config(config);
 
-function run($rootScope, $cookies, $window, authService) {
+function run($rootScope, $window, authService) {
 
     $rootScope.$on("$stateChangeStart",
-        function(event, toState, toParams, fromState, fromParams) {
+        function(event, toState) {
             if (toState.external) {
                 event.preventDefault();
                 $window.open(toState.url, "_self");
@@ -11,7 +11,7 @@ function run($rootScope, $cookies, $window, authService) {
         });
 
     $rootScope.$on("$stateChangeSuccess",
-        function(event, toState, toParams, fromState, fromParams) {
+        function(event, toState) {
             if (toState.external) {
                 event.preventDefault();
                 $window.open(toState.url, "_self");
