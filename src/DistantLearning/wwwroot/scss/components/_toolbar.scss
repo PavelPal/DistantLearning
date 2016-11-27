@@ -1,81 +1,89 @@
 ﻿.md-toolbar-tools {
-    position: relative;
+  position: relative;
+  height: 48px;
+  max-height: 48px;
 
-    h3 {
-        width: 284px;
-    }
+  h3 {
+    width: 284px;
+  }
 
-    .md-icon-button {
-        flex-shrink: 0;
-    }
+  .md-icon-button {
+    flex-shrink: 0;
+  }
 
-    .toolbar-search-box {
-        margin-left: 16px;
+  .toolbar-search-box {
+    margin-left: 16px;
 
-        form {
-            display: flex;
-            align-items: center;
+    form {
+      display: flex;
+      align-items: center;
 
-            input {
-                flex: 1 1 auto;
-                order: 2;
-                outline: none;
-                border: none;
-                border-radius: 0;
-                padding: 12px 15px;
-                font-family: 'Roboto', sans-serif;
-                font-size: 1rem;
-                transition: all 0.3s ease-in-out;
-                -webkit-appearance: none;
-                background: rgba(255, 255, 255, 0.25);
-                color: #000;
+      input {
+        flex: 1 1 auto;
+        order: 2;
+        outline: none;
+        border: none;
+        border-radius: 0;
+        padding: 10px 15px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s ease-in-out;
+        -webkit-appearance: none;
+        background: rgba(255, 255, 255, 0.25);
+        color: #000;
 
-                &::-webkit-input-placeholder {
-                    color: #fff;
-                }
-
-                &::-moz-placeholder {
-                    color: #fff;
-                }
-                
-                &:-ms-input-placeholder {
-                    color: #fff;
-                }
-                
-                &:-moz-placeholder {
-                    color: #fff;
-                }
-            
-                &:focus {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    height: 100%;
-                    width: 100%;
-                    padding: 10px 15px;
-                    background: #fff;
-
-                    &::-webkit-input-placeholder {
-                        color: #959595;
-                    }
-
-                    &::-moz-placeholder {
-                        color: #959595;
-                    }
-
-                    &:-ms-input-placeholder {
-                        color: #959595;
-                    }
-
-                    &:-moz-placeholder {
-                        color: #959595;
-                    }
-                }
-
-                @media screen and (max-width: 959px) and (min-width: 669px) {
-                    padding: 10px 15px;
-                }
-            }
+        &::-webkit-input-placeholder {
+          color: #fff;
         }
+
+        &::-moz-placeholder {
+          color: #fff;
+        }
+
+        &:-ms-input-placeholder {
+          color: #fff;
+        }
+
+        &:-moz-placeholder {
+          color: #fff;
+        }
+
+        &:focus {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 100%;
+          padding: 10px 15px;
+          background: #fff;
+
+          &::-webkit-input-placeholder {
+            color: #959595;
+          }
+
+          &::-moz-placeholder {
+            color: #959595;
+          }
+
+          &:-ms-input-placeholder {
+            color: #959595;
+          }
+
+          &:-moz-placeholder {
+            color: #959595;
+          }
+        }
+      }
     }
+  }
+}
+
+@media (max-width: 959px) and (min-width: 0) and (orientation: portrait) {
+  md-toolbar {
+    min-height: 48px;
+  }
+}
+
+md-toolbar {
+  min-height: 48px;
 }
