@@ -2,6 +2,15 @@ app.config(routes);
 
 function routes($stateProvider, $httpProvider, $urlRouterProvider) {
 
+    var Auth = function($q, authService) {
+        authService.fillAuthData();
+        if (authService.authentication.isAuth) {
+            return $q.when(authService.authentication);
+        } else {
+            return $q.reject({ authenticated: false });
+        }
+    };
+
     $urlRouterProvider.otherwise("/");
 
     $stateProvider
@@ -27,42 +36,67 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
         .state("profile",
         {
             url: "/profile",
-            templateUrl: "../app/profile.html"
+            templateUrl: "../app/profile.html",
+            resolve: {
+                auth: Auth
+            }
         })
         .state("users",
         {
             url: "/users",
-            templateUrl: "../app/users.html"
+            templateUrl: "../app/users.html",
+            resolve: {
+                auth: Auth
+            }
         })
         .state("tests",
         {
             url: "/tests",
-            templateUrl: "../app/tests.html"
+            templateUrl: "../app/tests.html",
+            resolve: {
+                auth: Auth
+            }
         })
         .state("journal",
         {
             url: "/journal",
-            templateUrl: "../app/journal.html"
+            templateUrl: "../app/journal.html",
+            resolve: {
+                auth: Auth
+            }
         })
         .state("results",
         {
             url: "/results",
-            templateUrl: "../app/results.html"
+            templateUrl: "../app/results.html",
+            resolve: {
+                auth: Auth
+            }
         })
         .state("documents",
         {
             url: "/documents",
-            templateUrl: "../app/documents.html"
+            templateUrl: "../app/documents.html",
+            controller: "documentController",
+            resolve: {
+                auth: Auth
+            }
         })
         .state("settings",
         {
             url: "/settings",
-            templateUrl: "../app/settings.html"
+            templateUrl: "../app/settings.html",
+            resolve: {
+                auth: Auth
+            }
         })
         .state("help",
         {
             url: "/help",
-            templateUrl: "../app/help.html"
+            templateUrl: "../app/help.html",
+            resolve: {
+                auth: Auth
+            }
         });
 
     $httpProvider.interceptors.push("authInterceptorService");

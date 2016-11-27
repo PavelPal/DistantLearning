@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using DataAccessProvider;
 using DistantLearning.Services;
 using Domain;
 using Domain.Model;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -47,7 +49,21 @@ namespace DistantLearning
                     )
             );
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options =>
+                {
+                    options.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = ctx =>
+                        {
+                            if (ctx.Request.Path.StartsWithSegments("/api") &&
+                                (ctx.Response.StatusCode == (int) HttpStatusCode.OK))
+                                ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                            else
+                                ctx.Response.Redirect(ctx.RedirectUri);
+                            return Task.FromResult(0);
+                        }
+                    };
+                })
                 .AddEntityFrameworkStores<DomainModelContext>()
                 .AddDefaultTokenProviders();
 
