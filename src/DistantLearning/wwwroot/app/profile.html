@@ -1,1 +1,46 @@
-﻿Profile
+﻿<div flex layout="row" layout-padding>
+    <div flex layout="column" class="profile-card-wrap">
+        <md-card class="profile-card">
+            <md-card-title>
+                <md-card-title-media>
+                    <div class="md-media-lg card-media"></div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions>
+                <md-button class="md-primary">Редактировать</md-button>
+                <md-button class="md-primary" aria-label="change photo button"><i class="fa fa-photo"></i></md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+    <div flex layout="column" class="profile-info-card-wrap">
+        <md-card class="profile-info-card">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
+                    <span class="md-subhead">
+                        <span ng-repeat="role in profile.roles">{{role.name}}</span>
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+        </md-card>
+        <md-card class="consultations-card">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">Консультации</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="row">
+                <div class="info-message" ng-hide="consultations.length > 0">
+                    <i class="fa fa-info-circle"></i> Нет консультаций
+                </div>
+
+                <md-chips ng-show="consultations.length > 0">
+                    <md-chip ng-repeat="consultation in consultations">
+                        {{dayOfWeekAsString(consultation.dayOfWeek)}} |
+                        {{getTime(consultation.time) | date:'HH:mm'}}
+                    </md-chip>
+                </md-chips>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
