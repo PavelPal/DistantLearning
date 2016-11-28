@@ -220,20 +220,50 @@ md-input-container.md-block {
         flex: 1;
         font-size: 12px; }
 
-.profile-info-card-wrap .profile-info-card md-card-title {
+.contact-info-card md-card-title,
+.consultations-card md-card-title {
   padding: 16px; }
-
-.profile-info-card-wrap .consultations-card md-card-title {
-  padding: 16px; }
-  .profile-info-card-wrap .consultations-card md-card-title .md-title {
+  .contact-info-card md-card-title .md-title,
+  .consultations-card md-card-title .md-title {
     font-size: 14px; }
 
-.profile-info-card-wrap .consultations-card md-card-content md-chips .md-chips {
+.contact-info-card md-card-content md-chips .md-chips,
+.consultations-card md-card-content md-chips .md-chips {
   padding: 0;
   box-shadow: none;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap; }
-  .profile-info-card-wrap .consultations-card md-card-content md-chips .md-chips md-chip {
+  .contact-info-card md-card-content md-chips .md-chips md-chip,
+  .consultations-card md-card-content md-chips .md-chips md-chip {
     font-size: 12px;
     margin: 5px 5px 0 0; }
+
+.contact-info-card md-list-item {
+  padding: 0; }
+  .contact-info-card md-list-item .md-avatar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+    background-color: #9b9b9b;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    font-size: 14px; }
+  .contact-info-card md-list-item .md-list-item-text {
+    margin-top: 12px;
+    margin-bottom: 16px; }
+    .contact-info-card md-list-item .md-list-item-text h3 {
+      font-size: 14px; }
+      .contact-info-card md-list-item .md-list-item-text h3 a {
+        color: rgba(0, 0, 0, 0.87);
+        text-decoration: none; }
+        .contact-info-card md-list-item .md-list-item-text h3 a:hover {
+          color: #0277bd; }
+    .contact-info-card md-list-item .md-list-item-text p {
+      font-size: 13px; }
+
+.profile-info-card-wrap .profile-info-card md-card-title {
+  padding: 16px; }

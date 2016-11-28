@@ -40,37 +40,79 @@
   }
 }
 
+.contact-info-card,
+.consultations-card {
+  md-card-title {
+    padding: 16px;
+
+    .md-title {
+      font-size: 14px;
+    }
+  }
+
+  md-card-content {
+    md-chips {
+      .md-chips {
+        padding: 0;
+        box-shadow: none;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        md-chip {
+          font-size: 12px;
+          margin: 5px 5px 0 0;
+        }
+      }
+    }
+  }
+}
+
+.contact-info-card {
+  md-list-item {
+    padding: 0;
+
+    .md-avatar {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+      background-color: #9b9b9b;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+    }
+
+    .md-list-item-text {
+      margin-top: 12px;
+      margin-bottom: 16px;
+
+      h3 {
+        font-size: 14px;
+
+        a {
+          color: rgba(0, 0, 0, 0.87);
+          text-decoration: none;
+
+          &:hover {
+            color: rgb(2, 119, 189);
+          }
+        }
+      }
+
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+}
+
 .profile-info-card-wrap {
   .profile-info-card {
     md-card-title {
       padding: 16px;
-    }
-  }
-
-  .consultations-card {
-    md-card-title {
-      padding: 16px;
-
-      .md-title {
-        font-size: 14px;
-      }
-    }
-
-    md-card-content {
-      md-chips {
-        .md-chips {
-          padding: 0;
-          box-shadow: none;
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-
-          md-chip {
-            font-size: 12px;
-            margin: 5px 5px 0 0;
-          }
-        }
-      }
     }
   }
 }
