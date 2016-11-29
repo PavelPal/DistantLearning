@@ -1,17 +1,28 @@
-﻿<div flex layout="row" layout-padding>
+﻿<div flex layout="row" layout-xs="column" layout-padding>
     <div flex layout="column" class="profile-card-wrap">
-        <md-card class="profile-card">
-            <md-card-title>
+        <md-card class="profile-photo-card">
+            <md-card-title layout="column" layout-align="center center">
                 <md-card-title-media>
-                    <div class="md-media-lg card-media"></div>
+                    <div class="md-media-lg profile-photo" style="background-image: url('')">
+                        <div class="change-photo-thumb">
+                            <i class="fa fa-photo"></i>
+                        </div>
+                    </div>
                 </md-card-title-media>
+                <md-card-title-text hide-gt-xs>
+                    <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
+                    <span class="md-subhead">
+                        <span>учитель</span>
+                        <span ng-repeat="role in profile.roles">{{role.name}}</span>
+                    </span>
+                </md-card-title-text>
             </md-card-title>
             <md-card-actions>
-                <md-button class="md-primary">Редактировать</md-button>
-                <md-button class="md-primary" aria-label="change photo button"><i class="fa fa-photo"></i></md-button>
+                <md-button>Редактировать</md-button>
+                <md-button aria-label="change photo button"><i class="fa fa-photo"></i></md-button>
             </md-card-actions>
         </md-card>
-        <md-card class="contact-info-card">
+        <md-card class="contact-info-card" flex-xs="1">
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-title">Контакты</span>
@@ -34,36 +45,53 @@
                 </md-list-item>
             </md-card-content>
         </md-card>
-    </div>
-    <div flex layout="column" class="profile-info-card-wrap">
-        <md-card class="profile-info-card">
-            <md-card-title>
-
-                <md-card-title-text>
-                    <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
-                    <span class="md-subhead">
-                        <span ng-repeat="role in profile.roles">{{role.name}}</span>
-                    </span>
-                </md-card-title-text>
-            </md-card-title>
-        </md-card>
-        <md-card class="consultations-card">
+        <md-card class="profile-info-card" flex-xs="1" hide-gt-xs>
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-title">Консультации</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-content layout="row">
+            <md-card-content layout="column">
                 <div class="info-message" ng-hide="consultations.length > 0">
                     <i class="fa fa-info-circle"></i> Нет консультаций
                 </div>
-
-                <md-chips ng-show="consultations.length > 0">
-                    <md-chip ng-repeat="consultation in consultations">
-                        {{dayOfWeekAsString(consultation.dayOfWeek)}} |
-                        {{getTime(consultation.time) | date:'HH:mm'}}
-                    </md-chip>
-                </md-chips>
+                <div layout="row">
+                    <md-chips ng-show="consultations.length > 0">
+                        <md-chip ng-repeat="consultation in consultations">
+                            {{dayOfWeekAsString(consultation.dayOfWeek)}} |
+                            {{getTime(consultation.time) | date:'HH:mm'}}
+                        </md-chip>
+                    </md-chips>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div flex layout="column" class="profile-info-card-wrap">
+        <md-card class="profile-info-card" hide-xs>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{profile.firstName}} {{profile.lastName}}</span>
+                    <span class="md-subhead">
+                        <span>учитель</span>
+                        <span ng-repeat="role in profile.roles">{{role.name}}</span>
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <section class="consultation-section" layout="column">
+                    <span class="md-title">Консультации</span>
+                    <div class="info-message" ng-hide="consultations.length > 0">
+                        <i class="fa fa-info-circle"></i> Нет консультаций
+                    </div>
+                    <div layout="row">
+                        <md-chips ng-show="consultations.length > 0">
+                            <md-chip ng-repeat="consultation in consultations">
+                                {{dayOfWeekAsString(consultation.dayOfWeek)}} |
+                                {{getTime(consultation.time) | date:'HH:mm'}}
+                            </md-chip>
+                        </md-chips>
+                    </div>
+                </section>
             </md-card-content>
         </md-card>
     </div>

@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <html ng-app="distantLearning" ng-controller="mainController">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
 
     <environment names="Development">
@@ -64,7 +65,7 @@
         <h3>
             <span>{{title}}</span>
         </h3>
-        <div class="toolbar-search-box" flex>
+        <div class="toolbar-search-box" flex hide-xs>
             <form>
                 <input placeholder="Поиск..."/>
             </form>

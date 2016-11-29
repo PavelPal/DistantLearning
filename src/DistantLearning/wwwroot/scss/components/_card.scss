@@ -1,22 +1,65 @@
 .profile-card-wrap {
-  width: 230px;
-  max-width: 230px;
+  @media screen and (min-width: 600px) {
+    width: 250px;
+    max-width: 250px;
+  }
 
-  .profile-card {
+  .profile-photo-card {
     md-card-title {
+      padding: 16px;
+
       md-card-title-media {
         margin: 0;
+        border-radius: 93px;
+        overflow: hidden;
 
-        .card-media {
-          border-radius: 50%;
-          width: 166px;
-          height: 166px;
+        .profile-photo {
+          border-radius: 93px;
+          width: 186px;
+          height: 186px;
+          cursor: pointer;
+          position: relative;
+          margin: 0;
+          padding: 0;
           background: {
             position: center;
             size: cover;
             color: #eeeeee;
+            repeat: no-repeat;
+          }
+
+          &:hover {
+            .change-photo-thumb {
+              background: rgba(0, 0, 0, .5);
+              i.fa {
+                opacity: 1;
+              }
+            }
+          }
+
+          .change-photo-thumb {
+            left: 0;
+            width: 186px;
+            height: 186px;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0;
+            transition: all .2s ease-in-out;
+
+            i.fa {
+              opacity: 0;
+              color: #fff;
+              font-size: 1.8rem;
+            }
           }
         }
+      }
+
+      md-card-title-text {
+        margin-top: 24px;
+        text-align: center;
       }
     }
 
@@ -39,20 +82,22 @@
 }
 
 .contact-info-card,
-.consultations-card,
-.profile-card {
-    md-card-title {
-        padding: 16px;
-    }
-}
-
-.consultations-card {
+.profile-info-card {
   md-card-title {
-    .md-title {
-      font-size: 14px;
+    padding: 16px;
+
+    .md-subhead {
+      padding-top: 0 !important;
+      color: rgba(0, 0, 0, 0.54);
     }
   }
 
+  .md-title {
+    font-size: 14px;
+  }
+}
+
+.profile-info-card {
   md-card-content {
     md-chips {
       .md-chips {
@@ -68,12 +113,20 @@
         }
       }
     }
+
+    .consultation-section {
+      .md-title {
+        padding-bottom: 12px;
+      }
+    }
   }
 }
 
 .contact-info-card {
   md-list-item {
     padding: 0;
+    height: 60px;
+    min-height: 60px;
 
     .md-avatar {
       display: flex;
@@ -86,6 +139,7 @@
       width: 30px;
       height: 30px;
       font-size: 14px;
+      border-radius: 50%;
     }
 
     .md-list-item-text {
