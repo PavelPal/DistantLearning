@@ -1,7 +1,6 @@
 app.config(routes);
 
 function routes($stateProvider, $httpProvider, $urlRouterProvider) {
-
     $httpProvider.interceptors.push("authInterceptorService");
 
     var Auth = function ($q, authService) {
@@ -43,6 +42,7 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
         .state("users", {
             url: "/users",
             templateUrl: "../app/users.html",
+            controller: "userController",
             resolve: {
                 auth: Auth
             }
