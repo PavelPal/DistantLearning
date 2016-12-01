@@ -1,8 +1,7 @@
 ﻿app.controller("mainController", mainController);
 
-function mainController($scope, $mdSidenav, $state, authService, ngProgressFactory) {
+function mainController($scope, $mdSidenav, $state, authService) {
     $scope.title = "Дистанционное обучение";
-
     $scope.toggleSideNav = toggleSideNav("sideNav");
 
     function toggleSideNav() {
@@ -12,11 +11,9 @@ function mainController($scope, $mdSidenav, $state, authService, ngProgressFacto
         };
     }
 
-    /*$scope.progressbar = ngProgressFactory.createInstance();
-    $scope.progressbar.setParent(document.getElementById('main-container'));
-    $scope.progressbar.setAbsolute();
-    $scope.progressbar.start();
-    $scope.progressbar.complete();*/
+    $scope.close = function () {
+        $mdSidenav('sideNav').close();
+    };
 
     $scope.logOut = function () {
         $mdSidenav('sideNav').close();
@@ -26,8 +23,7 @@ function mainController($scope, $mdSidenav, $state, authService, ngProgressFacto
 
     $scope.authentication = authService.authentication;
 
-    $scope.$on("$stateChangeError",
-        function () {
-            $state.go("login");
-        });
+    $scope.$on("$stateChangeError", function () {
+        $state.go("login");
+    });
 }

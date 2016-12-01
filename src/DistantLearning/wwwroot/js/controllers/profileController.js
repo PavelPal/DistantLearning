@@ -5,7 +5,6 @@ function profileController($scope, profileService, consultationService) {
     $scope.consultations = [];
 
     profileService.getProfile(function (data) {
-        console.log(data);
         $scope.profile = data;
 
         consultationService.getConsultations($scope.profile.id, function (data) {

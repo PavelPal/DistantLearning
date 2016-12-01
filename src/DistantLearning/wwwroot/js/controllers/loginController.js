@@ -1,7 +1,6 @@
 ﻿app.controller("loginController", loginController);
 
 function loginController($scope, $state, authService) {
-
     $scope.title = "Войти";
     $scope.message = "";
     $scope.activeLoader = false;
@@ -29,4 +28,6 @@ function loginController($scope, $state, authService) {
                 });
         }
     };
+
+    document.querySelector('#ngProgress-container').style.top = 0;
 }

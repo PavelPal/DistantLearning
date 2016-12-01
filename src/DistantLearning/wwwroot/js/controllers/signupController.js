@@ -1,7 +1,6 @@
 ﻿app.controller("signupController", signupController);
 
 function signupController($scope, $state, $element, authService, disciplineService, groupService) {
-
     $scope.title = "Зарегистрироваться";
     $scope.savedSuccessfully = false;
     $scope.message = "";
@@ -22,11 +21,10 @@ function signupController($scope, $state, $element, authService, disciplineServi
         $scope.searchTerm = "";
     };
 
-    $element.find("input")
-        .on("keydown",
-            function (e) {
-                e.stopPropagation();
-            });
+    $element.find("input").on("keydown",
+        function (e) {
+            e.stopPropagation();
+        });
 
     $scope.registration = {
         firstName: "",
@@ -60,4 +58,6 @@ function signupController($scope, $state, $element, authService, disciplineServi
                 });
         }
     };
+
+    document.querySelector('#ngProgress-container').style.top = 0;
 }

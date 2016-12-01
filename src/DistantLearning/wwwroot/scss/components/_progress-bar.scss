@@ -1,8 +1,9 @@
 #ngProgress-container {
   z-index: 10;
+  top: 48px;
 
   #ngProgress {
-    color: rgb(236,64,122) !important;
-    background-color: rgb(236,64,122) !important;;
+    color: rgb(236, 64, 122) !important;
+    background-color: rgb(236, 64, 122) !important;;
   }
 }

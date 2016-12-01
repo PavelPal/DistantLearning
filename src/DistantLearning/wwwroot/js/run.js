@@ -1,22 +1,29 @@
 app.run(run).config(config);
 
-function run($rootScope, $window, authService) {
+function run($rootScope, $window, authService, ngProgressFactory) {
+    $rootScope.progressbar = ngProgressFactory.createInstance();
+    $rootScope.progressbar.setParent(document.getElementById('main-container'));
+    $rootScope.progressbar.setAbsolute();
 
-    $rootScope.$on("$stateChangeStart",
-        function (event, toState) {
-            if (toState.external) {
-                event.preventDefault();
-                $window.open(toState.url, "_self");
-            }
-        });
+    $rootScope.$on("$stateChangeStart", function (event, toState) {
+        $rootScope.progressbar.start();
+        if (toState.external) {
+            event.preventDefault();
+            $window.open(toState.url, "_self");
+        }
+    });
 
-    $rootScope.$on("$stateChangeSuccess",
-        function (event, toState) {
-            if (toState.external) {
-                event.preventDefault();
-                $window.open(toState.url, "_self");
-            }
-        });
+    $rootScope.$on("$stateChangeSuccess", function (event, toState) {
+        $rootScope.progressbar.complete();
+        if (toState.external) {
+            event.preventDefault();
+            $window.open(toState.url, "_self");
+        }
+    });
+
+    $rootScope.$on("$stateChangeError", function (event, toState) {
+        $rootScope.progressbar.reset();
+    });
 
     authService.fillAuthData();
 }
