@@ -573,3 +573,4 @@ __pycache__/
 
 ### VisualStudio Patch ###
 build/
+.vscode/settings.json
