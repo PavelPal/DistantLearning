@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DataAccessProvider;
 using DistantLearning.Models;
@@ -25,10 +26,20 @@ namespace DistantLearning.Controllers
 
         [Route("")]
         [HttpGet]
-        public async Task<List<UsersViewModel>> Users()
+        public async Task<List<UsersViewModel>> Users(string searchString, int skip, int take)
         {
             var users = new List<UsersViewModel>();
-            foreach (var user in await _context.Users.ToListAsync())
+            var dbUsers = searchString == null
+                ? await _context.Users.Skip(skip).Take(take).ToListAsync()
+                : await
+                    _context.Users.Where(
+                            u =>
+                                u.FirstName.Contains(searchString) || u.LastName.Contains(searchString) ||
+                                searchString.Contains(u.FirstName) || searchString.Contains(u.LastName))
+                        .Skip(skip)
+                        .Take(take)
+                        .ToListAsync();
+            foreach (var user in dbUsers)
                 users.Add(new UsersViewModel
                 {
                     Email = user.Email,

@@ -7,3 +7,28 @@ md-input-container {
     }
   }
 }
+
+.search-input-block {
+  margin: 0;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e0e0e0;
+
+  .md-input {
+    padding: 0;
+    border: none;
+  }
+
+  md-icon {
+    top: 18px;
+    left: 10px;
+    color: #858585;
+  }
+
+  .md-errors-spacer {
+    display: none;
+  }
+
+  #ngProgress-container {
+    top: 100%;
+  }
+}

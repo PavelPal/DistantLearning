@@ -155,6 +155,22 @@ md-input-container.md-block {
   md-input-container.md-block label {
     font-size: 14px; }
 
+.search-input-block {
+  margin: 0;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e0e0e0; }
+  .search-input-block .md-input {
+    padding: 0;
+    border: none; }
+  .search-input-block md-icon {
+    top: 18px;
+    left: 10px;
+    color: #858585; }
+  .search-input-block .md-errors-spacer {
+    display: none; }
+  .search-input-block #ngProgress-container {
+    top: 100%; }
+
 .md-fab {
   font-size: 1.5rem; }
   .md-fab.md-fab-with-loader md-progress-circular path {
@@ -196,50 +212,52 @@ md-input-container.md-block {
     color: #ec407a !important;
     background-color: #ec407a !important; }
 
+md-card md-card-title {
+  padding: 16px; }
+
 @media screen and (min-width: 600px) {
   .profile-card-wrap {
     width: 250px;
     max-width: 250px; } }
 
-.profile-card-wrap .profile-photo-card md-card-title {
-  padding: 16px; }
-  .profile-card-wrap .profile-photo-card md-card-title md-card-title-media {
-    margin: 0;
+.profile-card-wrap .profile-photo-card md-card-title md-card-title-media {
+  margin: 0;
+  border-radius: 93px;
+  overflow: hidden; }
+  .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo {
     border-radius: 93px;
-    overflow: hidden; }
-    .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo {
-      border-radius: 93px;
+    width: 186px;
+    height: 186px;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-position: center;
+    background-size: cover;
+    background-color: #eeeeee;
+    background-repeat: no-repeat; }
+    .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo:hover .change-photo-thumb {
+      background: rgba(0, 0, 0, 0.5); }
+      .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo:hover .change-photo-thumb i.fa {
+        opacity: 1; }
+    .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo .change-photo-thumb {
+      left: 0;
       width: 186px;
       height: 186px;
-      cursor: pointer;
-      position: relative;
-      margin: 0;
-      padding: 0;
-      background-position: center;
-      background-size: cover;
-      background-color: #eeeeee;
-      background-repeat: no-repeat; }
-      .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo:hover .change-photo-thumb {
-        background: rgba(0, 0, 0, 0.5); }
-        .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo:hover .change-photo-thumb i.fa {
-          opacity: 1; }
-      .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo .change-photo-thumb {
-        left: 0;
-        width: 186px;
-        height: 186px;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: 0;
-        transition: all .2s ease-in-out; }
-        .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo .change-photo-thumb i.fa {
-          opacity: 0;
-          color: #fff;
-          font-size: 1.8rem; }
-  .profile-card-wrap .profile-photo-card md-card-title md-card-title-text {
-    margin-top: 24px;
-    text-align: center; }
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      transition: all .2s ease-in-out; }
+      .profile-card-wrap .profile-photo-card md-card-title md-card-title-media .profile-photo .change-photo-thumb i.fa {
+        opacity: 0;
+        color: #fff;
+        font-size: 1.8rem; }
+
+.profile-card-wrap .profile-photo-card md-card-title md-card-title-text {
+  margin-top: 24px;
+  text-align: center; }
 
 .profile-card-wrap .profile-photo-card md-card-actions {
   margin-top: 0;
@@ -252,13 +270,10 @@ md-input-container.md-block {
       flex: 1;
       font-size: 12px; }
 
-.contact-info-card md-card-title,
-.profile-info-card md-card-title {
-  padding: 16px; }
-  .contact-info-card md-card-title .md-subhead,
-  .profile-info-card md-card-title .md-subhead {
-    padding-top: 0 !important;
-    color: rgba(0, 0, 0, 0.54); }
+.contact-info-card md-card-title .md-subhead,
+.profile-info-card md-card-title .md-subhead {
+  padding-top: 0 !important;
+  color: rgba(0, 0, 0, 0.54); }
 
 .contact-info-card .md-title,
 .profile-info-card .md-title {

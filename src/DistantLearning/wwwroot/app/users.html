@@ -1,1 +1,26 @@
-﻿<div ng-repeat="user in users">{{user.firstName}} {{user.lastName}}</div>
+﻿<div flex layout-padding>
+    <div flex layout="column">
+        <md-card>
+            <md-card-title>
+                <md-input-container class="md-block search-input-block" md-no-float flex>
+                    <md-icon><i class="fa fa-search"></i></md-icon>
+                    <input type="search" ng-model="searchParams.searchString" placeholder="поиск пользователей">
+                </md-input-container>
+            </md-card-title>
+            <md-card-content>
+                <div class="info-message" ng-hide="users.length > 0">
+                    <i class="fa fa-info-circle"></i> По вашему запросу ничего не найдено
+                </div>
+                <md-list flex>
+                    <md-list-item class="md-2-line" ng-repeat="user in users">
+                        <img class="md-avatar"/>
+                        <div class="md-list-item-text">
+                            <h3><a>{{user.firstName}} {{user.lastName}}</a></h3>
+                            <p><span ng-repeat="role in user.roles">{{getRole(role)}}</span></p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

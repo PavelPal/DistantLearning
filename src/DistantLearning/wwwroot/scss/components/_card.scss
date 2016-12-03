@@ -1,3 +1,7 @@
+md-card md-card-title {
+  padding: 16px;
+}
+
 .profile-card-wrap {
   @media screen and (min-width: 600px) {
     width: 250px;
@@ -6,8 +10,6 @@
 
   .profile-photo-card {
     md-card-title {
-      padding: 16px;
-
       md-card-title-media {
         margin: 0;
         border-radius: 93px;
@@ -84,8 +86,6 @@
 .contact-info-card,
 .profile-info-card {
   md-card-title {
-    padding: 16px;
-
     .md-subhead {
       padding-top: 0 !important;
       color: rgba(0, 0, 0, 0.54);
