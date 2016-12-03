@@ -1,7 +1,6 @@
 "use strict";
 
-var app = angular.module("distantLearning",
-[
+var app = angular.module("distantLearning", [
     "ngRoute",
     "LocalStorageModule",
     "ngResource",

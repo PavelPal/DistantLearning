@@ -20,4 +20,6 @@ function profileController($scope, profileService, consultationService) {
         var timeTokens = timeString.split(':');
         return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
     };
+
+    document.querySelector('#ngProgress-container').style.top = 48 + 'px';
 }
