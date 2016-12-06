@@ -19,7 +19,9 @@
             </md-card-title>
             <md-card-actions>
                 <md-button>Редактировать</md-button>
-                <md-button aria-label="change photo button"><i class="fa fa-photo"></i></md-button>
+                <md-button aria-label="change photo button">
+                    <i class="fa fa-photo"></i>
+                </md-button>
             </md-card-actions>
         </md-card>
         <md-card class="contact-info-card" flex-xs="1">
@@ -30,14 +32,20 @@
             </md-card-title>
             <md-card-content layout="column">
                 <md-list-item class="md-2-line">
-                    <div class="md-avatar"><i class="fa fa-envelope"></i></div>
+                    <div class="md-avatar">
+                        <i class="fa fa-envelope"></i>
+                    </div>
                     <div class="md-list-item-text">
-                        <h3><a href="mailto:{{profile.email}}">{{profile.email}}</a></h3>
+                        <h3>
+                            <a href="mailto:{{profile.email}}">{{profile.email}}</a>
+                        </h3>
                         <p>почтовый ящик</p>
                     </div>
                 </md-list-item>
                 <md-list-item class="md-2-line">
-                    <div class="md-avatar"><i class="fa fa-phone"></i></div>
+                    <div class="md-avatar">
+                        <i class="fa fa-phone"></i>
+                    </div>
                     <div class="md-list-item-text">
                         <h3>{{profile.phoneNumber}}</h3>
                         <p>мобильный</p>
