@@ -50,7 +50,7 @@ function signupController($scope, $state, $element, authService, disciplineServi
                     if (result == "OK") {
                         $scope.message = "Регистрация прошла успешно.";
                         $scope.activeLoader = false;
-                        $state.go("profile");
+                        $state.go("profile", {profileId: null});
                     } else {
                         $scope.message = result;
                         $scope.activeLoader = false;

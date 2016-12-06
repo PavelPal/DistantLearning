@@ -65,6 +65,7 @@ namespace DistantLearning.Controllers
             var user = _context.Users.FirstOrDefault(u => u.Email.Equals(model.Email));
             return new
             {
+                id = user.Id,
                 email = user.Email,
                 roles = await _userManager.GetRolesAsync(user)
             };
@@ -144,6 +145,7 @@ namespace DistantLearning.Controllers
             _logger.LogInformation(3, "User created a new account with password.");
             return new
             {
+                id = user.Id,
                 email = user.Email,
                 roles = await _userManager.GetRolesAsync(user)
             };

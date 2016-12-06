@@ -32,7 +32,7 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
             controller: "signupController"
         })
         .state("profile", {
-            url: "/profile",
+            url: "/profile/:profileId",
             templateUrl: "../app/profile.html",
             controller: "profileController",
             resolve: {

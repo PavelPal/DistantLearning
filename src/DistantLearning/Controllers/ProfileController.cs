@@ -17,11 +17,15 @@ namespace DistantLearning.Controllers
             _userManager = userManager;
         }
 
-        [Route("")]
-        [HttpGet]
-        public async Task<User> Profile()
+        [HttpGet("{id?}")]
+        public async Task<object> Profile(string id)
         {
-            return await _userManager.GetUserAsync(User);
+            if (id == null)
+                return await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return "Пользователь не найден.";
+            return user;
         }
     }
 }

@@ -4,6 +4,7 @@ function authService($http, $cookies, localStorageService) {
     var authServiceFactory = {};
 
     var authentication = {
+        id: "",
         isAuth: false,
         email: "",
         roles: []
@@ -25,6 +26,7 @@ function authService($http, $cookies, localStorageService) {
         if (authentication.isAuth)
             logOutFromServer();
         authentication.isAuth = false;
+        authentication.id = "";
         authentication.email = "";
         authentication.roles = [];
     };
@@ -48,6 +50,7 @@ function authService($http, $cookies, localStorageService) {
                     roles: response.roles
                 });
                 authentication.isAuth = true;
+                authentication.id = response.id;
                 authentication.email = response.email;
                 authentication.roles = response.roles;
                 callback("OK");
@@ -73,10 +76,12 @@ function authService($http, $cookies, localStorageService) {
                 $cookies.put("access_token", response.email);
                 localStorageService.set("authorizationData", {
                     token: response.access_token,
+                    id: response.id,
                     email: response.email,
                     roles: response.roles
                 });
                 authentication.isAuth = true;
+                authentication.id = response.id;
                 authentication.email = response.email;
                 authentication.roles = response.roles;
                 callback("OK");
@@ -92,6 +97,7 @@ function authService($http, $cookies, localStorageService) {
         var authCookie = $cookies.get("access_token");
         if (authData && authCookie) {
             authentication.isAuth = true;
+            authentication.id = authData.id;
             authentication.email = authData.email;
             authentication.roles = authData.roles;
         }

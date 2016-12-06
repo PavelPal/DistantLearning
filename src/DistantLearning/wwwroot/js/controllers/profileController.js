@@ -1,15 +1,21 @@
 app.controller("profileController", profileController);
 
-function profileController($scope, profileService, consultationService) {
+function profileController($scope, $stateParams, profileService, consultationService, FileUploader, $mdToast) {
     $scope.profile = {};
     $scope.consultations = [];
+    $scope.image = null;
 
-    profileService.getProfile(function (data) {
-        $scope.profile = data;
+    var profileId = $stateParams.profileId;
 
-        consultationService.getConsultations($scope.profile.id, function (data) {
-            $scope.consultations = data;
-        });
+    profileService.getProfile(profileId, function (data) {
+        if (data != "Пользователь не найден.") {
+            $scope.profile = data;
+            consultationService.getConsultations($scope.profile.id, function (data) {
+                $scope.consultations = data;
+            });
+        } else {
+            $mdToast.show($mdToast.simple().textContent(data).position('bottom right').hideDelay(3000));
+        }
     });
 
     $scope.dayOfWeekAsString = function (index) {
@@ -20,6 +26,15 @@ function profileController($scope, profileService, consultationService) {
         var timeTokens = timeString.split(':');
         return new Date(1970, 0, 1, timeTokens[0], timeTokens[1], timeTokens[2]);
     };
+
+    $scope.add = function () {
+        var image = $scope.uploader.queue[0]._file;
+        profileService.uploadImage(image, function (data) {
+            console.log(data);
+        });
+    };
+
+    $scope.uploader = new FileUploader();
 
     document.querySelector('#ngProgress-container').style.top = 48 + 'px';
 }
