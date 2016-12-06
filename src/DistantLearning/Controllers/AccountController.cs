@@ -41,8 +41,7 @@ namespace DistantLearning.Controllers
             _context = context;
         }
 
-        [Route("login")]
-        [HttpPost]
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<object> Login([FromBody] LoginViewModel model)
         {
@@ -71,8 +70,7 @@ namespace DistantLearning.Controllers
             };
         }
 
-        [Route("register")]
-        [HttpPost]
+        [HttpPost("register")]
         [AllowAnonymous]
         public async Task<object> Register([FromBody] RegisterViewModel model)
         {
@@ -151,8 +149,7 @@ namespace DistantLearning.Controllers
             };
         }
 
-        [Route("logout")]
-        [HttpPost]
+        [HttpPost("logout")]
         public async Task LogOff()
         {
             await _signInManager.SignOutAsync();

@@ -21,15 +21,13 @@ namespace DistantLearning.Controllers
             _context = context;
         }
 
-        [Route("")]
-        [HttpGet]
+        [HttpGet("")]
         public async Task<List<Document>> Documents()
         {
             return await _context.Documents.ToListAsync();
         }
 
-        [Route("{id}")]
-        [HttpGet]
+        [HttpGet("{id}")]
         public Document Document(int? id)
         {
             if (id == null)
@@ -37,8 +35,7 @@ namespace DistantLearning.Controllers
             return _context.Documents.FirstOrDefault(d => d.Id == id);
         }
 
-        [Route("byTeacher/{id}")]
-        [HttpGet]
+        [HttpGet("byTeacher/{id}")]
         public async Task<List<Document>> TeachersDocuments(string id)
         {
             if (id == null)

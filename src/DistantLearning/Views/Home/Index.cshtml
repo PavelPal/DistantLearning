@@ -9,14 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
 
-    <environment names="Development">
-        <link rel="stylesheet" href="~/lib/normalize-css/normalize.css"/>
-        <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css"/>
-        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="~/lib/ngprogress/ngProgress.css"/>
-        <link rel="stylesheet" href="~/css/site.min.css"/>
-    </environment>
-    <environment names="Staging,Production">
+    <environment names="Development,Staging,Production">
         <link rel="stylesheet" href="~/lib/normalize-css/normalize.css"/>
         <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css"/>
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
@@ -26,7 +19,7 @@
 </head>
 <body layout="column" ng-cloak>
 
-<environment names="Development">
+<environment names="Development,Staging,Production">
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/angular/angular.min.js"></script>
     <script src="~/lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
@@ -39,21 +32,7 @@
     <script src="~/lib/angular-messages/angular-messages.min.js"></script>
     <script src="~/lib/ngprogress/build/ngprogress.min.js"></script>
     <script src="~/lib/angular-material/angular-material.min.js"></script>
-    <script src="~/js/site.min.js"></script>
-</environment>
-<environment names="Staging,Production">
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/angular/angular.min.js"></script>
-    <script src="~/lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <script src="~/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="~/lib/angular-route/angular-route.min.js"></script>
-    <script src="~/lib/angular-cookies/angular-cookies.min.js"></script>
-    <script src="~/lib/angular-resource/angular-resource.min.js"></script>
-    <script src="~/lib/angular-animate/angular-animate.min.js"></script>
-    <script src="~/lib/angular-aria/angular-aria.min.js"></script>
-    <script src="~/lib/angular-messages/angular-messages.min.js"></script>
-    <script src="~/lib/ngprogress/build/ngprogress.min.js"></script>
-    <script src="~/lib/angular-material/angular-material.min.js"></script>
+    <script src="~/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <script src="~/js/site.min.js"></script>
 </environment>
 
@@ -80,7 +59,7 @@
                 ng-show="authentication.isAuth">
         <md-content>
             <md-list flex>
-                <md-list-item ng-click="close()" ui-sref="profile">
+                <md-list-item ng-click="close()" ui-sref="profile({profileId: ''})">
                     <md-icon class="fa fa-user"></md-icon>
                     <div class="md-list-item-text" layout="column" flex>
                         <p>Профиль</p>
@@ -139,17 +118,11 @@
             </md-list>
         </md-content>
     </md-sidenav>
-
     <md-content flex>
-
         <div flex>
             <div ui-view=""></div>
         </div>
-
     </md-content>
-
 </section>
-
-
 </body>
 </html>

@@ -21,8 +21,7 @@ namespace DistantLearning.Controllers
             _context = context;
         }
 
-        [Route("byTeacher/{id}")]
-        [HttpGet]
+        [HttpGet("byTeacher/{id}")]
         public async Task<List<Consultation>> TeachersConsultations(string id)
         {
             if (id == null)

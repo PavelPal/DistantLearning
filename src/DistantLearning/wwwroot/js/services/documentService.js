@@ -1,7 +1,6 @@
 app.factory("documentService", documentService);
 
 function documentService($http) {
-    var documents = [];
     return {
         getDocuments: function (callback) {
             $http.get("/api/document")

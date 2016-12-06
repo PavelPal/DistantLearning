@@ -1,9 +1,7 @@
 ﻿app.factory("authInterceptorService", authInterceptorService);
 
 function authInterceptorService($q, $location, localStorageService) {
-
     var authInterceptorServiceFactory = {};
-
     var request = function (config) {
 
         config.headers = config.headers || {};

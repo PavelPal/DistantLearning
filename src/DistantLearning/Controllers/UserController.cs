@@ -24,8 +24,7 @@ namespace DistantLearning.Controllers
             _context = context;
         }
 
-        [Route("")]
-        [HttpGet]
+        [HttpGet("")]
         public async Task<List<UsersViewModel>> Users(string searchString, int skip, int take)
         {
             var users = new List<UsersViewModel>();

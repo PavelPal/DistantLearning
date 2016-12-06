@@ -1,7 +1,6 @@
 app.factory("consultationService", consultationService);
 
 function consultationService($http) {
-    var consultations = [];
     return {
         getConsultations: function (teacherId, callback) {
             $http.get("/api/consultation/byTeacher/" + teacherId)

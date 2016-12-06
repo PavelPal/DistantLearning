@@ -20,8 +20,7 @@ namespace DistantLearning.Controllers
             _context = context;
         }
 
-        [Route("")]
-        [HttpGet]
+        [HttpGet("")]
         [AllowAnonymous]
         public async Task<List<Discipline>> Disciplines()
         {
