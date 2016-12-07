@@ -1,13 +1,13 @@
 app.controller("userController", userController);
 
-function userController($scope, userService, ngProgressFactory) {
+function userController($scope, authService, userService, ngProgressFactory) {
     $scope.progressbar = ngProgressFactory.createInstance();
     $scope.progressbar.setParent(document.querySelector('.search-input-block'));
     $scope.progressbar.setAbsolute();
     $scope.progressbar.start();
 
+    $scope.authenticationId = authService.authentication.id;
     $scope.users = [];
-
     $scope.searchParams = {
         searchString: null,
         skip: 0,

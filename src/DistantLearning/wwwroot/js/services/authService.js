@@ -43,17 +43,21 @@ function authService($http, $cookies, localStorageService) {
             }
         })
             .success(function (response) {
-                $cookies.put("access_token", response.email);
-                localStorageService.set("authorizationData", {
-                    token: response.access_token,
-                    email: response.email,
-                    roles: response.roles
-                });
-                authentication.isAuth = true;
-                authentication.id = response.id;
-                authentication.email = response.email;
-                authentication.roles = response.roles;
-                callback("OK");
+                if (response != "Неверные данные." && response != "Неверный тип." && response != "При регистрации произошла ошибка.") {
+                    $cookies.put("access_token", response.email);
+                    localStorageService.set("authorizationData", {
+                        token: response.access_token,
+                        email: response.email,
+                        roles: response.roles
+                    });
+                    authentication.isAuth = true;
+                    authentication.id = response.id;
+                    authentication.email = response.email;
+                    authentication.roles = response.roles;
+                    callback("OK");
+                } else {
+                    callback(response);
+                }
             })
             .error(function (error) {
                 logOut();
@@ -73,18 +77,22 @@ function authService($http, $cookies, localStorageService) {
             }
         })
             .success(function (response) {
-                $cookies.put("access_token", response.email);
-                localStorageService.set("authorizationData", {
-                    token: response.access_token,
-                    id: response.id,
-                    email: response.email,
-                    roles: response.roles
-                });
-                authentication.isAuth = true;
-                authentication.id = response.id;
-                authentication.email = response.email;
-                authentication.roles = response.roles;
-                callback("OK");
+                if (response != "Неверные данные." && response != "При входе произошла ошибка.") {
+                    $cookies.put("access_token", response.email);
+                    localStorageService.set("authorizationData", {
+                        token: response.access_token,
+                        id: response.id,
+                        email: response.email,
+                        roles: response.roles
+                    });
+                    authentication.isAuth = true;
+                    authentication.id = response.id;
+                    authentication.email = response.email;
+                    authentication.roles = response.roles;
+                    callback("OK");
+                } else {
+                    callback(response);
+                }
             })
             .error(function (error) {
                 logOut();
