@@ -29,7 +29,8 @@ namespace DistantLearning.Controllers
         {
             var users = new List<UsersViewModel>();
             var dbUsers = searchString == null
-                ? await _context.Users.Skip(skip).Take(take).ToListAsync()
+                ? await
+                    _context.Users.OrderBy(u => u.FirstName).ThenBy(u => u.LastName).Skip(skip).Take(take).ToListAsync()
                 : await
                     _context.Users.Where(
                             u =>
@@ -39,16 +40,7 @@ namespace DistantLearning.Controllers
                         .Take(take)
                         .ToListAsync();
             foreach (var user in dbUsers)
-                users.Add(new UsersViewModel
-                {
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    Id = user.Id,
-                    LastName = user.LastName,
-                    Photo = user.Photo,
-                    PhotoType = user.PhotoType,
-                    Roles = await _userManager.GetRolesAsync(user)
-                });
+                users.Add(new UsersViewModel(user, await _userManager.GetRolesAsync(user)));
             return users;
         }
     }

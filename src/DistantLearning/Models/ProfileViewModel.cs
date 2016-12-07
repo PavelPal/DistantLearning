@@ -3,17 +3,21 @@ using Domain.Model;
 
 namespace DistantLearning.Models
 {
-    public class UsersViewModel
+    public class ProfileViewModel
     {
-        public UsersViewModel()
+        public ProfileViewModel()
         {
         }
 
-        public UsersViewModel(User user, IList<string> roles)
+        public ProfileViewModel(User user, IList<string> roles)
         {
             Id = user.Id;
             FirstName = user.FirstName;
             LastName = user.LastName;
+            Email = user.Email;
+            EmailConfirmed = user.EmailConfirmed;
+            PhoneNumber = user.PhoneNumber;
+            PhoneNumberConfirmed = user.PhoneNumberConfirmed;
             Photo = user.Photo;
             PhotoType = user.PhotoType;
             Roles = roles;
@@ -22,6 +26,10 @@ namespace DistantLearning.Models
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
+        public bool EmailConfirmed { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool PhoneNumberConfirmed { get; set; }
         public byte[] Photo { get; set; }
         public string PhotoType { get; set; }
         public IList<string> Roles { get; set; }

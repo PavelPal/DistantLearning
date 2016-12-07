@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DistantLearning.Models;
 using Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,11 +22,14 @@ namespace DistantLearning.Controllers
         public async Task<object> Profile(string id)
         {
             if (id == null)
-                return await _userManager.GetUserAsync(User);
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                return new ProfileViewModel(currentUser, await _userManager.GetRolesAsync(currentUser));
+            }
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
                 return "Пользователь не найден.";
-            return user;
+            return new ProfileViewModel(user, await _userManager.GetRolesAsync(user));
         }
     }
 }
