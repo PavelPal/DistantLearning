@@ -12,8 +12,7 @@
                 <md-card-title-text hide-gt-xs>
                     <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
                     <span class="md-subhead">
-                        <span>учитель</span>
-                        <span ng-repeat="role in profile.roles">{{role.name}}</span>
+                        <span ng-repeat="role in profile.roles">{{getRole(role)}}</span>
                     </span>
                 </md-card-title-text>
             </md-card-title>
@@ -42,18 +41,18 @@
                         <p>почтовый ящик</p>
                     </div>
                 </md-list-item>
-                <md-list-item class="md-2-line">
+                <md-list-item class="md-2-line" ng-show="profile.phoneNumber">
                     <div class="md-avatar">
                         <i class="fa fa-phone"></i>
                     </div>
                     <div class="md-list-item-text">
                         <h3>{{profile.phoneNumber}}</h3>
-                        <p>мобильный</p>
+                        <p>телефон</p>
                     </div>
                 </md-list-item>
             </md-card-content>
         </md-card>
-        <md-card class="profile-info-card" flex-xs="1" hide-gt-xs>
+        <md-card class="profile-info-card" flex-xs="1" hide-gt-xs ng-show="isTeacher()">
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-title">Консультации</span>
@@ -80,13 +79,12 @@
                 <md-card-title-text>
                     <span class="md-headline">{{profile.firstName}} {{profile.lastName}}</span>
                     <span class="md-subhead">
-                        <span>учитель</span>
-                        <span ng-repeat="role in profile.roles">{{role.name}}</span>
+                        <span ng-repeat="role in profile.roles">{{getRole(role)}}</span>
                     </span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout="column">
-                <section class="consultation-section" layout="column">
+                <section class="consultation-section" layout="column" ng-show="isTeacher()">
                     <span class="md-title">Консультации</span>
                     <div class="info-message" ng-hide="consultations.length > 0">
                         <i class="fa fa-info-circle"></i> Нет консультаций
@@ -104,3 +102,11 @@
         </md-card>
     </div>
 </div>
+
+<input type="file" nv-file-select uploader="uploader"/><br/>
+<ul>
+    <li ng-repeat="item in uploader.queue">
+        Name: <span ng-bind="item.file.name"></span><br/>
+        <button ng-click="add()">upload</button>
+    </li>
+</ul>
