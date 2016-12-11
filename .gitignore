@@ -575,3 +575,4 @@ __pycache__/
 build/
 .vscode/settings.json
 /.vscode/
+/src/DistantLearning/App_Data/profile_photos/*.*
