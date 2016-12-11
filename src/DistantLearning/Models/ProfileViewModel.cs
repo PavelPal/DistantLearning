@@ -18,7 +18,7 @@ namespace DistantLearning.Models
             EmailConfirmed = user.EmailConfirmed;
             PhoneNumber = user.PhoneNumber;
             PhoneNumberConfirmed = user.PhoneNumberConfirmed;
-            PhotoPath = user.PhotoPath;
+            Photo = user.PhotoPath;
             Roles = roles;
         }
 
@@ -29,7 +29,7 @@ namespace DistantLearning.Models
         public bool EmailConfirmed { get; set; }
         public string PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
-        public string PhotoPath { get; set; }
+        public string Photo { get; set; }
         public IList<string> Roles { get; set; }
     }
 }

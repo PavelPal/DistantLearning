@@ -1,6 +1,6 @@
 app.controller("profileController", profileController);
 
-function profileController($scope, $state, $stateParams, $mdToast, profileService, consultationService, documentService, FileUploader, authService) {
+function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, profileService, consultationService, documentService, authService) {
     $scope.profile = {};
     $scope.consultations = [];
     $scope.documents = [];
@@ -10,6 +10,7 @@ function profileController($scope, $state, $stateParams, $mdToast, profileServic
     profileService.getProfile(profileId, function (data) {
         if (data != "Пользователь не найден.") {
             $scope.profile = data;
+            $scope.image = data.photo == null ? null : "data/profile_photos/" + data.photo;
             if ($scope.isTeacher()) {
                 consultationService.getConsultationsByTeacher($scope.profile.id, function (data) {
                     $scope.consultations = data;
@@ -48,13 +49,6 @@ function profileController($scope, $state, $stateParams, $mdToast, profileServic
         }
     };
 
-    $scope.add = function () {
-        var image = $scope.uploader.queue[0]._file;
-        profileService.uploadImage(image, function (data) {
-            console.log(data);
-        });
-    };
-
     $scope.isTeacher = function () {
         var isTeacher = false;
         angular.forEach($scope.profile.roles, function (role) {
@@ -70,9 +64,21 @@ function profileController($scope, $state, $stateParams, $mdToast, profileServic
         return profileId == currentProfileId || profileId == "";
     };
 
-    $scope.uploader = new FileUploader({
-        url: '/api/image/uploadProfileImage'
-    });
+    $scope.showProfileImageModal = function (ev) {
+        $mdDialog.show({
+            controller: 'ProfileImageLoaderController',
+            templateUrl: '../app/partials/profileImageLoaderView.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: false,
+            fullscreen: false
+        }).then(
+            function (response) {
+                $scope.image = response;
+            },
+            function (response) {
+            });
+    };
 
     document.querySelector('#ngProgress-container').style.top = 48 + 'px';
 }

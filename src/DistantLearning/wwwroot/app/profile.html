@@ -4,7 +4,7 @@
             <md-card-title layout="column" layout-align="center center">
                 <md-card-title-media>
                     <div class="md-media-lg profile-photo"
-                         style="background-image: url('../images/4K-Widescreen-HD-Wallpapers.jpg')"></div>
+                         style="background-image: url('{{image}}')"></div>
                 </md-card-title-media>
                 <md-card-title-text hide-gt-xs>
                     <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
@@ -15,7 +15,7 @@
             </md-card-title>
             <md-card-actions ng-show="isCurrent()" ng-disabled="!isCurrent()">
                 <md-button>Редактировать</md-button>
-                <md-button aria-label="change photo button">
+                <md-button aria-label="change photo button" ng-click="showProfileImageModal($event)">
                     <i class="fa fa-photo"></i>
                 </md-button>
             </md-card-actions>
@@ -119,11 +119,3 @@
         </md-card>
     </div>
 </div>
-
-<input type="file" nv-file-select uploader="uploader"/><br/>
-<ul>
-    <li ng-repeat="item in uploader.queue">
-        Name: <span ng-bind="item.file.name"></span><br/>
-        <button ng-click="item.upload()">upload</button>
-    </li>
-</ul>

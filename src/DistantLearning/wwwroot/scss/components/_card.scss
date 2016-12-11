@@ -91,6 +91,18 @@ md-card {
       border-radius: 50%;
     }
 
+    &:first-child {
+      .md-avatar {
+        background-color: #039BE5;
+      }
+    }
+
+    &:last-child {
+      .md-avatar {
+        background-color: #FF4081;
+      }
+    }
+
     .md-list-item-text {
       margin-top: 12px;
       margin-bottom: 16px;

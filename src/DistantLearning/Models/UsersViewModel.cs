@@ -14,14 +14,14 @@ namespace DistantLearning.Models
             Id = user.Id;
             FirstName = user.FirstName;
             LastName = user.LastName;
-            PhotoPath = user.PhotoPath;
+            Photo = user.PhotoPath;
             Roles = roles;
         }
 
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string PhotoPath { get; set; }
+        public string Photo { get; set; }
         public IList<string> Roles { get; set; }
     }
 }

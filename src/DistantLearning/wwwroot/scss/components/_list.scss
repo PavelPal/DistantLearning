@@ -1,5 +1,22 @@
 .user-list {
   md-list-item {
+    .md-avatar {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background: {
+        size: cover;
+        position: center;
+        repeat: no-repeat;
+        color: #eee;
+      }
+
+      i {
+        font-size: 20px;
+        color: #858585;
+      }
+    }
     .md-list-item-text {
       h3 {
         a {

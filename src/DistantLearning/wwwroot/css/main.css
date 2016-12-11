@@ -280,6 +280,10 @@ md-card md-card-title {
     height: 30px;
     font-size: 14px;
     border-radius: 50%; }
+  .contact-info-card md-list-item:first-child .md-avatar {
+    background-color: #039BE5; }
+  .contact-info-card md-list-item:last-child .md-avatar {
+    background-color: #FF4081; }
   .contact-info-card md-list-item .md-list-item-text {
     margin-top: 12px;
     margin-bottom: 16px; }
@@ -304,6 +308,19 @@ md-card md-card-title {
   border-radius: 2px;
   background-color: #c4c4c4; }
 
+.user-list md-list-item .md-avatar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #eee; }
+  .user-list md-list-item .md-avatar i {
+    font-size: 20px;
+    color: #858585; }
+
 .user-list md-list-item .md-list-item-text h3 a {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87); }
@@ -322,3 +339,19 @@ md-card md-card-title {
   .consultation-section md-chips .md-chips md-chip {
     font-size: 12px;
     margin: 5px 5px 0 0; }
+
+.md-dialog-container md-dialog md-toolbar .md-toolbar-tools h2 {
+  font-size: 16px; }
+
+.file-upload-container .upload-input input {
+  opacity: 0;
+  width: 0;
+  height: 0; }
+
+.file-upload-container .cover {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center; }

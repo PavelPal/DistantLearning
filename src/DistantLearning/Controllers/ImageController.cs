@@ -27,13 +27,15 @@ namespace DistantLearning.Controllers
         public async Task<string> UploadProfileImage(IFormFile file)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
-            var path = Path.Combine(_hostingEnvironment.ContentRootPath, "App_Data", "profile_photos");
+            var path = _hostingEnvironment.WebRootPath + Path.DirectorySeparatorChar + "data" +
+                       Path.DirectorySeparatorChar + "profile_photos";
             if ((user == null) || (file.Length <= 0)) return "Ошибка";
             try
             {
+                RemoveExsitingImages(user.Id, path);
                 var fileExtention = file.ContentType.Substring(file.ContentType.LastIndexOf('/') + 1);
                 if (!fileExtention.Equals("jpeg") && !fileExtention.Equals("jpg") && !fileExtention.Equals("png"))
-                    return "Ошибка";
+                    return "Некорректный формат файла";
                 var filename = user.Id + '.' + fileExtention;
                 using (var fileStream = new FileStream(Path.Combine(path, filename), FileMode.Create))
                 {
@@ -48,6 +50,13 @@ namespace DistantLearning.Controllers
             {
                 return "Ошибка";
             }
+        }
+
+        private void RemoveExsitingImages(string name, string path)
+        {
+            var exsistingFiles = Directory.GetFiles(path, name + ".*");
+            foreach (var exsistingFile in exsistingFiles)
+                System.IO.File.Delete(exsistingFile);
         }
     }
 }

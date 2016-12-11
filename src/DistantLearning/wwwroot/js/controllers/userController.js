@@ -58,9 +58,9 @@ function userController($scope, authService, userService, ngProgressFactory) {
                 angular.forEach(data, function (element) {
                     $scope.users.push(element);
                 });
-                $scope.isLoading = false;
                 $scope.progressbar.complete();
             });
         }
+        $scope.isLoading = false;
     }
 }
