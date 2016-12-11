@@ -8,5 +8,6 @@ var app = angular.module("distantLearning", [
     "ui.router",
     "ngCookies",
     "ngProgress",
-    "angularFileUpload"
+    "angularFileUpload",
+    "infinite-scroll"
 ]);
