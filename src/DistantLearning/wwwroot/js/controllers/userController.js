@@ -5,9 +5,9 @@ function userController($scope, authService, userService, ngProgressFactory) {
     $scope.progressbar.setParent(document.querySelector('.search-input-block'));
     $scope.progressbar.setAbsolute();
     $scope.progressbar.start();
-
-    $scope.authenticationId = authService.authentication.id;
     $scope.users = [];
+    $scope.isLoading = true;
+    $scope.canGetElements = true;
     $scope.searchParams = {
         searchString: null,
         skip: 0,
@@ -16,6 +16,7 @@ function userController($scope, authService, userService, ngProgressFactory) {
 
     userService.getUsers($scope.searchParams, function (data) {
         $scope.users = data;
+        $scope.isLoading = false;
         $scope.progressbar.complete();
     });
 
@@ -35,10 +36,31 @@ function userController($scope, authService, userService, ngProgressFactory) {
     };
 
     $scope.$watch("searchParams.searchString", function () {
+        if ($scope.isLoading) return;
+        $scope.isLoading = true;
         $scope.progressbar.start();
+        $scope.searchParams.skip = 0;
         userService.getUsers($scope.searchParams, function (data) {
             $scope.users = data;
+            $scope.isLoading = false;
             $scope.progressbar.complete();
         });
     });
+
+    $scope.getMoreUsers = function () {
+        if ($scope.isLoading) return;
+        $scope.isLoading = true;
+        $scope.progressbar.start();
+        $scope.searchParams.skip += $scope.searchParams.take;
+        if ($scope.canGetElements) {
+            userService.getUsers($scope.searchParams, function (data) {
+                if (data.length < 20) $scope.canGetElements = false;
+                angular.forEach(data, function (element) {
+                    $scope.users.push(element);
+                });
+                $scope.isLoading = false;
+                $scope.progressbar.complete();
+            });
+        }
+    }
 }

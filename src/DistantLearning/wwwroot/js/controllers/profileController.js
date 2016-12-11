@@ -1,23 +1,26 @@
 app.controller("profileController", profileController);
 
-function profileController($scope, $state, $stateParams, profileService, consultationService, FileUploader, $mdToast) {
+function profileController($scope, $state, $stateParams, $mdToast, profileService, consultationService, documentService, FileUploader, authService) {
     $scope.profile = {};
     $scope.consultations = [];
+    $scope.documents = [];
     $scope.image = null;
-
     var profileId = $stateParams.profileId;
 
     profileService.getProfile(profileId, function (data) {
         if (data != "Пользователь не найден.") {
             $scope.profile = data;
             if ($scope.isTeacher()) {
-                consultationService.getConsultations($scope.profile.id, function (data) {
+                consultationService.getConsultationsByTeacher($scope.profile.id, function (data) {
                     $scope.consultations = data;
+                });
+                documentService.getDocumentsByTeacher($scope.profile.id, function (data) {
+                    $scope.documents = data;
                 });
             }
         } else {
-            $mdToast.show($mdToast.simple().textContent(data).position('bottom right').hideDelay(3000));
             $state.go("users");
+            $mdToast.show($mdToast.simple().textContent(data).position('bottom right').hideDelay(3000));
         }
     });
 
@@ -62,7 +65,14 @@ function profileController($scope, $state, $stateParams, profileService, consult
         return isTeacher;
     };
 
-    $scope.uploader = new FileUploader();
+    $scope.isCurrent = function () {
+        var currentProfileId = authService.authentication.id;
+        return profileId == currentProfileId || profileId == "";
+    };
+
+    $scope.uploader = new FileUploader({
+        url: '/api/image/uploadProfileImage'
+    });
 
     document.querySelector('#ngProgress-container').style.top = 48 + 'px';
 }

@@ -19,7 +19,7 @@ function loginController($scope, $state, $mdToast, authService) {
                     if (result == "OK") {
                         $scope.message = "Вход прошел успешно.";
                         $scope.activeLoader = false;
-                        $state.go("profile");
+                        $state.go("profile", {profileId: authService.authentication.id});
                     } else {
                         $mdToast.show($mdToast.simple().textContent(result).position('bottom right').hideDelay(3000));
                         $scope.activeLoader = false;

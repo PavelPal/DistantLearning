@@ -14,11 +14,11 @@ function authService($http, $cookies, localStorageService) {
         return $http({
             url: "/api/account/logout",
             method: "POST"
-        })
-            .success(function () {
-            })
-            .error(function (error) {
-            });
+        }).then(
+            function successCallback(response) {
+            }, function errorCallback(response) {
+            }
+        );
     };
 
     var logOut = function () {
@@ -41,28 +41,28 @@ function authService($http, $cookies, localStorageService) {
             headers: {
                 "Content-Type": "application/json"
             }
-        })
-            .success(function (response) {
-                if (response != "Неверные данные." && response != "Неверный тип." && response != "При регистрации произошла ошибка.") {
-                    $cookies.put("access_token", response.email);
+        }).then(
+            function successCallback(response) {
+                if (response.data != "Неверные данные." && response.data != "Неверный тип." && response.data != "При регистрации произошла ошибка.") {
+                    $cookies.put("access_token", response.data.email);
                     localStorageService.set("authorizationData", {
                         token: response.access_token,
-                        email: response.email,
-                        roles: response.roles
+                        email: response.data.email,
+                        roles: response.data.roles
                     });
                     authentication.isAuth = true;
-                    authentication.id = response.id;
-                    authentication.email = response.email;
-                    authentication.roles = response.roles;
+                    authentication.id = response.data.id;
+                    authentication.email = response.data.email;
+                    authentication.roles = response.data.roles;
                     callback("OK");
                 } else {
-                    callback(response);
+                    callback(response.data);
                 }
-            })
-            .error(function (error) {
+            }, function errorCallback(error) {
                 logOut();
                 callback(error);
-            });
+            }
+        );
     };
 
     var login = function (model, callback) {
@@ -75,29 +75,29 @@ function authService($http, $cookies, localStorageService) {
             headers: {
                 "Content-Type": "application/json"
             }
-        })
-            .success(function (response) {
-                if (response != "Неверные данные." && response != "При входе произошла ошибка.") {
-                    $cookies.put("access_token", response.email);
+        }).then(
+            function successCallback(response) {
+                if (response.data != "Неверные данные." && response.data != "При входе произошла ошибка.") {
+                    $cookies.put("access_token", response.data.email);
                     localStorageService.set("authorizationData", {
                         token: response.access_token,
-                        id: response.id,
-                        email: response.email,
-                        roles: response.roles
+                        id: response.data.id,
+                        email: response.data.email,
+                        roles: response.data.roles
                     });
                     authentication.isAuth = true;
-                    authentication.id = response.id;
-                    authentication.email = response.email;
-                    authentication.roles = response.roles;
+                    authentication.id = response.data.id;
+                    authentication.email = response.data.email;
+                    authentication.roles = response.data.roles;
                     callback("OK");
                 } else {
-                    callback(response);
+                    callback(response.data);
                 }
-            })
-            .error(function (error) {
+            }, function errorCallback(error) {
                 logOut();
                 callback(error);
-            });
+            }
+        );
     };
 
     var fillAuthData = function () {

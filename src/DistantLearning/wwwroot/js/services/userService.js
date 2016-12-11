@@ -12,14 +12,14 @@ function userService($http) {
                     skip: searchParams.skip,
                     take: searchParams.take
                 }
-            })
-                .success(function (data) {
-                    users = data;
-                    callback(data);
-                })
-                .error(function () {
-                    console.error("Problem with getting users from the server");
-                });
+            }).then(
+                function successCallback(response) {
+                    users = response.data;
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with getting users from the server" + error);
+                }
+            );
         }
     };
 }

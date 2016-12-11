@@ -1,0 +1,20 @@
+.consultation-section {
+  .md-title {
+    padding-bottom: 12px;
+  }
+
+  md-chips {
+    .md-chips {
+      padding: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      md-chip {
+        font-size: 12px;
+        margin: 5px 5px 0 0;
+      }
+    }
+  }
+}

@@ -5,12 +5,13 @@ function groupService($http) {
     return {
         getGroups: function (callback) {
             $http.get("/api/group")
-                .success(function (data) {
-                    callback(data);
-                })
-                .error(function () {
-                    console.error("Problem with getting groups from the server");
-                });
+                .then(
+                    function successCallback(response) {
+                        callback(response.data);
+                    }, function errorCallback(error) {
+                        console.error("Problem with getting groups from the server" + error);
+                    }
+                );
         }
     };
 }

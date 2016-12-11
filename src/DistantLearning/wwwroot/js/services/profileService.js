@@ -3,13 +3,13 @@ app.factory("profileService", profileService);
 function profileService($http) {
     return {
         getProfile: function (profileId, callback) {
-            $http.get("/api/profile/" + profileId)
-                .success(function (data) {
-                    callback(data);
-                })
-                .error(function (data) {
-                    console.error("Problem with getting profile data from the server");
-                });
+            $http.get("/api/profile/" + profileId).then(
+                function successCallback(response) {
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with getting profile data from the server" + error);
+                }
+            );
         },
         uploadImage: function (image, callback) {
             $http({
@@ -17,13 +17,13 @@ function profileService($http) {
                 method: "POST",
                 data: image,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            })
-                .success(function (data) {
-                    callback(data);
-                })
-                .error(function () {
-                    console.error("Problem with getting profile data from the server");
-                });
+            }).then(
+                function successCallback(response) {
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with getting profile data from the server" + error);
+                }
+            );
         }
     };
 }

@@ -11,15 +11,13 @@
                 <div class="info-message" ng-hide="users.length > 0">
                     <i class="fa fa-info-circle"></i> По вашему запросу ничего не найдено
                 </div>
-                <md-list flex class="user-list">
+                <md-list flex class="user-list" infinite-scroll="getMoreUsers()" infinite-scroll-disabled="isLoading"
+                         infinite-scroll-distance="1" infinite-scroll-container="'#parent-container'">
                     <md-list-item class="md-2-line" ng-repeat="user in users">
                         <img class="md-avatar"/>
                         <div class="md-list-item-text">
                             <h3>
-                                <a ng-if="user.id == authenticationId" ui-sref="profile">{{user.firstName}}
-                                    {{user.lastName}}</a>
-                                <a ng-if="user.id != authenticationId" ui-sref="profile({profileId: user.id})">{{user.firstName}}
-                                    {{user.lastName}}</a>
+                                <a ui-sref="profile({profileId: user.id})">{{user.firstName}} {{user.lastName}}</a>
                             </h3>
                             <p><span ng-repeat="role in user.roles">{{getRole(role)}}</span></p>
                         </div>

@@ -3,11 +3,8 @@
         <md-card class="profile-photo-card">
             <md-card-title layout="column" layout-align="center center">
                 <md-card-title-media>
-                    <div class="md-media-lg profile-photo" style="background-image: url('')">
-                        <div class="change-photo-thumb">
-                            <i class="fa fa-photo"></i>
-                        </div>
-                    </div>
+                    <div class="md-media-lg profile-photo"
+                         style="background-image: url('../images/4K-Widescreen-HD-Wallpapers.jpg')"></div>
                 </md-card-title-media>
                 <md-card-title-text hide-gt-xs>
                     <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
@@ -16,7 +13,7 @@
                     </span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-actions>
+            <md-card-actions ng-show="isCurrent()" ng-disabled="!isCurrent()">
                 <md-button>Редактировать</md-button>
                 <md-button aria-label="change photo button">
                     <i class="fa fa-photo"></i>
@@ -83,9 +80,15 @@
                     </span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-content layout="column">
-                <section class="consultation-section" layout="column" ng-show="isTeacher()">
+        </md-card>
+        <md-card ng-show="isTeacher()">
+            <md-card-title>
+                <md-card-title-text>
                     <span class="md-title">Консультации</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <section class="consultation-section" layout="column">
                     <div class="info-message" ng-hide="consultations.length > 0">
                         <i class="fa fa-info-circle"></i> Нет консультаций
                     </div>
@@ -100,6 +103,20 @@
                 </section>
             </md-card-content>
         </md-card>
+        <md-card ng-show="isTeacher()">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">Документы</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <section class="ocuments-section" layout="column">
+                    <div class="info-message" ng-hide="documents.length > 0">
+                        <i class="fa fa-info-circle"></i> Нет документов
+                    </div>
+                </section>
+            </md-card-content>
+        </md-card>
     </div>
 </div>
 
@@ -107,6 +124,6 @@
 <ul>
     <li ng-repeat="item in uploader.queue">
         Name: <span ng-bind="item.file.name"></span><br/>
-        <button ng-click="add()">upload</button>
+        <button ng-click="item.upload()">upload</button>
     </li>
 </ul>

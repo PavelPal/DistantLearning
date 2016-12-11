@@ -1,5 +1,11 @@
-md-card md-card-title {
-  padding: 16px;
+md-card {
+  .md-title {
+    font-size: 14px;
+  }
+
+  md-card-title {
+    padding: 16px;
+  }
 }
 
 .profile-card-wrap {
@@ -19,7 +25,6 @@ md-card md-card-title {
           border-radius: 93px;
           width: 186px;
           height: 186px;
-          cursor: pointer;
           position: relative;
           margin: 0;
           padding: 0;
@@ -28,33 +33,6 @@ md-card md-card-title {
             size: cover;
             color: #eeeeee;
             repeat: no-repeat;
-          }
-
-          &:hover {
-            .change-photo-thumb {
-              background: rgba(0, 0, 0, .5);
-              i.fa {
-                opacity: 1;
-              }
-            }
-          }
-
-          .change-photo-thumb {
-            left: 0;
-            width: 186px;
-            height: 186px;
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            top: 0;
-            transition: all .2s ease-in-out;
-
-            i.fa {
-              opacity: 0;
-              color: #fff;
-              font-size: 1.8rem;
-            }
           }
         }
       }
@@ -66,9 +44,9 @@ md-card md-card-title {
     }
 
     md-card-actions {
-      margin-top: 0;
       display: flex;
       flex-direction: row;
+      background-color: #eee;
 
       .md-button {
         min-width: 36px;
@@ -89,35 +67,6 @@ md-card md-card-title {
     .md-subhead {
       padding-top: 0 !important;
       color: rgba(0, 0, 0, 0.54);
-    }
-  }
-
-  .md-title {
-    font-size: 14px;
-  }
-}
-
-.profile-info-card {
-  md-card-content {
-    md-chips {
-      .md-chips {
-        padding: 0;
-        box-shadow: none;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-
-        md-chip {
-          font-size: 12px;
-          margin: 5px 5px 0 0;
-        }
-      }
-    }
-
-    .consultation-section {
-      .md-title {
-        padding-bottom: 12px;
-      }
     }
   }
 }
