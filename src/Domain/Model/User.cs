@@ -17,8 +17,7 @@ namespace Domain.Model
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public byte[] Photo { get; set; }
-        public string PhotoType { get; set; }
+        public string PhotoPath { get; set; }
 
         public List<UserTeacher> Teacher { get; set; }
         public List<UserStudent> Student { get; set; }

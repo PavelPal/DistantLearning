@@ -45,7 +45,7 @@ namespace DistantLearning
             services.AddDbContext<DomainModelContext>(options =>
                     options.UseSqlServer(
                         sqlConnectionString,
-                        b => b.MigrationsAssembly("distantlearning")
+                        b => b.MigrationsAssembly("DistantLearning")
                     )
             );
 

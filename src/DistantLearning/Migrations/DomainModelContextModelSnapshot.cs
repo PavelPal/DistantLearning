@@ -349,9 +349,7 @@ namespace distantlearning.Migrations
 
                 b.Property<bool>("PhoneNumberConfirmed");
 
-                b.Property<byte[]>("Photo");
-
-                b.Property<string>("PhotoType");
+                b.Property<string>("PhotoPath");
 
                 b.Property<string>("SecurityStamp");
 
