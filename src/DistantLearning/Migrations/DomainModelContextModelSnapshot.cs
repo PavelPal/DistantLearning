@@ -203,6 +203,27 @@ namespace distantlearning.Migrations
                 b.ToTable("Marks");
             });
 
+            modelBuilder.Entity("Domain.Model.PendingUserData", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
+
+                b.Property<DateTime>("Date");
+
+                b.Property<string>("FirstName");
+
+                b.Property<string>("LastName");
+
+                b.Property<string>("UserId");
+
+                b.HasKey("Id");
+
+                b.HasIndex("UserId")
+                    .IsUnique();
+
+                b.ToTable("PendingUserData");
+            });
+
             modelBuilder.Entity("Domain.Model.Quarter", b =>
             {
                 b.Property<int>("Id")
@@ -361,6 +382,10 @@ namespace distantlearning.Migrations
                     .HasAnnotation("MaxLength", 256);
 
                 b.HasKey("Id");
+
+                b.HasIndex("FirstName");
+
+                b.HasIndex("LastName");
 
                 b.HasIndex("NormalizedEmail")
                     .HasName("EmailIndex");
@@ -644,6 +669,13 @@ namespace distantlearning.Migrations
                     .WithMany("Marks")
                     .HasForeignKey("JournalId")
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity("Domain.Model.PendingUserData", b =>
+            {
+                b.HasOne("Domain.Model.User", "User")
+                    .WithMany("PendingUserData")
+                    .HasForeignKey("UserId");
             });
 
             modelBuilder.Entity("Domain.Model.Question", b =>

@@ -115,6 +115,13 @@ namespace DataAccessProvider
                 .HasForeignKey(mark => mark.DisciplineId);
             builder.Entity<Mark>().HasIndex(mark => mark.DisciplineId);
 
+            builder.Entity<PendingUserData>()
+                .HasOne(data => data.User)
+                .WithMany(user => user.PendingUserData)
+                .HasForeignKey(data => data.UserId);
+            builder.Entity<PendingUserData>().HasIndex(data => data.UserId)
+                .IsUnique();
+
             builder.Entity<Question>()
                 .HasOne(question => question.Test)
                 .WithMany(test => test.Questions)
@@ -157,6 +164,9 @@ namespace DataAccessProvider
                 .HasForeignKey(tr => tr.UserId);
             builder.Entity<TestResult>().HasIndex(tr => tr.UserId);
 
+            builder.Entity<User>().HasIndex(u => u.FirstName);
+            builder.Entity<User>().HasIndex(u => u.LastName);
+
             builder.Entity<UserMark>()
                 .HasOne(um => um.Mark)
                 .WithMany(mark => mark.Users)
@@ -174,7 +184,7 @@ namespace DataAccessProvider
                 .WithMany(user => user.Parent)
                 .HasForeignKey(parent => parent.UserId);
             builder.Entity<UserParent>().HasIndex(parent => parent.UserId)
-                .IsUnique(true);
+                .IsUnique();
 
             builder.Entity<UserSetting>()
                 .HasOne(us => us.User)
@@ -187,14 +197,14 @@ namespace DataAccessProvider
                 .WithMany(user => user.Student)
                 .HasForeignKey(student => student.UserId);
             builder.Entity<UserStudent>().HasIndex(student => student.UserId)
-                .IsUnique(true);
+                .IsUnique();
 
             builder.Entity<UserTeacher>()
                 .HasOne(teacher => teacher.User)
                 .WithMany(user => user.Teacher)
                 .HasForeignKey(teacher => teacher.UserId);
             builder.Entity<UserTeacher>().HasIndex(teacher => teacher.UserId)
-                .IsUnique(true);
+                .IsUnique();
 
             #region UpdatedTimestamp Property
 

@@ -3,7 +3,6 @@ using System.Net;
 using System.Threading.Tasks;
 using DataAccessProvider;
 using DistantLearning.Services;
-using Domain;
 using Domain.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -66,28 +65,6 @@ namespace DistantLearning
                 })
                 .AddEntityFrameworkStores<DomainModelContext>()
                 .AddDefaultTokenProviders();
-
-            services.AddScoped<IDataAccessProvider<Answer>, DataAccessProvider<Answer>>();
-            services.AddScoped<IDataAccessProvider<ChildParent>, DataAccessProvider<ChildParent>>();
-            services.AddScoped<IDataAccessProvider<Comment>, DataAccessProvider<Comment>>();
-            services.AddScoped<IDataAccessProvider<Consultation>, DataAccessProvider<Consultation>>();
-            services.AddScoped<IDataAccessProvider<Discipline>, DataAccessProvider<Discipline>>();
-            services.AddScoped<IDataAccessProvider<Document>, DataAccessProvider<Document>>();
-            services.AddScoped<IDataAccessProvider<Group>, DataAccessProvider<Group>>();
-            services.AddScoped<IDataAccessProvider<Journal>, DataAccessProvider<Journal>>();
-            services.AddScoped<IDataAccessProvider<JournalDiscipline>, DataAccessProvider<JournalDiscipline>>();
-            services.AddScoped<IDataAccessProvider<Mark>, DataAccessProvider<Mark>>();
-            services.AddScoped<IDataAccessProvider<Quarter>, DataAccessProvider<Quarter>>();
-            services.AddScoped<IDataAccessProvider<Question>, DataAccessProvider<Question>>();
-            services.AddScoped<IDataAccessProvider<TeacherDiscipline>, DataAccessProvider<TeacherDiscipline>>();
-            services.AddScoped<IDataAccessProvider<Test>, DataAccessProvider<Test>>();
-            services.AddScoped<IDataAccessProvider<TestResult>, DataAccessProvider<TestResult>>();
-            services.AddScoped<IDataAccessProvider<User>, DataAccessProvider<User>>();
-            services.AddScoped<IDataAccessProvider<UserMark>, DataAccessProvider<UserMark>>();
-            services.AddScoped<IDataAccessProvider<UserParent>, DataAccessProvider<UserParent>>();
-            services.AddScoped<IDataAccessProvider<UserSetting>, DataAccessProvider<UserSetting>>();
-            services.AddScoped<IDataAccessProvider<UserStudent>, DataAccessProvider<UserStudent>>();
-            services.AddScoped<IDataAccessProvider<UserTeacher>, DataAccessProvider<UserTeacher>>();
 
             services.AddMvc()
                 .AddJsonOptions(
