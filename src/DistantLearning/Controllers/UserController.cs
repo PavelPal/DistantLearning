@@ -28,17 +28,31 @@ namespace DistantLearning.Controllers
         public async Task<List<UsersViewModel>> Users(string searchString, int skip, int take)
         {
             var users = new List<UsersViewModel>();
-            var dbUsers = searchString == null
-                ? await
-                    _context.Users.OrderBy(u => u.FirstName).ThenBy(u => u.LastName).Skip(skip).Take(take).ToListAsync()
-                : await
+            List<User> dbUsers;
+            if (searchString == null)
+            {
+                dbUsers =
+                    await
+                        _context.Users.OrderBy(u => u.FirstName)
+                            .ThenBy(u => u.LastName)
+                            .Skip(skip)
+                            .Take(take)
+                            .ToListAsync();
+            }
+            else
+            {
+                var searchStringToLower = searchString.ToLower();
+                dbUsers = await
                     _context.Users.Where(
                             u =>
-                                u.FirstName.Contains(searchString) || u.LastName.Contains(searchString) ||
-                                searchString.Contains(u.FirstName) || searchString.Contains(u.LastName))
+                                u.FirstName.ToLower().Contains(searchStringToLower) ||
+                                u.LastName.ToLower().Contains(searchStringToLower) ||
+                                searchStringToLower.Contains(u.FirstName.ToLower()) ||
+                                searchStringToLower.Contains(u.LastName.ToLower()))
                         .Skip(skip)
                         .Take(take)
                         .ToListAsync();
+            }
             foreach (var user in dbUsers)
                 users.Add(new UsersViewModel(user, await _userManager.GetRolesAsync(user)));
             return users;
