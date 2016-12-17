@@ -29,8 +29,13 @@ md-input-container {
   }
 
   md-icon {
-    top: 18px;
+    top: 15px;
     left: 10px;
+    cursor: pointer;
+
+    &:focus, &:active, &:hover {
+      outline: none;
+    }
   }
 
   .md-errors-spacer {

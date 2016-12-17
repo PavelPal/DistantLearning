@@ -35,8 +35,9 @@ function userController($scope, authService, userService, ngProgressFactory) {
         }
     };
 
-    $scope.$watch("searchParams.searchString", function () {
-        if ($scope.isLoading) return;
+    $scope.findUsers = function () {
+        if ($scope.isLoading || $scope.searchParams.searchString == null || $scope.searchParams.searchString == '')
+            return;
         $scope.isLoading = true;
         $scope.progressbar.start();
         $scope.searchParams.skip = 0;
@@ -45,7 +46,7 @@ function userController($scope, authService, userService, ngProgressFactory) {
             $scope.isLoading = false;
             $scope.progressbar.complete();
         });
-    });
+    };
 
     $scope.getMoreUsers = function () {
         if ($scope.isLoading) return;

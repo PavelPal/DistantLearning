@@ -169,8 +169,11 @@ md-input-container md-icon {
     padding: 0;
     border: none; }
   .search-input-block md-icon {
-    top: 18px;
-    left: 10px; }
+    top: 15px;
+    left: 10px;
+    cursor: pointer; }
+    .search-input-block md-icon:focus, .search-input-block md-icon:active, .search-input-block md-icon:hover {
+      outline: none; }
   .search-input-block .md-errors-spacer {
     display: none; }
   .search-input-block #ngProgress-container {
