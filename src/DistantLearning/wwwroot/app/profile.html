@@ -3,8 +3,12 @@
         <md-card class="profile-photo-card">
             <md-card-title layout="column" layout-align="center center">
                 <md-card-title-media>
-                    <div class="md-media-lg profile-photo"
+                    <div class="md-media-lg profile-photo" ng-if="image != null"
                          style="background-image: url('{{image}}')"></div>
+                    <div class="md-media-lg profile-photo" ng-if="image == null" flex layout="row"
+                         layout-align="center center">
+                        <i class="fa fa-user"></i>
+                    </div>
                 </md-card-title-media>
                 <md-card-title-text hide-gt-xs>
                     <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
@@ -43,7 +47,9 @@
                         <i class="fa fa-phone"></i>
                     </div>
                     <div class="md-list-item-text">
-                        <h3>{{profile.phoneNumber}}</h3>
+                        <h3>
+                            <a href="tel:{{profile.phoneNumber}}">{{profile.phoneNumber}}</a>
+                        </h3>
                         <p>телефон</p>
                     </div>
                 </md-list-item>
@@ -82,14 +88,17 @@
             </md-card-title>
         </md-card>
         <md-card ng-show="isTeacher()">
-            <md-card-title>
+            <md-card-title id="consultations-header">
                 <md-card-title-text>
                     <span class="md-title">Консультации</span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout="column">
                 <section class="consultation-section" layout="column">
-                    <div class="info-message" ng-hide="consultations.length > 0">
+                    <md-progress-circular ng-show="consultationsLoader" ng-disabled="!consultationsLoader"
+                                          md-diameter="40px"
+                                          md-mode="indeterminate"></md-progress-circular>
+                    <div class="info-message" ng-hide="consultations.length > 0 || consultationsLoader">
                         <i class="fa fa-info-circle"></i> Нет консультаций
                     </div>
                     <div layout="row">
@@ -104,15 +113,41 @@
             </md-card-content>
         </md-card>
         <md-card ng-show="isTeacher()">
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-title">Документы</span>
+            <md-card-title id="documents-header">
+                <md-card-title-text flex layout="row">
+                    <span class="md-title" flex>Документы</span>
+                    <md-button class="md-icon-button" ng-show="isCurrent()"
+                               ng-click="showDocumentUploadingModal($event)"
+                               aria-label="Upload document">
+                        <md-icon layout="column" layout-align="center center">
+                            <md-tooltip md-direction="left">Загрузить</md-tooltip>
+                            <i class="fa fa-upload"></i>
+                        </md-icon>
+                    </md-button>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout="column">
-                <section class="ocuments-section" layout="column">
-                    <div class="info-message" ng-hide="documents.length > 0">
+                <section class="documents-section" layout="column">
+                    <md-progress-circular ng-show="documentsLoader" ng-disabled="!documentsLoader" md-diameter="40px"
+                                          md-mode="indeterminate"></md-progress-circular>
+                    <div class="info-message" ng-hide="documents.length > 0 || documentsLoader">
                         <i class="fa fa-info-circle"></i> Нет документов
+                    </div>
+                    <div layout="row">
+                        <md-list class="small-list" flex ng-cloak>
+                            <md-list-item ng-click="" ng-repeat="document in documents">
+                                <md-icon layout="column" layout-align="center center">
+                                    <i class="fa fa-file"></i>
+                                </md-icon>
+                                <p flex>{{document.name}}</p>
+                                <md-button class="md-icon-button md-secondary" aria-label="Download document">
+                                    <md-tooltip md-direction="left">Скачать</md-tooltip>
+                                    <md-icon layout="column" layout-align="center center">
+                                        <i class="fa fa-download"></i>
+                                    </md-icon>
+                                </md-button>
+                            </md-list-item>
+                        </md-list>
                     </div>
                 </section>
             </md-card-content>

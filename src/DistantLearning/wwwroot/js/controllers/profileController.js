@@ -1,10 +1,15 @@
 app.controller("profileController", profileController);
 
 function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, profileService, consultationService, documentService, authService) {
+    document.querySelector('#ngProgress-container').style.top = 48 + 'px';
+
     $scope.profile = {};
     $scope.consultations = [];
     $scope.documents = [];
     $scope.image = null;
+    $scope.documentsLoader = false;
+    $scope.consultationsLoader = false;
+
     var profileId = $stateParams.profileId;
 
     profileService.getProfile(profileId, function (data) {
@@ -12,11 +17,14 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             $scope.profile = data;
             $scope.image = data.photo == null ? null : "data/profile_photos/" + data.photo;
             if ($scope.isTeacher()) {
+                $scope.documentsLoader = $scope.consultationsLoader = true;
                 consultationService.getConsultationsByTeacher($scope.profile.id, function (data) {
                     $scope.consultations = data;
+                    $scope.consultationsLoader = false;
                 });
                 documentService.getDocumentsByTeacher($scope.profile.id, function (data) {
                     $scope.documents = data;
+                    $scope.documentsLoader = false;
                 });
             }
         } else {
@@ -24,6 +32,21 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             $mdToast.show($mdToast.simple().textContent(data).position('bottom right').hideDelay(3000));
         }
     });
+
+    $scope.isTeacher = function () {
+        var isTeacher = false;
+        angular.forEach($scope.profile.roles, function (role) {
+            if (role == "Teacher") {
+                isTeacher = true;
+            }
+        });
+        return isTeacher;
+    };
+
+    $scope.isCurrent = function () {
+        var currentProfileId = authService.authentication.id;
+        return profileId == currentProfileId || profileId == "";
+    };
 
     $scope.dayOfWeekAsString = function (index) {
         return ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"][index];
@@ -49,22 +72,8 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
         }
     };
 
-    $scope.isTeacher = function () {
-        var isTeacher = false;
-        angular.forEach($scope.profile.roles, function (role) {
-            if (role == "Teacher") {
-                isTeacher = true;
-            }
-        });
-        return isTeacher;
-    };
-
-    $scope.isCurrent = function () {
-        var currentProfileId = authService.authentication.id;
-        return profileId == currentProfileId || profileId == "";
-    };
-
     $scope.showProfileImageModal = function (ev) {
+        if (!$scope.isCurrent) return;
         $mdDialog.show({
             controller: 'ProfileImageLoaderController',
             templateUrl: '../app/partials/profileImageLoaderView.html',
@@ -80,5 +89,25 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             });
     };
 
-    document.querySelector('#ngProgress-container').style.top = 48 + 'px';
+    $scope.showDocumentUploadingModal = function (ev) {
+        if (!$scope.isTeacher) return;
+        $mdDialog.show({
+            controller: 'DocumentLoaderController',
+            templateUrl: '../app/partials/documentUploadingView.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: false,
+            fullscreen: false
+        }).then(
+            function (response) {
+                $scope.documents.unshift({
+                    id: 0,
+                    name: response.name,
+                    date: Date.now(),
+                    isLocked: false
+                });
+            },
+            function (response) {
+            });
+    };
 }

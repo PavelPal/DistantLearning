@@ -251,7 +251,7 @@ namespace DataAccessProvider
         private void UpdateUpdatedProperty<T>() where T : class
         {
             var modifiedSourceInfo = ChangeTracker.Entries<T>()
-                .Where(e => (e.State == EntityState.Added) || (e.State == EntityState.Modified));
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
             foreach (var entry in modifiedSourceInfo)
                 entry.Property("UpdatedTimestamp").CurrentValue = DateTime.UtcNow;

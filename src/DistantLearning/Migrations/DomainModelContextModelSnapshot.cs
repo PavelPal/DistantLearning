@@ -111,9 +111,7 @@ namespace distantlearning.Migrations
 
                 b.Property<DateTime>("Date");
 
-                b.Property<byte[]>("File");
-
-                b.Property<string>("FileType");
+                b.Property<string>("FileCode");
 
                 b.Property<bool>("IsLocked");
 
