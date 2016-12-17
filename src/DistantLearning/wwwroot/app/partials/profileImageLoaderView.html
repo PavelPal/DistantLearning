@@ -11,13 +11,13 @@
         </md-toolbar>
         <md-dialog-content>
             <div class="md-dialog-content file-upload-container" flex layout="column" layout-align="start center">
-                <div class="upload-input" flex layout="column" layout-align="start center"
-                     ng-hide="uploader.queue.length > 0">
-                    <label class="md-button md-ink-ripple" for="profile-image">Загрузить</label>
-                    <input id="profile-image" type="file" nv-file-select uploader="uploader"/><br/>
+                <div class="upload-input" flex layout="column" layout-align="start center">
+                    <label ng-disabled="uploader.queue.length > 0" class="md-button md-ink-ripple" for="profile-image">Выбрать
+                        фотографию</label>
+                    <input ng-disabled="uploader.queue.length > 0" id="profile-image" type="file" nv-file-select
+                           uploader="uploader"/><br/>
                 </div>
-                <div class="cover" ng-show="uploader.queue.length > 0"
-                     style="background-image: url({{imageUrl}})"></div>
+                <div class="cover preview" style="background-image: url({{imageUrl}})"></div>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">

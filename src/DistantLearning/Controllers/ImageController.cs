@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using DataAccessProvider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DistantLearning.Controllers
 {
@@ -26,10 +26,11 @@ namespace DistantLearning.Controllers
         [HttpPost("uploadProfileImage")]
         public async Task<string> UploadProfileImage(IFormFile file)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
-            var path = _hostingEnvironment.WebRootPath + Path.DirectorySeparatorChar + "data" +
-                       Path.DirectorySeparatorChar + "profile_photos";
-            if ((user == null) || (file.Length <= 0)) return "Ошибка";
+            if (file == null || file.Length <= 0) return "Ошибка";
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
+            if (user == null) return "Ошибка";
+            var path = Path.Combine(_hostingEnvironment.WebRootPath,
+                "data" + Path.DirectorySeparatorChar + "profile_photos");
             try
             {
                 RemoveExsitingImages(user.Id, path);

@@ -42,10 +42,10 @@ namespace DistantLearning
             var sqlConnectionString = Configuration.GetConnectionString("DistantLearningDb");
 
             services.AddDbContext<DomainModelContext>(options =>
-                    options.UseSqlServer(
-                        sqlConnectionString,
-                        b => b.MigrationsAssembly("DistantLearning")
-                    )
+                options.UseSqlServer(
+                    sqlConnectionString,
+                    b => b.MigrationsAssembly("DistantLearning")
+                )
             );
 
             services.AddIdentity<User, IdentityRole>(options =>
@@ -55,7 +55,7 @@ namespace DistantLearning
                         OnRedirectToLogin = ctx =>
                         {
                             if (ctx.Request.Path.StartsWithSegments("/api") &&
-                                (ctx.Response.StatusCode == (int) HttpStatusCode.OK))
+                                ctx.Response.StatusCode == (int) HttpStatusCode.OK)
                                 ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
                             else
                                 ctx.Response.Redirect(ctx.RedirectUri);

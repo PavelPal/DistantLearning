@@ -1,6 +1,8 @@
 ﻿app.controller("signupController", signupController);
 
 function signupController($scope, $state, $element, authService, disciplineService, groupService) {
+    document.querySelector('#ngProgress-container').style.top = 0;
+
     $scope.title = "Зарегистрироваться";
     $scope.savedSuccessfully = false;
     $scope.message = "";
@@ -58,6 +60,4 @@ function signupController($scope, $state, $element, authService, disciplineServi
                 });
         }
     };
-
-    document.querySelector('#ngProgress-container').style.top = 0;
 }

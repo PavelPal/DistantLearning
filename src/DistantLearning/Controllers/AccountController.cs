@@ -230,7 +230,7 @@ namespace DistantLearning.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            if ((userId == null) || (code == null))
+            if (userId == null || code == null)
                 return View("Error");
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -258,7 +258,7 @@ namespace DistantLearning.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
-                if ((user == null) || !await _userManager.IsEmailConfirmedAsync(user))
+                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
                     return View("ForgotPasswordConfirmation");
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713

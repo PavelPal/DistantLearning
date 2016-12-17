@@ -23,11 +23,11 @@ namespace DistantLearning.Controllers
         {
             if (id == null)
                 return "Некорректный id.";
-            var user = _context.Users.Where(u => u.Id.Equals(id)).Include(u => u.Teacher).FirstOrDefault();
+            var user =
+                await _context.Users.Where(u => u.Id.Equals(id)).Include("Teacher.Consultations").FirstOrDefaultAsync();
             if (user == null)
                 return "Пользователь не найден.";
-            return
-                await _context.Consultations.Where(d => d.TeacherId == user.Teacher.FirstOrDefault().Id).ToListAsync();
+            return user.Teacher.FirstOrDefault().Consultations.OrderBy(c => c.DayOfWeek);
         }
     }
 }

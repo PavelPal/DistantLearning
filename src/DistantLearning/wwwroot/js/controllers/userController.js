@@ -1,6 +1,6 @@
 app.controller("userController", userController);
 
-function userController($scope, authService, userService, ngProgressFactory) {
+function userController($scope, userService, ngProgressFactory) {
     $scope.progressbar = ngProgressFactory.createInstance();
     $scope.progressbar.setParent(document.querySelector('.search-input-block'));
     $scope.progressbar.setAbsolute();
