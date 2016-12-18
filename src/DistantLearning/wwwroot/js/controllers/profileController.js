@@ -1,9 +1,11 @@
 app.controller("profileController", profileController);
 
-function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, profileService, consultationService, documentService, authService) {
+function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, profileService, consultationService, documentService, authService, groupService, disciplineService) {
     document.querySelector('#ngProgress-container').style.top = 48 + 'px';
 
     $scope.profile = {};
+    $scope.group = '';
+    $scope.disciplines = [];
     $scope.consultations = [];
     $scope.documents = [];
     $scope.image = null;
@@ -17,6 +19,9 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             $scope.profile = data;
             $scope.image = data.photo == null ? null : "data/profile_photos/" + data.photo;
             if ($scope.isTeacher()) {
+                disciplineService.getTeachersDisciplines(profileId, function (data) {
+                    $scope.disciplines = data;
+                });
                 $scope.documentsLoader = $scope.consultationsLoader = true;
                 consultationService.getConsultationsByTeacher($scope.profile.id, function (data) {
                     $scope.consultations = data;
@@ -26,6 +31,10 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
                     $scope.documents = data;
                     $scope.documentsLoader = false;
                 });
+            } else if ($scope.isStudent()) {
+                groupService.getStudentsGroup(profileId, function (data) {
+                    $scope.group = data.name;
+                })
             }
         } else {
             $state.go("users");
@@ -41,6 +50,16 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             }
         });
         return isTeacher;
+    };
+
+    $scope.isStudent = function () {
+        var isStudent = false;
+        angular.forEach($scope.profile.roles, function (role) {
+            if (role == "Student") {
+                isStudent = true;
+            }
+        });
+        return isStudent;
     };
 
     $scope.isCurrent = function () {

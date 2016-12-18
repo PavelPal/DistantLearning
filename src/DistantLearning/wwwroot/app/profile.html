@@ -14,6 +14,10 @@
                     <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
                     <span class="md-subhead">
                         <span ng-repeat="role in profile.roles">{{getRole(role)}}</span>
+                        <span ng-show="isTeacher()">(<span
+                                ng-repeat="discipline in disciplines">{{discipline.name}}<span
+                                ng-if="$index + 1 < disciplines.length">, </span></span>)</span>
+                        <span ng-show="isStudent()">(<span>{{group.name}}</span>)</span>
                     </span>
                 </md-card-title-text>
             </md-card-title>
@@ -63,6 +67,10 @@
                     <span class="md-headline">{{profile.firstName}} {{profile.lastName}}</span>
                     <span class="md-subhead">
                         <span ng-repeat="role in profile.roles">{{getRole(role)}}</span>
+                        <span ng-show="isTeacher()">(<span
+                                ng-repeat="discipline in disciplines">{{discipline.name}}<span
+                                ng-if="$index + 1 < disciplines.length">, </span></span>)</span>
+                        <span ng-show="isStudent()">(<span>{{group.name}}</span>)</span>
                     </span>
                 </md-card-title-text>
             </md-card-title>
