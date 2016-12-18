@@ -1,0 +1,37 @@
+﻿<div flex layout-padding>
+    <div flex layout="column">
+        <md-card>
+            <md-card-title>
+                <form ng-submit="findUsers()" flex>
+                    <md-input-container class="md-block search-input-block" md-no-float flex>
+                        <md-icon ng-click="findUsers()" flex layout="column" layout-align="center center">
+                            <i class="fa fa-search"></i>
+                        </md-icon>
+                        <input type="search" ng-model="searchParams.searchString" placeholder="поиск пользователей">
+                    </md-input-container>
+                </form>
+            </md-card-title>
+            <md-card-content>
+                <div class="info-message" ng-hide="users.length > 0">
+                    <i class="fa fa-info-circle"></i> По вашему запросу ничего не найдено
+                </div>
+                <md-list flex class="dl-multi-line-list" infinite-scroll="getMoreUsers()" infinite-scroll-disabled="isLoading"
+                         infinite-scroll-distance="1" infinite-scroll-container="'#parent-container'">
+                    <md-list-item class="md-2-line" ng-repeat="user in users">
+                        <div class="md-avatar" ng-if="user.photo == null">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <div class="md-avatar" ng-if="user.photo != null"
+                             style="background-image: url('data/profile_photos/{{user.photo}}');"></div>
+                        <div class="md-list-item-text">
+                            <h3>
+                                <a ui-sref="profile({profileId: user.id})">{{user.firstName}} {{user.lastName}}</a>
+                            </h3>
+                            <p><span ng-repeat="role in user.roles">{{getRole(role)}}</span></p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

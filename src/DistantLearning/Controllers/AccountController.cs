@@ -1,6 +1,7 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DataAccessProvider;
 using DistantLearning.Models.AccountViewModels;
 using DistantLearning.Services;
 using Domain.Model;
@@ -12,10 +13,11 @@ using Microsoft.Extensions.Logging;
 
 namespace DistantLearning.Controllers
 {
-    [Route("account")]
     [Authorize]
+    [Route("api/account")]
     public class AccountController : Controller
     {
+        private readonly DomainModelContext _context;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly SignInManager<User> _signInManager;
@@ -27,99 +29,126 @@ namespace DistantLearning.Controllers
             SignInManager<User> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            DomainModelContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
-        [Route("login")]
-        [HttpGet]
+        [HttpPost("login")]
         [AllowAnonymous]
-        public IActionResult Login()
+        public async Task<object> Login([FromBody] LoginViewModel model)
         {
-            return View();
-        }
+            if (!ModelState.IsValid)
+                return "Неверные данные";
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
+            //if (result.RequiresTwoFactor)
+            //    return RedirectToAction(nameof(SendCode), new {model});
 
-        [Route("login")]
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
-            var result =
-                await
-                    _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-            if (result.Succeeded)
+            //if (result.IsLockedOut)
+            //{
+            //    _logger.LogWarning(2, "User account locked out.");
+            //    // TODO locked page
+            //    return RedirectToAction(nameof(HomeController.Index), "Home");
+            //}
+            if (!result.Succeeded) return "При входе произошла ошибка";
+            _logger.LogInformation(1, "User logged in.");
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            return new
             {
-                _logger.LogInformation(1, "User logged in.");
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-            if (result.RequiresTwoFactor)
-                return RedirectToAction(nameof(SendCode), new {model.RememberMe});
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning(2, "User account locked out.");
-
-                // TODO locked page
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(model);
+                id = user.Id,
+                email = user.Email,
+                roles = await _userManager.GetRolesAsync(user)
+            };
         }
 
-        [Route("register")]
-        [HttpGet]
+        [HttpPost("register")]
         [AllowAnonymous]
-        public IActionResult Register()
+        public async Task<object> Register([FromBody] RegisterViewModel model)
         {
-            return View();
-        }
-
-        [Route("register")]
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return "Неверные данные";
+            var user = new User
             {
-                var user = new User {UserName = model.Email, Email = model.Email};
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                }
-                AddErrors(result);
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
+            switch (model.Type)
+            {
+                case 0:
+                    user.Teacher.Add(new UserTeacher
+                    {
+                        Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
+                        {
+                            Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
+                        }).ToList()
+                    });
+                    break;
+                case 1:
+                    user.Student.Add(new UserStudent
+                    {
+                        Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
+                    });
+                    break;
+                case 2:
+                    user.Parent.Add(new UserParent
+                    {
+                        Children = model.Children.Select(child => new UserStudent
+                        {
+                            Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
+                        }).ToList().Select(student => new ChildParent
+                        {
+                            Student = student
+                        }).ToList()
+                    });
+                    break;
+                default:
+                    _logger.LogError("Error with registration.");
+                    return "Неверный тип";
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return "При регистрации произошла ошибка";
+            switch (model.Type)
+            {
+                case 0:
+                    await _userManager.AddToRoleAsync(user, "Teacher");
+                    break;
+                case 1:
+                    await _userManager.AddToRoleAsync(user, "Student");
+                    break;
+                case 2:
+                    await _userManager.AddToRoleAsync(user, "Parent");
+                    break;
+                default:
+                    _logger.LogError("Error with adding role.");
+                    return "Неверный тип";
+            }
+            await _signInManager.SignInAsync(user, false);
+            _logger.LogInformation(3, "User created a new account with password.");
+            return new
+            {
+                id = user.Id,
+                email = user.Email,
+                roles = await _userManager.GetRolesAsync(user)
+            };
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
+        [HttpPost("logout")]
+        public async Task LogOff()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        //
-        // POST: /Account/ExternalLogin
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -201,7 +230,7 @@ namespace DistantLearning.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            if ((userId == null) || (code == null))
+            if (userId == null || code == null)
                 return View("Error");
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -229,7 +258,7 @@ namespace DistantLearning.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
-                if ((user == null) || !await _userManager.IsEmailConfirmedAsync(user))
+                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
                     return View("ForgotPasswordConfirmation");
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713

@@ -3,38 +3,36 @@
 
   "dependencies": {
     "Microsoft.NETCore.App": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "type": "platform"
     },
-    "DataAccessProvider": "1.0.0",
+    "DataAccessProvider": "*",
+    "Microsoft.AspNetCore.Authorization": "1.1.0",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0",
+    "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.1.0",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.AspNetCore.Mvc.Core": "1.1.0",
+    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.0",
+    "Microsoft.AspNetCore.Razor.Tools": {
+      "type": "build",
+      "version": "1.0.0-preview2-final"
+    },
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
     "Microsoft.EntityFrameworkCore.Tools": {
-      "version": "1.0.0-preview2-final",
       "imports": [
         "portable-net45+win8+dnxcore50",
         "portable-net45+win8"
-      ]
+      ],
+      "version": "1.0.0-preview2-final"
     },
-    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-    "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.0.0",
-    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
-    "Microsoft.AspNetCore.Mvc": "1.0.0",
-    "Microsoft.AspNetCore.Razor.Tools": {
-      "version": "1.0.0-preview2-final",
-      "type": "build"
-    },
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
-    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
-    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "Microsoft.Extensions.DependencyModel": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0",
-    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
+    "Microsoft.Extensions.Logging.Debug": "1.1.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.1.0",
+    "Microsoft.IdentityModel.Tokens": "5.1.0",
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
     "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
       "version": "1.0.0-preview2-final",
       "type": "build"
@@ -43,12 +41,7 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
-    "Microsoft.IdentityModel.Tokens": "5.0.0",
-    "System.IdentityModel.Tokens.Jwt": "5.0.0",
-    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
-    "Microsoft.Extensions.Configuration.Binder": "1.0.0",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0-rc2-final"
+    "System.IdentityModel.Tokens.Jwt": "5.1.0"
   },
 
   "tools": {
@@ -110,8 +103,14 @@
     ]
   },
 
+  "commands": {
+    "Development": "Microsoft.AspNet.Server.Kestrel --ASPNETCORE_ENVIRONMENT Development",
+    "Preview": "Microsoft.AspNet.Server.Kestrel --ASPNETCORE_ENVIRONMENT Preview",
+    "Production": "Microsoft.AspNet.Server.Kestrel --ASPNETCORE_ENVIRONMENT Production"
+  },
+
   "scripts": {
-    "prepublish": ["bower install", "dotnet bundle"],
+    "prepublish": ["npm install", "bower install", "dotnet bundle"],
     "postpublish": [
       "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
     ]

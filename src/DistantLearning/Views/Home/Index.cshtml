@@ -1,0 +1,129 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html ng-app="distantLearning" ng-controller="mainController">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+
+    <environment names="Development,Staging,Production">
+        <link rel="stylesheet" href="~/lib/normalize-css/normalize.css"/>
+        <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css"/>
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="~/lib/ngprogress/ngProgress.css"/>
+        <link rel="stylesheet" href="~/css/main.min.css"/>
+    </environment>
+</head>
+<body layout="column" ng-cloak>
+
+<environment names="Development,Staging,Production">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
+    <script src="~/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="~/lib/angular-route/angular-route.min.js"></script>
+    <script src="~/lib/angular-cookies/angular-cookies.min.js"></script>
+    <script src="~/lib/angular-resource/angular-resource.min.js"></script>
+    <script src="~/lib/angular-animate/angular-animate.min.js"></script>
+    <script src="~/lib/angular-aria/angular-aria.min.js"></script>
+    <script src="~/lib/angular-messages/angular-messages.min.js"></script>
+    <script src="~/lib/ngprogress/build/ngprogress.min.js"></script>
+    <script src="~/lib/angular-material/angular-material.min.js"></script>
+    <script src="~/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="~/lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+    <script src="~/js/site.min.js"></script>
+</environment>
+
+<md-toolbar md-whiteframe="5" ng-show="authentication.isAuth">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" hide-gt-md ng-click="toggleSideNav()" aria-label="toggle sidenav">
+            <i class="fa fa-bars"></i>
+        </md-button>
+        <h3>
+            <span>{{title}}</span>
+        </h3>
+        <div class="toolbar-search-box" flex hide-xs>
+            <form>
+                <input placeholder="Поиск..."/>
+            </form>
+        </div>
+    </div>
+</md-toolbar>
+
+<section id="main-container" layout="row" flex>
+    <md-sidenav class="md-sidenav-left dl-sidenav"
+                md-component-id="sideNav"
+                md-is-locked-open="$mdMedia('gt-md')"
+                ng-show="authentication.isAuth">
+        <md-content>
+            <md-list flex>
+                <md-list-item ng-click="close()" ui-sref="profile({profileId: authentication.id})">
+                    <md-icon class="fa fa-user"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Профиль</p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-click="close()" ui-sref="users">
+                    <md-icon class="fa fa-users"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Пользователи</p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-click="close()" ui-sref="tests">
+                    <md-icon class="fa fa-flask"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Тесты</p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-click="close()" ui-sref="journal">
+                    <md-icon class="fa fa-book"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Журнал</p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-click="close()" ui-sref="results">
+                    <md-icon class="fa fa-check-circle"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Результаты</p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-click="close()" ui-sref="documents">
+                    <md-icon class="fa fa-file"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Документы</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item ng-click="close()" ui-sref="settings">
+                    <md-icon class="fa fa-gears"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Настройки</p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-click="logOut()">
+                    <md-icon class="fa fa-sign-out"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Выход</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item ng-click="close()" ui-sref="help">
+                    <md-icon class="fa fa-question-circle"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Помощь</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav>
+    <md-content flex>
+        <div flex id="parent-container">
+            <div ui-view=""></div>
+        </div>
+    </md-content>
+</section>
+</body>
+</html>

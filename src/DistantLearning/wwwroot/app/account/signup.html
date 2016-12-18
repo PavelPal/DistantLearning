@@ -1,0 +1,146 @@
+﻿<div class="banner blue empty"></div>
+
+<div flex="none" layout="row" layout-align="center center">
+    <form class="auth-form" name="signUpForm" novalidate flex="none" layout="row" ng-submit="signUp()">
+        <div>
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{title}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>имя</label>
+                            <input type="text" ng-model="registration.firstName" required>
+                            <div ng-messages="registration.firstName.$error">
+                                <div ng-message="required">Введите имя</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>фамилия</label>
+                            <input type="text" ng-model="registration.lastName" required>
+                            <div ng-messages="registration.lastName.$error">
+                                <div ng-message="required">Введите фамилию</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>email</label>
+                            <input type="email" ng-model="registration.email" required ng-pattern="validation.email">
+                            <div ng-messages="registration.email.$error">
+                                <div ng-message="required">Введите email</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>пароль</label>
+                            <input type="password" ng-model="registration.password" required minlength="6">
+                            <div ng-messages="registration.password.$error">
+                                <div ng-message="required">Введите пароль</div>
+                                <div ng-message="minlength">Коротко! Должен содержать минимум 6 символов</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>подтверждение пароля</label>
+                            <input type="password" ng-model="registration.confirmPassword" required minlength="6">
+                            <div ng-messages="registration.confirmPassword.$error">
+                                <div ng-message="required">Введите подтверждение пароля</div>
+                                <div ng-message="minlength">Коротко! Должен содержать минимум 6 символов</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row" class="radio-group-box">
+                        <md-radio-group ng-model="registration.type" required>
+
+                            <md-radio-button class="radio-button-block md-primary" value="0">учитель</md-radio-button>
+                            <md-radio-button class="radio-button-block md-primary" value="1">ученик</md-radio-button>
+                            <md-radio-button class="radio-button-block md-primary" value="2">родитель</md-radio-button>
+
+                        </md-radio-group>
+                    </div>
+
+                    <div layout-gt-sm="row" ng-show="registration.type == 0">
+                        <md-input-container class="md-block dl-select" flex-gt-sm>
+                            <label>дисциплины</label>
+                            <md-select ng-model="registration.disciplines"
+                                       md-on-close="clearSearchTerm()"
+                                       data-md-container-class="dl-select-header"
+                                       multiple>
+                                <md-select-header class="dl-select-header">
+                                    <input ng-model="searchTerm"
+                                           type="search"
+                                           placeholder="Поиск..."
+                                           class="dl-header-search-box md-text">
+                                </md-select-header>
+                                <md-optgroup>
+                                    <md-option ng-value="discipline.id"
+                                               ng-repeat="discipline in disciplines | filter:searchTerm">
+                                        {{discipline.name}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row" ng-show="registration.type == 1">
+                        <md-input-container class="md-block dl-select" flex-gt-sm>
+                            <label>класс</label>
+                            <md-select ng-model="registration.group"
+                                       md-on-close="clearSearchTerm()"
+                                       data-md-container-class="dl-select-header">
+                                <md-select-header class="dl-select-header">
+                                    <input ng-model="searchTerm"
+                                           type="search"
+                                           placeholder="Поиск..."
+                                           class="dl-header-search-box md-text">
+                                </md-select-header>
+                                <md-optgroup>
+                                    <md-option ng-value="group.id"
+                                               ng-repeat="group in groups | filter:searchTerm">
+                                        {{group.name}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="column" layout-align="center center">
+                    <md-button class="button-with-loader" type="submit" layout="row" layout-align="center center">
+                        <md-progress-circular ng-disabled="!activeLoader" ng-show="activeLoader" md-mode="indeterminate"
+                                              md-diameter="18px"></md-progress-circular>
+                        {{title}}
+                    </md-button>
+                    <p class="md-body-1">
+                        <a ui-sref="login">Войти</a>, если уже есть аккаунт.
+                    </p>
+                </md-card-actions>
+            </md-card>
+
+            <footer>
+                <p class="center-align md-caption">Дистанционное обучение</p>
+                <p class="center-align md-caption">ГУО "Средняя школа №83 г. Минска имени Г. К. Жукова"</p>
+                <p class="center-align md-caption">2016/2017</p>
+            </footer>
+        </div>
+
+        <md-button class="md-fab md-fab-with-loader" type="submit" layout="row" layout-align="center center"
+                   aria-label="submit signup form">
+            <md-progress-circular ng-show="activeLoader" ng-disabled="!activeLoader" md-diameter="30px"
+                                  md-mode="indeterminate"></md-progress-circular>
+            <i class="fa fa-check" ng-hide="activeLoader"></i>
+        </md-button>
+    </form>
+</div>
