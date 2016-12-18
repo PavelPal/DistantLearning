@@ -25,28 +25,42 @@ namespace DistantLearning.Controllers
         }
 
         [HttpGet("")]
-        public async Task<List<Document>> Documents()
+        public async Task<List<DocumentViewModel>> Documents(string searchString, int skip, int take)
         {
-            return await _context.Documents.OrderByDescending(d => d.Date).ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<object> Document(int? id)
-        {
-            if (id == null)
-                return "Некорректный id.";
-            return await _context.Documents.FirstOrDefaultAsync(d => d.Id == id);
+            List<Document> dbDocuments;
+            if (searchString == null)
+            {
+                dbDocuments =
+                    await _context.Documents.Include("Teacher.User")
+                        .OrderByDescending(d => d.Date)
+                        .Skip(skip)
+                        .Take(take)
+                        .ToListAsync();
+            }
+            else
+            {
+                var searchStringToLower = searchString.ToLower();
+                dbDocuments = await _context.Documents.Include("Teacher.User").Where(
+                        d =>
+                            d.Name.ToLower().Contains(searchStringToLower) ||
+                            searchStringToLower.Contains(d.Name.ToLower()))
+                    .OrderByDescending(d => d.Date)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
+            }
+            return dbDocuments.Select(document => new DocumentViewModel(document, document.Teacher.User)).ToList();
         }
 
         [HttpGet("byTeacher/{id}")]
         public async Task<object> TeachersDocuments(string id)
         {
             if (id == null)
-                return "Некорректный id.";
+                return "Некорректный id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id)).Include("Teacher.Documents").FirstOrDefaultAsync();
             if (user == null)
-                return "Пользователь не найден.";
+                return "Пользователь не найден";
             return
                 user.Teacher.FirstOrDefault()
                     .Documents.OrderByDescending(d => d.Date)
@@ -62,7 +76,7 @@ namespace DistantLearning.Controllers
             var user = await
                 _context.Users.Include("Teacher.Documents")
                     .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
-            if (user == null) return "Ошибка";
+            if (user == null) return "Пользователь не найден";
             try
             {
                 byte[] buffer;
@@ -99,6 +113,25 @@ namespace DistantLearning.Controllers
             var stream = new MemoryStream(bytes);
             var fileStream = new FileStreamResult(stream, "*/*") {FileDownloadName = document.Name};
             return fileStream;
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost("deleteDocument/{id}")]
+        public async Task<object> DeleteDocument(int? id)
+        {
+            if (id == null)
+                return "Некорректный id";
+            var user = await _context.Users.Include("Teacher.Consultations")
+                .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
+            if (user == null)
+                return "Пользователь не найден";
+            if (user.Teacher.FirstOrDefault().Consultations.FirstOrDefault(c => c.Id == id) == null)
+                return "Консультация не найдена";
+            _context.Consultations.Remove(user.Teacher.FirstOrDefault()
+                .Consultations.FirstOrDefault(c => c.Id == id));
+            _context.ChangeTracker.DetectChanges();
+            await _context.SaveChangesAsync();
+            return "Удалено";
         }
     }
 }

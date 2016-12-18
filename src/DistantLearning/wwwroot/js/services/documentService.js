@@ -2,8 +2,16 @@ app.factory("documentService", documentService);
 
 function documentService($http) {
     return {
-        getDocuments: function (callback) {
-            $http.get("/api/document").then(
+        getDocuments: function (searchParams, callback) {
+            $http({
+                url: "/api/document",
+                method: "GET",
+                params: {
+                    searchString: searchParams.searchString,
+                    skip: searchParams.skip,
+                    take: searchParams.take
+                }
+            }).then(
                 function successCallback(response) {
                     callback(response.data);
                 }, function errorCallback(error) {

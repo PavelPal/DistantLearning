@@ -27,7 +27,6 @@ namespace DistantLearning.Controllers
         [HttpGet("")]
         public async Task<List<UsersViewModel>> Users(string searchString, int skip, int take)
         {
-            var users = new List<UsersViewModel>();
             List<User> dbUsers;
             if (searchString == null)
             {
@@ -53,6 +52,7 @@ namespace DistantLearning.Controllers
                         .Take(take)
                         .ToListAsync();
             }
+            var users = new List<UsersViewModel>();
             foreach (var user in dbUsers)
                 users.Add(new UsersViewModel(user, await _userManager.GetRolesAsync(user)));
             return users;

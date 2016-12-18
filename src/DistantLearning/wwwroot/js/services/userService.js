@@ -1,7 +1,6 @@
 app.factory("userService", userService);
 
 function userService($http) {
-    var users = [];
     return {
         getUsers: function (searchParams, callback) {
             $http({
@@ -14,7 +13,6 @@ function userService($http) {
                 }
             }).then(
                 function successCallback(response) {
-                    users = response.data;
                     callback(response.data);
                 }, function errorCallback(error) {
                     console.error("Problem with getting users from the server" + error);

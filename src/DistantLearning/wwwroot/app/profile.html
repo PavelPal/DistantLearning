@@ -55,26 +55,6 @@
                 </md-list-item>
             </md-card-content>
         </md-card>
-        <md-card class="profile-info-card" flex-xs="1" hide-gt-xs ng-show="isTeacher()">
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-title">Консультации</span>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-content layout="column">
-                <div class="info-message" ng-hide="consultations.length > 0">
-                    <i class="fa fa-info-circle"></i> Нет консультаций
-                </div>
-                <div layout="row">
-                    <md-chips ng-show="consultations.length > 0">
-                        <md-chip ng-repeat="consultation in consultations">
-                            {{dayOfWeekAsString(consultation.dayOfWeek)}} |
-                            {{getTime(consultation.time) | date:'HH:mm'}}
-                        </md-chip>
-                    </md-chips>
-                </div>
-            </md-card-content>
-        </md-card>
     </div>
     <div flex layout="column" class="profile-info-card-wrap">
         <md-card class="profile-info-card" hide-xs>

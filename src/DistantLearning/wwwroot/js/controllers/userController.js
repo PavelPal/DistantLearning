@@ -36,7 +36,7 @@ function userController($scope, userService, ngProgressFactory) {
     };
 
     $scope.findUsers = function () {
-        if ($scope.isLoading || $scope.searchParams.searchString == null || $scope.searchParams.searchString == '')
+        if ($scope.isLoading)
             return;
         $scope.isLoading = true;
         $scope.progressbar.start();

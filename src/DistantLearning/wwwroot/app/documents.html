@@ -1,1 +1,36 @@
-﻿Documents
+﻿<div flex layout-padding>
+    <div flex layout="column">
+        <md-card>
+            <md-card-title>
+                <form ng-submit="findDocuments()" flex>
+                    <md-input-container class="md-block search-input-block" md-no-float flex>
+                        <md-icon ng-click="findDocuments()" flex layout="column" layout-align="center center">
+                            <i class="fa fa-search"></i>
+                        </md-icon>
+                        <input type="search" ng-model="searchParams.searchString" placeholder="поиск документов">
+                    </md-input-container>
+                </form>
+            </md-card-title>
+            <md-card-content>
+                <div class="info-message" ng-hide="documents.length > 0">
+                    <i class="fa fa-info-circle"></i> По вашему запросу ничего не найдено
+                </div>
+                <md-list flex class="dl-multi-line-list" id="documents-list" infinite-scroll="getMoreDocuments()"
+                         infinite-scroll-disabled="isLoading"
+                         infinite-scroll-distance="1" infinite-scroll-container="'#parent-container'">
+                    <md-list-item class="md-2-line" ng-repeat="document in documents">
+                        <div class="md-avatar">
+                            <i class="fa fa-file"></i>
+                        </div>
+                        <div class="md-list-item-text">
+                            <h3>
+                                <a>{{document.name}}</a>
+                                <p>{{document.owner.firstName}} {{document.owner.lastName}}</p>
+                            </h3>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
