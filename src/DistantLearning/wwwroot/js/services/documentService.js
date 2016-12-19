@@ -28,6 +28,18 @@ function documentService($http) {
                         console.error("Problem with getting documents by teacher from the server " + error);
                     }
                 );
+        },
+        deleteDocument: function (id, callback) {
+            $http({
+                url: "/api/document/deleteDocument/" + id,
+                method: "POST"
+            }).then(
+                function successCallback(response) {
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with deleting consultation " + error);
+                }
+            );
         }
     };
 }

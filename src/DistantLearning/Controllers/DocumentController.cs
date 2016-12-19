@@ -120,15 +120,25 @@ namespace DistantLearning.Controllers
         public async Task<object> DeleteDocument(int? id)
         {
             if (id == null)
-                return "Некорректный id";
-            var user = await _context.Users.Include("Teacher.Consultations")
-                .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
-            if (user == null)
-                return "Пользователь не найден";
-            if (user.Teacher.FirstOrDefault().Consultations.FirstOrDefault(c => c.Id == id) == null)
-                return "Консультация не найдена";
-            _context.Consultations.Remove(user.Teacher.FirstOrDefault()
-                .Consultations.FirstOrDefault(c => c.Id == id));
+                return "Incorrect id";
+            if (User.IsInRole("Admin"))
+            {
+                var doc = await _context.Documents.FirstOrDefaultAsync(d => d.Id == id);
+                if (doc == null)
+                    return "Document not found";
+                _context.Documents.Remove(doc);
+            }
+            else
+            {
+                var user =
+                    await _context.Users.Include("Teacher.Documents")
+                        .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
+                if (user == null)
+                    return "User not found";
+                if (user.Teacher.FirstOrDefault().Documents.FirstOrDefault(d => d.Id == id) == null)
+                    return "Document not found";
+                _context.Documents.Remove(user.Teacher.FirstOrDefault().Documents.FirstOrDefault(d => d.Id == id));
+            }
             _context.ChangeTracker.DetectChanges();
             await _context.SaveChangesAsync();
             return "Deleted";
