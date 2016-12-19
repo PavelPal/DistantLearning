@@ -9,9 +9,9 @@ function DocumentLoaderController($scope, $mdDialog, $mdToast, FileUploader) {
             $scope.file = item._file;
         },
         onSuccessItem: function (item, response) {
-            if (response == "Загружено") {
+            if (response == "Uploaded") {
                 $mdToast.show($mdToast.simple()
-                    .textContent(response)
+                    .textContent("Загружено")
                     .position('bottom right')
                     .hideDelay(3000));
             } else {
@@ -21,7 +21,7 @@ function DocumentLoaderController($scope, $mdDialog, $mdToast, FileUploader) {
                     .hideDelay(3000));
             }
         },
-        onErrorItem: function (item, response) {
+        onErrorItem: function () {
             $mdToast.show($mdToast.simple()
                 .textContent("При загрузке произошла ошибка")
                 .position('bottom right')

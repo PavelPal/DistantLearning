@@ -56,11 +56,11 @@ namespace DistantLearning.Controllers
         public async Task<object> TeachersDocuments(string id)
         {
             if (id == null)
-                return "Некорректный id";
+                return "Incorrect id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id)).Include("Teacher.Documents").FirstOrDefaultAsync();
             if (user == null)
-                return "Пользователь не найден";
+                return "User not found";
             return
                 user.Teacher.FirstOrDefault()
                     .Documents.OrderByDescending(d => d.Date)
@@ -72,11 +72,11 @@ namespace DistantLearning.Controllers
         [HttpPost("uploadDocument")]
         public async Task<object> UploadDocument(IFormFile file)
         {
-            if (file == null || file.Length <= 0) return "Ошибка";
+            if (file == null || file.Length <= 0) return "Error";
             var user = await
                 _context.Users.Include("Teacher.Documents")
                     .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
-            if (user == null) return "Пользователь не найден";
+            if (user == null) return "User not found";
             try
             {
                 byte[] buffer;
@@ -95,43 +95,53 @@ namespace DistantLearning.Controllers
                 });
                 _context.ChangeTracker.DetectChanges();
                 await _context.SaveChangesAsync();
-                return "Загружено";
+                return "Uploaded";
             }
             catch (Exception)
             {
-                return "Ошибка";
+                return "Error";
             }
         }
 
         [HttpGet("downloadDocument/{id}")]
         public async Task<object> Download(int? id)
         {
-            if (id == null) return "Ошибка";
+            if (id == null) return "Incorrect id";
             var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == id);
-            if (document == null) return "Ошибка";
+            if (document == null) return "Document not found";
             var bytes = Convert.FromBase64String(document.FileCode);
             var stream = new MemoryStream(bytes);
             var fileStream = new FileStreamResult(stream, "*/*") {FileDownloadName = document.Name};
             return fileStream;
         }
 
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Admin")]
         [HttpPost("deleteDocument/{id}")]
         public async Task<object> DeleteDocument(int? id)
         {
             if (id == null)
-                return "Некорректный id";
-            var user = await _context.Users.Include("Teacher.Consultations")
-                .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
-            if (user == null)
-                return "Пользователь не найден";
-            if (user.Teacher.FirstOrDefault().Consultations.FirstOrDefault(c => c.Id == id) == null)
-                return "Консультация не найдена";
-            _context.Consultations.Remove(user.Teacher.FirstOrDefault()
-                .Consultations.FirstOrDefault(c => c.Id == id));
+                return "Incorrect id";
+            if (User.IsInRole("Admin"))
+            {
+                var doc = await _context.Documents.FirstOrDefaultAsync(d => d.Id == id);
+                if (doc == null)
+                    return "Document not found";
+                _context.Documents.Remove(doc);
+            }
+            else
+            {
+                var user =
+                    await _context.Users.Include("Teacher.Documents")
+                        .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
+                if (user == null)
+                    return "User not found";
+                if (user.Teacher.FirstOrDefault().Documents.FirstOrDefault(d => d.Id == id) == null)
+                    return "Document not found";
+                _context.Documents.Remove(user.Teacher.FirstOrDefault().Documents.FirstOrDefault(d => d.Id == id));
+            }
             _context.ChangeTracker.DetectChanges();
             await _context.SaveChangesAsync();
-            return "Удалено";
+            return "Deleted";
         }
     }
 }

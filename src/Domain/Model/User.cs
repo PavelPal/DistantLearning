@@ -8,6 +8,8 @@ namespace Domain.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhotoPath { get; set; }
+        public bool IsApproved { get; set; } = false;
+        public bool IsPendingData { get; set; } = false;
 
         public List<UserTeacher> Teacher { get; set; }
         public List<UserStudent> Student { get; set; }

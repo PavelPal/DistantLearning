@@ -26,9 +26,9 @@ namespace DistantLearning.Controllers
         [HttpPost("uploadProfileImage")]
         public async Task<string> UploadProfileImage(IFormFile file)
         {
-            if (file == null || file.Length <= 0) return "Ошибка";
+            if (file == null || file.Length <= 0) return "Error";
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
-            if (user == null) return "Ошибка";
+            if (user == null) return "Error";
             var path = Path.Combine(_hostingEnvironment.WebRootPath,
                 "data" + Path.DirectorySeparatorChar + "profile_photos");
             try
@@ -36,7 +36,7 @@ namespace DistantLearning.Controllers
                 RemoveExsitingImages(user.Id, path);
                 var fileExtention = file.ContentType.Substring(file.ContentType.LastIndexOf('/') + 1);
                 if (!fileExtention.Equals("jpeg") && !fileExtention.Equals("jpg") && !fileExtention.Equals("png"))
-                    return "Некорректный формат файла";
+                    return "Incorrect file extension";
                 var filename = user.Id + '.' + fileExtention;
                 using (var fileStream = new FileStream(Path.Combine(path, filename), FileMode.Create))
                 {
@@ -45,11 +45,11 @@ namespace DistantLearning.Controllers
                 user.PhotoPath = filename;
                 _context.ChangeTracker.DetectChanges();
                 await _context.SaveChangesAsync();
-                return "Загружено";
+                return "Uploaded";
             }
             catch (Exception)
             {
-                return "Ошибка";
+                return "Error";
             }
         }
 

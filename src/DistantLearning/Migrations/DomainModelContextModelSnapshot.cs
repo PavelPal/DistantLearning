@@ -350,6 +350,10 @@ namespace distantlearning.Migrations
 
                 b.Property<string>("FirstName");
 
+                b.Property<bool>("IsApproved");
+
+                b.Property<bool>("IsPendingData");
+
                 b.Property<string>("LastName");
 
                 b.Property<bool>("LockoutEnabled");

@@ -44,7 +44,7 @@ namespace DistantLearning
             services.AddDbContext<DomainModelContext>(options =>
                 options.UseSqlServer(
                     sqlConnectionString,
-                    b => b.MigrationsAssembly("DistantLearning")
+                    b => b.MigrationsAssembly("distantlearning")
                 )
             );
 
@@ -122,7 +122,8 @@ namespace DistantLearning
                 {
                     Email = adminEmail,
                     UserName = adminEmail,
-                    FirstName = "Администратор"
+                    FirstName = "Администратор",
+                    IsApproved = true
                 };
                 var result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
