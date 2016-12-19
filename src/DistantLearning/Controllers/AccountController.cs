@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DataAccessProvider;
@@ -45,7 +46,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Login([FromBody] LoginViewModel model)
         {
             if (!ModelState.IsValid)
-                return "Неверные данные";
+                return "Incorrect data";
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
             //if (result.RequiresTwoFactor)
             //    return RedirectToAction(nameof(SendCode), new {model});
@@ -56,7 +57,7 @@ namespace DistantLearning.Controllers
             //    // TODO locked page
             //    return RedirectToAction(nameof(HomeController.Index), "Home");
             //}
-            if (!result.Succeeded) return "При входе произошла ошибка";
+            if (!result.Succeeded) return "Error with login";
             _logger.LogInformation(1, "User logged in.");
             var user = await _userManager.FindByEmailAsync(model.Email);
             return new
@@ -72,7 +73,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-                return "Неверные данные";
+                return "Incorrect data";
             var user = new User
             {
                 UserName = model.Email,
@@ -83,39 +84,48 @@ namespace DistantLearning.Controllers
             switch (model.Type)
             {
                 case 0:
-                    user.Teacher.Add(new UserTeacher
+                    user.Teacher = new List<UserTeacher>
                     {
-                        Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
+                        new UserTeacher
                         {
-                            Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
-                        }).ToList()
-                    });
+                            Disciplines = model.Disciplines.Select(discipline => new TeacherDiscipline
+                            {
+                                Discipline = _context.Disciplines.FirstOrDefault(d => d.Id == discipline)
+                            }).ToList()
+                        }
+                    };
                     break;
                 case 1:
-                    user.Student.Add(new UserStudent
+                    user.Student = new List<UserStudent>
                     {
-                        Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
-                    });
+                        new UserStudent
+                        {
+                            Group = _context.Groups.FirstOrDefault(g => g.Id == model.Group.Value)
+                        }
+                    };
                     break;
                 case 2:
-                    user.Parent.Add(new UserParent
+                    user.Parent = new List<UserParent>
                     {
-                        Children = model.Children.Select(child => new UserStudent
+                        new UserParent
                         {
-                            Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
-                        }).ToList().Select(student => new ChildParent
-                        {
-                            Student = student
-                        }).ToList()
-                    });
+                            Children = model.Children.Select(child => new UserStudent
+                            {
+                                Id = _context.UserStudents.FirstOrDefault(u => u.UserId.Equals(child)).Id
+                            }).ToList().Select(student => new ChildParent
+                            {
+                                Student = student
+                            }).ToList()
+                        }
+                    };
                     break;
                 default:
                     _logger.LogError("Error with registration.");
-                    return "Неверный тип";
+                    return "Incorrect type";
             }
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return "При регистрации произошла ошибка";
+                return "Error with registration";
             switch (model.Type)
             {
                 case 0:
@@ -129,7 +139,7 @@ namespace DistantLearning.Controllers
                     break;
                 default:
                     _logger.LogError("Error with adding role.");
-                    return "Неверный тип";
+                    return "Error with adding role";
             }
             await _signInManager.SignInAsync(user, false);
             _logger.LogInformation(3, "User created a new account with password.");
