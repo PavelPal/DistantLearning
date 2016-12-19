@@ -24,30 +24,30 @@ namespace DistantLearning.Controllers
         public async Task<object> TeachersConsultations(string id)
         {
             if (id == null)
-                return "Некорректный id";
+                return "Incorrect id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id)).Include("Teacher.Consultations").FirstOrDefaultAsync();
             if (user == null)
-                return "Пользователь не найден";
+                return "User not found";
             return user.Teacher.FirstOrDefault().Consultations.OrderBy(c => c.DayOfWeek);
         }
 
-        [HttpGet("createConsultation")]
+        [HttpPost("createConsultation")]
         public async Task<object> CreateConsultation([FromBody] Consultation consultation)
         {
             if (consultation == null)
-                return "Неверные данные";
+                return "Incorrect data";
             var user =
                 await _context.Users.Include("Teacher.Consultations")
                     .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
             if (user == null)
-                return "Ошибка";
+                return "User not found";
             if (user.Teacher.FirstOrDefault().Consultations == null)
                 user.Teacher.FirstOrDefault().Consultations = new List<Consultation>();
             user.Teacher.FirstOrDefault().Consultations.Add(consultation);
             _context.ChangeTracker.DetectChanges();
             await _context.SaveChangesAsync();
-            return "Создано";
+            return "Created";
         }
     }
 }

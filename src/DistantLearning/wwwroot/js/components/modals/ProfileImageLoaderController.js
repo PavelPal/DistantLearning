@@ -9,10 +9,10 @@ function ProfileImageLoaderController($scope, $mdDialog, $mdToast, FileUploader)
             $scope.imageUrl = URL.createObjectURL(item._file);
         },
         onSuccessItem: function (item, response) {
-            if (response == "Загружено") {
-                $mdToast.show($mdToast.simple().textContent(response).position('bottom right').hideDelay(3000));
-            } else if (response == "Некорректный формат файла") {
-                $mdToast.show($mdToast.simple().textContent(response).position('bottom right').hideDelay(3000));
+            if (response == "Uploaded") {
+                $mdToast.show($mdToast.simple().textContent("Загружено").position('bottom right').hideDelay(3000));
+            } else if (response == "Incorrect file extension") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный формат файла").position('bottom right').hideDelay(3000));
             } else {
                 $mdToast.show($mdToast.simple().textContent("При загрузке произошла ошибка").position('bottom right').hideDelay(3000));
             }

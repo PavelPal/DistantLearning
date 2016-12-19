@@ -21,14 +21,14 @@ namespace DistantLearning.Controllers
         [HttpGet("{id?}")]
         public async Task<object> Profile(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 var currentUser = await _userManager.GetUserAsync(User);
                 return new ProfileViewModel(currentUser, await _userManager.GetRolesAsync(currentUser));
             }
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
-                return "Пользователь не найден";
+                return "User not found";
             return new ProfileViewModel(user, await _userManager.GetRolesAsync(user));
         }
     }

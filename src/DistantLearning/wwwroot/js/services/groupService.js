@@ -8,7 +8,7 @@ function groupService($http) {
                     function successCallback(response) {
                         callback(response.data);
                     }, function errorCallback(error) {
-                        console.error("Problem with getting groups from the server" + error);
+                        console.error("Problem with getting groups from the server " + error);
                     }
                 );
         },

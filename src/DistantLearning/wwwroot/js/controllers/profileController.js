@@ -15,7 +15,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
     var profileId = $stateParams.profileId;
 
     profileService.getProfile(profileId, function (data) {
-        if (data != "Пользователь не найден.") {
+        if (data != "User not found") {
             $scope.profile = data;
             $scope.image = data.photo == null ? null : "data/profile_photos/" + data.photo;
             if ($scope.isTeacher()) {
@@ -38,7 +38,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             }
         } else {
             $state.go("users");
-            $mdToast.show($mdToast.simple().textContent(data).position('bottom right').hideDelay(3000));
+            $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
         }
     });
 

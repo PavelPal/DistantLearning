@@ -31,13 +31,13 @@ namespace DistantLearning.Controllers
         public async Task<object> TeachersDisciplines(string id)
         {
             if (id == null)
-                return "Некорректный id";
+                return "Incorrect id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id))
                     .Include("Teacher.Disciplines.Discipline")
                     .FirstOrDefaultAsync();
             if (user == null)
-                return "Пользователь не найден";
+                return "User not found";
             return
                 user.Teacher.FirstOrDefault()
                     .Disciplines.Select(teacherDiscipline => teacherDiscipline.Discipline)

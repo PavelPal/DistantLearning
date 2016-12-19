@@ -15,7 +15,7 @@ function documentService($http) {
                 function successCallback(response) {
                     callback(response.data);
                 }, function errorCallback(error) {
-                    console.error("Problem with getting documents from the server" + error);
+                    console.error("Problem with getting documents from the server " + error);
                 }
             );
         },
@@ -25,7 +25,7 @@ function documentService($http) {
                     function successCallback(response) {
                         callback(response.data);
                     }, function errorCallback(error) {
-                        console.error("Problem with getting documents by teacher from the server" + error);
+                        console.error("Problem with getting documents by teacher from the server " + error);
                     }
                 );
         }

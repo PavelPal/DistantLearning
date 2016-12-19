@@ -31,13 +31,13 @@ namespace DistantLearning.Controllers
         public async Task<object> StudentsGroup(string id)
         {
             if (id == null)
-                return "Некорректный id";
+                return "Incorrect id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id))
                     .Include("Student.Group")
                     .FirstOrDefaultAsync();
             if (user == null)
-                return "Пользователь не найден";
+                return "User not found";
             return user.Student.FirstOrDefault().Group;
         }
     }

@@ -31,14 +31,14 @@ namespace DistantLearning.Controllers
                     .ToListAsync();
         }
 
-        [HttpGet("getTest/{id}")]
+        [HttpGet("{id}")]
         public async Task<object> Test(int? id)
         {
             if (id == null)
-                return "Некорректный id";
+                return "Incorrect id";
             var test = await _context.Tests.Include("Questions.Answers").FirstOrDefaultAsync(t => t.Id == id);
             if (test == null)
-                return "Тест не найден";
+                return "Test not found";
             return test;
         }
     }
