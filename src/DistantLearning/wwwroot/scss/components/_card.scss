@@ -1,0 +1,142 @@
+md-card {
+  .md-title {
+    font-size: 14px;
+  }
+
+  md-card-title {
+    padding: 16px;
+
+    button.md-button.md-icon-button {
+      height: 30px;
+      padding: 0;
+      width: 30px;
+      margin: -14px -14px 0 0;
+      min-height: 30px;
+    }
+  }
+}
+
+.profile-card-wrap {
+  @media screen and (min-width: 600px) {
+    width: 250px;
+    max-width: 250px;
+  }
+
+  .profile-photo-card {
+    md-card-title {
+      md-card-title-media {
+        margin: 0;
+        border-radius: 93px;
+        overflow: hidden;
+        position: relative;
+
+        .profile-photo {
+          border-radius: 93px;
+          width: 186px;
+          height: 186px;
+          position: relative;
+          margin: 0;
+          padding: 0;
+          background: {
+            position: center;
+            size: cover;
+            color: #eeeeee;
+            repeat: no-repeat;
+          }
+
+          i.fa {
+            font-size: 110px;
+            color: #858585;
+          }
+        }
+      }
+
+      md-card-title-text {
+        margin-top: 24px;
+        text-align: center;
+      }
+    }
+
+    md-card-actions {
+      display: flex;
+      flex-direction: row;
+      background-color: #eee;
+
+      .md-button {
+        min-width: 36px;
+        flex-shrink: 0;
+
+        &:first-child {
+          flex: 1;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.contact-info-card,
+.profile-info-card {
+  md-card-title {
+    .md-subhead {
+      padding-top: 0 !important;
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+}
+
+.contact-info-card {
+  md-list-item {
+    padding: 0;
+    height: 60px;
+    min-height: 60px;
+
+    .md-avatar {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+      background-color: #9b9b9b;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+      border-radius: 50%;
+    }
+
+    &:first-child {
+      .md-avatar {
+        background-color: #039BE5;
+      }
+    }
+
+    &:last-child {
+      .md-avatar {
+        background-color: #FF4081;
+      }
+    }
+
+    .md-list-item-text {
+      margin-top: 12px;
+      margin-bottom: 16px;
+
+      h3 {
+        font-size: 14px;
+
+        a {
+          color: rgba(0, 0, 0, 0.87);
+          text-decoration: none;
+
+          &:hover {
+            color: rgb(2, 119, 189);
+          }
+        }
+      }
+
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+}

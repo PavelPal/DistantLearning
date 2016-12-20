@@ -6,8 +6,11 @@ namespace Domain.Model
     {
         public Group()
         {
-            Students = new List<UserStudent>();
-            Journals = new List<Journal>();
+        }
+
+        public Group(string name)
+        {
+            Name = name;
         }
 
         public int Id { get; set; }

@@ -12,7 +12,7 @@ namespace distantlearning.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.Model.Answer", b =>
@@ -37,9 +37,9 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.ChildParent", b =>
             {
-                b.Property<string>("ParentId");
+                b.Property<int>("ParentId");
 
-                b.Property<string>("StudentId");
+                b.Property<int>("StudentId");
 
                 b.HasKey("ParentId", "StudentId");
 
@@ -79,7 +79,7 @@ namespace distantlearning.Migrations
 
                 b.Property<int>("DayOfWeek");
 
-                b.Property<string>("TeacherId");
+                b.Property<int>("TeacherId");
 
                 b.Property<TimeSpan>("Time");
 
@@ -111,15 +111,13 @@ namespace distantlearning.Migrations
 
                 b.Property<DateTime>("Date");
 
-                b.Property<byte[]>("File");
-
-                b.Property<string>("FileType");
+                b.Property<string>("FileCode");
 
                 b.Property<bool>("IsLocked");
 
                 b.Property<string>("Name");
 
-                b.Property<string>("TeacherId");
+                b.Property<int>("TeacherId");
 
                 b.HasKey("Id");
 
@@ -203,6 +201,27 @@ namespace distantlearning.Migrations
                 b.ToTable("Marks");
             });
 
+            modelBuilder.Entity("Domain.Model.PendingUserData", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
+
+                b.Property<DateTime>("Date");
+
+                b.Property<string>("FirstName");
+
+                b.Property<string>("LastName");
+
+                b.Property<string>("UserId");
+
+                b.HasKey("Id");
+
+                b.HasIndex("UserId")
+                    .IsUnique();
+
+                b.ToTable("PendingUserData");
+            });
+
             modelBuilder.Entity("Domain.Model.Quarter", b =>
             {
                 b.Property<int>("Id")
@@ -245,7 +264,7 @@ namespace distantlearning.Migrations
             {
                 b.Property<int>("DisciplineId");
 
-                b.Property<string>("TeacherId");
+                b.Property<int>("TeacherId");
 
                 b.Property<DateTime>("UpdatedTimestamp");
 
@@ -275,7 +294,7 @@ namespace distantlearning.Migrations
 
                 b.Property<DateTime?>("StartedDate");
 
-                b.Property<string>("TeacherId");
+                b.Property<int>("TeacherId");
 
                 b.Property<DateTime>("UpdatedTimestamp");
 
@@ -301,7 +320,7 @@ namespace distantlearning.Migrations
 
                 b.Property<DateTime>("UpdatedTimestamp");
 
-                b.Property<string>("UserId");
+                b.Property<int>("UserId");
 
                 b.Property<int>("Wrong");
 
@@ -316,7 +335,8 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.User", b =>
             {
-                b.Property<string>("Id");
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd();
 
                 b.Property<int>("AccessFailedCount");
 
@@ -330,6 +350,10 @@ namespace distantlearning.Migrations
 
                 b.Property<string>("FirstName");
 
+                b.Property<bool>("IsApproved");
+
+                b.Property<bool>("IsPendingData");
+
                 b.Property<string>("LastName");
 
                 b.Property<bool>("LockoutEnabled");
@@ -342,23 +366,15 @@ namespace distantlearning.Migrations
                 b.Property<string>("NormalizedUserName")
                     .HasAnnotation("MaxLength", 256);
 
-                b.Property<string>("ParentId");
-
                 b.Property<string>("PasswordHash");
 
                 b.Property<string>("PhoneNumber");
 
                 b.Property<bool>("PhoneNumberConfirmed");
 
-                b.Property<byte[]>("Photo");
-
-                b.Property<string>("PhotoType");
+                b.Property<string>("PhotoPath");
 
                 b.Property<string>("SecurityStamp");
-
-                b.Property<string>("StudentId");
-
-                b.Property<string>("TeacherId");
 
                 b.Property<bool>("TwoFactorEnabled");
 
@@ -369,21 +385,16 @@ namespace distantlearning.Migrations
 
                 b.HasKey("Id");
 
+                b.HasIndex("FirstName");
+
+                b.HasIndex("LastName");
+
                 b.HasIndex("NormalizedEmail")
                     .HasName("EmailIndex");
 
                 b.HasIndex("NormalizedUserName")
                     .IsUnique()
                     .HasName("UserNameIndex");
-
-                b.HasIndex("ParentId")
-                    .IsUnique();
-
-                b.HasIndex("StudentId")
-                    .IsUnique();
-
-                b.HasIndex("TeacherId")
-                    .IsUnique();
 
                 b.ToTable("AspNetUsers");
             });
@@ -405,9 +416,15 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.UserParent", b =>
             {
-                b.Property<string>("Id");
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
+
+                b.Property<string>("UserId");
 
                 b.HasKey("Id");
+
+                b.HasIndex("UserId")
+                    .IsUnique();
 
                 b.ToTable("UserParents");
             });
@@ -434,29 +451,42 @@ namespace distantlearning.Migrations
 
             modelBuilder.Entity("Domain.Model.UserStudent", b =>
             {
-                b.Property<string>("Id");
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
 
                 b.Property<int>("GroupId");
+
+                b.Property<string>("UserId");
 
                 b.HasKey("Id");
 
                 b.HasIndex("GroupId");
+
+                b.HasIndex("UserId")
+                    .IsUnique();
 
                 b.ToTable("UserStudents");
             });
 
             modelBuilder.Entity("Domain.Model.UserTeacher", b =>
             {
-                b.Property<string>("Id");
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
+
+                b.Property<string>("UserId");
 
                 b.HasKey("Id");
+
+                b.HasIndex("UserId")
+                    .IsUnique();
 
                 b.ToTable("UserTeachers");
             });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
             {
-                b.Property<string>("Id");
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd();
 
                 b.Property<string>("ConcurrencyStamp")
                     .IsConcurrencyToken();
@@ -470,6 +500,7 @@ namespace distantlearning.Migrations
                 b.HasKey("Id");
 
                 b.HasIndex("NormalizedName")
+                    .IsUnique()
                     .HasName("RoleNameIndex");
 
                 b.ToTable("AspNetRoles");
@@ -541,8 +572,6 @@ namespace distantlearning.Migrations
 
                 b.HasIndex("RoleId");
 
-                b.HasIndex("UserId");
-
                 b.ToTable("AspNetUserRoles");
             });
 
@@ -598,14 +627,16 @@ namespace distantlearning.Migrations
             {
                 b.HasOne("Domain.Model.UserTeacher", "Teacher")
                     .WithMany("Consultations")
-                    .HasForeignKey("TeacherId");
+                    .HasForeignKey("TeacherId")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity("Domain.Model.Document", b =>
             {
                 b.HasOne("Domain.Model.UserTeacher", "Teacher")
                     .WithMany("Documents")
-                    .HasForeignKey("TeacherId");
+                    .HasForeignKey("TeacherId")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity("Domain.Model.Journal", b =>
@@ -642,6 +673,13 @@ namespace distantlearning.Migrations
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity("Domain.Model.PendingUserData", b =>
+            {
+                b.HasOne("Domain.Model.User", "User")
+                    .WithMany("PendingUserData")
+                    .HasForeignKey("UserId");
+            });
+
             modelBuilder.Entity("Domain.Model.Question", b =>
             {
                 b.HasOne("Domain.Model.Test", "Test")
@@ -672,7 +710,8 @@ namespace distantlearning.Migrations
 
                 b.HasOne("Domain.Model.UserTeacher", "Teacher")
                     .WithMany("Tests")
-                    .HasForeignKey("TeacherId");
+                    .HasForeignKey("TeacherId")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity("Domain.Model.TestResult", b =>
@@ -684,22 +723,8 @@ namespace distantlearning.Migrations
 
                 b.HasOne("Domain.Model.UserStudent", "User")
                     .WithMany("TestResults")
-                    .HasForeignKey("UserId");
-            });
-
-            modelBuilder.Entity("Domain.Model.User", b =>
-            {
-                b.HasOne("Domain.Model.UserParent", "Parent")
-                    .WithOne("User")
-                    .HasForeignKey("Domain.Model.User", "ParentId");
-
-                b.HasOne("Domain.Model.UserStudent", "Student")
-                    .WithOne("User")
-                    .HasForeignKey("Domain.Model.User", "StudentId");
-
-                b.HasOne("Domain.Model.UserTeacher", "Teacher")
-                    .WithOne("User")
-                    .HasForeignKey("Domain.Model.User", "TeacherId");
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity("Domain.Model.UserMark", b =>
@@ -715,6 +740,13 @@ namespace distantlearning.Migrations
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity("Domain.Model.UserParent", b =>
+            {
+                b.HasOne("Domain.Model.User", "User")
+                    .WithMany("Parent")
+                    .HasForeignKey("UserId");
+            });
+
             modelBuilder.Entity("Domain.Model.UserSetting", b =>
             {
                 b.HasOne("Domain.Model.User", "User")
@@ -728,6 +760,17 @@ namespace distantlearning.Migrations
                     .WithMany("Students")
                     .HasForeignKey("GroupId")
                     .OnDelete(DeleteBehavior.Cascade);
+
+                b.HasOne("Domain.Model.User", "User")
+                    .WithMany("Student")
+                    .HasForeignKey("UserId");
+            });
+
+            modelBuilder.Entity("Domain.Model.UserTeacher", b =>
+            {
+                b.HasOne("Domain.Model.User", "User")
+                    .WithMany("Teacher")
+                    .HasForeignKey("UserId");
             });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

@@ -6,10 +6,11 @@ namespace Domain.Model
     {
         public Discipline()
         {
-            Marks = new List<Mark>();
-            Journal = new List<JournalDiscipline>();
-            Tests = new List<Test>();
-            Teachers = new List<TeacherDiscipline>();
+        }
+
+        public Discipline(string name)
+        {
+            Name = name;
         }
 
         public int Id { get; set; }

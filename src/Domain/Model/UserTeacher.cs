@@ -4,16 +4,10 @@ namespace Domain.Model
 {
     public class UserTeacher
     {
-        public UserTeacher()
-        {
-            Disciplines = new List<TeacherDiscipline>();
-            Tests = new List<Test>();
-            Documents = new List<Document>();
-            Consultations = new List<Consultation>();
-        }
+        public int Id { get; set; }
 
-        public string Id { get; set; }
         public User User { get; set; }
+        public string UserId { get; set; }
 
         public List<TeacherDiscipline> Disciplines { get; set; }
         public List<Test> Tests { get; set; }

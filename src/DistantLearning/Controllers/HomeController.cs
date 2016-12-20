@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DistantLearning.Controllers
 {
-    [Route("home")]
     [AllowAnonymous]
     public class HomeController : Controller
     {
