@@ -101,6 +101,8 @@ namespace distantlearning.Migrations
 
                 b.HasKey("Id");
 
+                b.HasIndex("Id");
+
                 b.ToTable("Disciplines");
             });
 
@@ -121,6 +123,8 @@ namespace distantlearning.Migrations
 
                 b.HasKey("Id");
 
+                b.HasIndex("Name");
+
                 b.HasIndex("TeacherId");
 
                 b.ToTable("Documents");
@@ -131,11 +135,15 @@ namespace distantlearning.Migrations
                 b.Property<int>("Id")
                     .ValueGeneratedOnAdd();
 
-                b.Property<string>("Name");
+                b.Property<string>("Postfix");
+
+                b.Property<int>("Prefix");
 
                 b.Property<DateTime>("UpdatedTimestamp");
 
                 b.HasKey("Id");
+
+                b.HasIndex("Id");
 
                 b.ToTable("Groups");
             });
@@ -208,9 +216,13 @@ namespace distantlearning.Migrations
 
                 b.Property<DateTime>("Date");
 
+                b.Property<string>("Email");
+
                 b.Property<string>("FirstName");
 
                 b.Property<string>("LastName");
+
+                b.Property<string>("Phone");
 
                 b.Property<string>("UserId");
 

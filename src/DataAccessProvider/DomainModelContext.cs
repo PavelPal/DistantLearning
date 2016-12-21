@@ -79,11 +79,16 @@ namespace DataAccessProvider
                 .HasForeignKey(consultation => consultation.TeacherId);
             builder.Entity<Consultation>().HasIndex(consultation => consultation.TeacherId);
 
+            builder.Entity<Discipline>().HasIndex(discipline => discipline.Id);
+
             builder.Entity<Document>()
                 .HasOne(document => document.Teacher)
                 .WithMany(teacher => teacher.Documents)
                 .HasForeignKey(document => document.TeacherId);
-            builder.Entity<Consultation>().HasIndex(document => document.TeacherId);
+            builder.Entity<Document>().HasIndex(document => document.TeacherId);
+            builder.Entity<Document>().HasIndex(document => document.Name);
+
+            builder.Entity<Group>().HasIndex(group => group.Id);
 
             builder.Entity<Journal>()
                 .HasOne(journal => journal.Group)
@@ -269,6 +274,7 @@ namespace DataAccessProvider
         public DbSet<Journal> Journals { get; set; }
         public DbSet<JournalDiscipline> JournalDisciplines { get; set; }
         public DbSet<Mark> Marks { get; set; }
+        public DbSet<PendingUserData> PendingUserData { get; set; }
         public DbSet<Quarter> Quarters { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<TeacherDiscipline> TeacheDisciplines { get; set; }

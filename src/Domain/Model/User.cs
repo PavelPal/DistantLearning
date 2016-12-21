@@ -18,5 +18,11 @@ namespace Domain.Model
         public List<UserSetting> UserSettings { get; set; }
         public List<Comment> Comments { get; set; }
         public List<UserMark> Marks { get; set; }
+
+        public void UpdateUserData(PendingUserData pendingUserData)
+        {
+            FirstName = pendingUserData.FirstName;
+            LastName = pendingUserData.LastName;
+        }
     }
 }
