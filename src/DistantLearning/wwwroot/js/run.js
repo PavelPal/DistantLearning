@@ -1,12 +1,24 @@
 app.run(run).config(config);
 
-function run($rootScope, $window, authService, ngProgressFactory) {
+function run($rootScope, $window, $state, authService, ngProgressFactory) {
     $rootScope.progressbar = ngProgressFactory.createInstance();
     $rootScope.progressbar.setParent(document.getElementById('main-container'));
     $rootScope.progressbar.setAbsolute();
 
     $rootScope.$on("$stateChangeStart", function (event, toState) {
         $rootScope.progressbar.start();
+        authService.fillAuthData();
+        if (toState.name == "admin") {
+            var isAdmin = false;
+            angular.forEach(authService.authentication.roles, function (role) {
+                if (role == "Admin")
+                    isAdmin = true;
+            });
+            if (!isAdmin) {
+                event.preventDefault();
+                $state.go("profile", {profileId: authService.authentication.id});
+            }
+        }
         if (toState.external) {
             event.preventDefault();
             $window.open(toState.url, "_self");
@@ -21,7 +33,7 @@ function run($rootScope, $window, authService, ngProgressFactory) {
         }
     });
 
-    $rootScope.$on("$stateChangeError", function (event, toState) {
+    $rootScope.$on("$stateChangeError", function () {
         $rootScope.progressbar.reset();
     });
 

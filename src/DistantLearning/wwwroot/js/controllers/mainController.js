@@ -23,6 +23,15 @@ function mainController($scope, $mdSidenav, $state, authService) {
 
     $scope.authentication = authService.authentication;
 
+    $scope.isAdmin = function () {
+        var isAdmin = false;
+        angular.forEach($scope.authentication.roles, function (role) {
+            if (role == "Admin")
+                isAdmin = true;
+        });
+        return isAdmin;
+    };
+
     $scope.$on("$stateChangeError", function () {
         $state.go("login");
     });

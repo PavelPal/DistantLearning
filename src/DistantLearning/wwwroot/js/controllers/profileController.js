@@ -15,7 +15,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
     var profileId = $stateParams.profileId;
 
     profileService.getProfile(profileId, function (data) {
-        if (data != "User not found") {
+        if (data != "Not found") {
             $scope.profile = data;
             $scope.image = data.photo == null ? null : "data/profile_photos/" + data.photo;
             if ($scope.isTeacher()) {
@@ -33,7 +33,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
                 });
             } else if ($scope.isStudent()) {
                 groupService.getStudentsGroup(profileId, function (data) {
-                    $scope.group = data.name;
+                    $scope.group = data.prefix + data.postfix;
                 })
             }
         } else {
@@ -41,6 +41,8 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
         }
     });
+
+    // todo move to authService.js
 
     $scope.isTeacher = function () {
         var isTeacher = false;
@@ -52,6 +54,8 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
         return isTeacher;
     };
 
+    // todo move to authService.js
+
     $scope.isStudent = function () {
         var isStudent = false;
         angular.forEach($scope.profile.roles, function (role) {
@@ -60,6 +64,18 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             }
         });
         return isStudent;
+    };
+
+    // todo move to authService.js
+
+    $scope.isParent = function () {
+        var isParent = false;
+        angular.forEach($scope.profile.roles, function (role) {
+            if (role == "Parent") {
+                isParent = true;
+            }
+        });
+        return isParent;
     };
 
     $scope.isCurrent = function () {
