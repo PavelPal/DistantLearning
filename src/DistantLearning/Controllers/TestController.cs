@@ -35,10 +35,10 @@ namespace DistantLearning.Controllers
         public async Task<object> Test(int? id)
         {
             if (id == null)
-                return "Incorrect id";
+                return "Invalid id";
             var test = await _context.Tests.Include("Questions.Answers").FirstOrDefaultAsync(t => t.Id == id);
             if (test == null)
-                return "Test not found";
+                return "Not found";
             return test;
         }
     }

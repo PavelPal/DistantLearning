@@ -36,7 +36,7 @@ namespace DistantLearning.Controllers
                 RemoveExsitingImages(user.Id, path);
                 var fileExtention = file.ContentType.Substring(file.ContentType.LastIndexOf('/') + 1);
                 if (!fileExtention.Equals("jpeg") && !fileExtention.Equals("jpg") && !fileExtention.Equals("png"))
-                    return "Incorrect file extension";
+                    return "Invalid file extension";
                 var filename = user.Id + '.' + fileExtention;
                 using (var fileStream = new FileStream(Path.Combine(path, filename), FileMode.Create))
                 {

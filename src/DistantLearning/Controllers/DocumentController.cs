@@ -28,7 +28,7 @@ namespace DistantLearning.Controllers
         public async Task<List<DocumentViewModel>> Documents(string searchString, int skip, int take)
         {
             List<Document> dbDocuments;
-            if (searchString == null)
+            if (string.IsNullOrEmpty(searchString))
             {
                 dbDocuments =
                     await _context.Documents.Include("Teacher.User")
@@ -55,12 +55,12 @@ namespace DistantLearning.Controllers
         [HttpGet("byTeacher/{id}")]
         public async Task<object> TeachersDocuments(string id)
         {
-            if (id == null)
-                return "Incorrect id";
+            if (string.IsNullOrEmpty(id))
+                return "Invalid id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id)).Include("Teacher.Documents").FirstOrDefaultAsync();
             if (user == null)
-                return "User not found";
+                return "Not found";
             return
                 user.Teacher.FirstOrDefault()
                     .Documents.OrderByDescending(d => d.Date)
@@ -76,7 +76,7 @@ namespace DistantLearning.Controllers
             var user = await
                 _context.Users.Include("Teacher.Documents")
                     .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
-            if (user == null) return "User not found";
+            if (user == null) return "Not found";
             try
             {
                 byte[] buffer;
@@ -106,9 +106,9 @@ namespace DistantLearning.Controllers
         [HttpGet("downloadDocument/{id}")]
         public async Task<object> Download(int? id)
         {
-            if (id == null) return "Incorrect id";
+            if (id == null) return "Invalid id";
             var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == id);
-            if (document == null) return "Document not found";
+            if (document == null) return "Not found";
             var bytes = Convert.FromBase64String(document.FileCode);
             var stream = new MemoryStream(bytes);
             var fileStream = new FileStreamResult(stream, "*/*") {FileDownloadName = document.Name};
@@ -120,12 +120,12 @@ namespace DistantLearning.Controllers
         public async Task<object> DeleteDocument(int? id)
         {
             if (id == null)
-                return "Incorrect id";
+                return "Invalid id";
             if (User.IsInRole("Admin"))
             {
                 var doc = await _context.Documents.FirstOrDefaultAsync(d => d.Id == id);
                 if (doc == null)
-                    return "Document not found";
+                    return "Not found";
                 _context.Documents.Remove(doc);
             }
             else

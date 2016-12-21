@@ -23,12 +23,12 @@ namespace DistantLearning.Controllers
         [HttpGet("byTeacher/{id}")]
         public async Task<object> TeachersConsultations(string id)
         {
-            if (id == null)
-                return "Incorrect id";
+            if (string.IsNullOrEmpty(id))
+                return "Invalid id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id)).Include("Teacher.Consultations").FirstOrDefaultAsync();
             if (user == null)
-                return "User not found";
+                return "Not found";
             return user.Teacher.FirstOrDefault().Consultations.OrderBy(c => c.DayOfWeek);
         }
 
@@ -36,12 +36,12 @@ namespace DistantLearning.Controllers
         public async Task<object> CreateConsultation([FromBody] Consultation consultation)
         {
             if (consultation == null)
-                return "Incorrect data";
+                return "Invalid data";
             var user =
                 await _context.Users.Include("Teacher.Consultations")
                     .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
             if (user == null)
-                return "User not found";
+                return "Not found";
             if (user.Teacher.FirstOrDefault().Consultations == null)
                 user.Teacher.FirstOrDefault().Consultations = new List<Consultation>();
             user.Teacher.FirstOrDefault().Consultations.Add(consultation);

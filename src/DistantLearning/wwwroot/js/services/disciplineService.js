@@ -25,7 +25,11 @@ function disciplineService($http) {
             $http({
                 url: "/api/discipline/createDiscipline",
                 method: "POST",
-                data: disciplineName
+                dataType: "json",
+                data: JSON.stringify(disciplineName),
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }).then(
                 function successCallback(response) {
                     callback(response.data);
@@ -38,7 +42,11 @@ function disciplineService($http) {
             $http({
                 url: "/api/discipline/updateDiscipline",
                 method: "POST",
-                data: discipline
+                data: JSON.stringify(discipline),
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }).then(
                 function successCallback(response) {
                     callback(response.data);
@@ -64,7 +72,7 @@ function disciplineService($http) {
                 function successCallback(response) {
                     callback(response.data);
                 }, function errorCallback(error) {
-                    console.error("Problem with getting teachers disciplines from the server" + error);
+                    console.error("Problem with getting teacher's disciplines from the server" + error);
                 }
             );
         }

@@ -46,7 +46,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Login([FromBody] LoginViewModel model)
         {
             if (!ModelState.IsValid)
-                return "Incorrect data";
+                return "Invalid data";
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
             //if (result.RequiresTwoFactor)
             //    return RedirectToAction(nameof(SendCode), new {model});
@@ -73,7 +73,7 @@ namespace DistantLearning.Controllers
         public async Task<object> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-                return "Incorrect data";
+                return "Invalid data";
             var user = new User
             {
                 UserName = model.Email,
@@ -121,7 +121,7 @@ namespace DistantLearning.Controllers
                     break;
                 default:
                     _logger.LogError("Error with registration.");
-                    return "Incorrect type";
+                    return "Invalid type";
             }
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -139,7 +139,7 @@ namespace DistantLearning.Controllers
                     break;
                 default:
                     _logger.LogError("Error with adding role.");
-                    return "Error with adding role";
+                    return "Error with adding to role";
             }
             await _signInManager.SignInAsync(user, false);
             _logger.LogInformation(3, "User created a new account with password.");

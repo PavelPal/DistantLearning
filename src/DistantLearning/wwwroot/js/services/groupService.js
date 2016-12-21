@@ -26,7 +26,11 @@ function groupService($http) {
             $http({
                 url: "/api/group/createGroup",
                 method: "POST",
-                data: groupName
+                dataType: "json",
+                data: JSON.stringify(groupName),
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }).then(
                 function successCallback(response) {
                     callback(response.data);
@@ -39,7 +43,11 @@ function groupService($http) {
             $http({
                 url: "/api/group/updateGroup",
                 method: "POST",
-                data: group
+                data: JSON.stringify(group),
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }).then(
                 function successCallback(response) {
                     callback(response.data);
@@ -66,7 +74,7 @@ function groupService($http) {
                     function successCallback(response) {
                         callback(response.data);
                     }, function errorCallback(error) {
-                        console.error("Problem with getting students group from the server" + error);
+                        console.error("Problem with getting student's group from the server" + error);
                     }
                 );
         }
