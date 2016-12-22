@@ -25,3 +25,4 @@ used font-awesome icon pack
 - run "gulp" command
 - check for errors during assembly
 - run "dotnet run" command (if you try to run app on your local PC, check sql server name before doing this step and then go to localhost:5000)
+- go to login page (/login)
