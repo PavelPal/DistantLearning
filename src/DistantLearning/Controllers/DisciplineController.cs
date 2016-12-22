@@ -32,22 +32,30 @@ namespace DistantLearning.Controllers
         public async Task<object> Discipline(int? id)
         {
             if (id == null)
-                return "Incorrect id";
+                return "Invalid id";
             var discipline = await _context.Disciplines.FirstOrDefaultAsync(d => d.Id == id);
             if (discipline == null)
-                return "Discipline not found";
+                return "Not found";
             return discipline;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost("createDiscipline")]
-        public async Task<string> CreateDiscipline([FromBody] string disciplineName)
+        public async Task<object> CreateDiscipline([FromBody] string disciplineName)
         {
             if (string.IsNullOrEmpty(disciplineName))
-                return "Incorrect data";
-            _context.Disciplines.Add(new Discipline(disciplineName));
+                return "Invalid data";
+            if (await _context.Disciplines.FirstOrDefaultAsync(d => d.Name.ToLower().Equals(disciplineName.ToLower())) !=
+                null)
+                return "Exist";
+            var discipline = new Discipline(disciplineName);
+            _context.Disciplines.Add(discipline);
             await _context.SaveChangesAsync();
-            return "Created";
+            return new
+            {
+                Message = "Created",
+                discipline.Id
+            };
         }
 
         [Authorize(Roles = "Admin")]
@@ -55,10 +63,13 @@ namespace DistantLearning.Controllers
         public async Task<string> UpdateDiscipline([FromBody] Discipline discipline)
         {
             if (discipline == null)
-                return "Incorrect data";
+                return "Invalid data";
             var dbDiscipline = await _context.Disciplines.FirstOrDefaultAsync(d => d.Id == discipline.Id);
             if (dbDiscipline == null)
-                return "Discipline not found";
+                return "Not found";
+            if (await _context.Disciplines.FirstOrDefaultAsync(d => d.Name.ToLower().Equals(discipline.Name.ToLower())) !=
+                null)
+                return "Exist";
             dbDiscipline.Name = discipline.Name;
             _context.ChangeTracker.DetectChanges();
             await _context.SaveChangesAsync();
@@ -70,10 +81,10 @@ namespace DistantLearning.Controllers
         public async Task<string> DeleteDiscipline(int? id)
         {
             if (id == null)
-                return "Incorrect id";
+                return "Invalid id";
             var discipline = await _context.Disciplines.FirstOrDefaultAsync(d => d.Id == id);
             if (discipline == null)
-                return "Discipline not found";
+                return "Not found";
             _context.Disciplines.Remove(discipline);
             await _context.SaveChangesAsync();
             return "Deleted";
@@ -82,14 +93,14 @@ namespace DistantLearning.Controllers
         [HttpGet("teachersDisciplines/{id}")]
         public async Task<object> TeachersDisciplines(string id)
         {
-            if (id == null)
-                return "Incorrect id";
+            if (string.IsNullOrEmpty(id))
+                return "Invalid id";
             var user =
                 await _context.Users.Where(u => u.Id.Equals(id))
                     .Include("Teacher.Disciplines.Discipline")
                     .FirstOrDefaultAsync();
             if (user == null)
-                return "User not found";
+                return "Not found";
             return
                 user.Teacher.FirstOrDefault()
                     .Disciplines.Select(teacherDiscipline => teacherDiscipline.Discipline)

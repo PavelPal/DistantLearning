@@ -28,7 +28,7 @@ namespace DistantLearning.Controllers
             }
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
-                return "User not found";
+                return "Not found";
             return new ProfileViewModel(user, await _userManager.GetRolesAsync(user));
         }
     }

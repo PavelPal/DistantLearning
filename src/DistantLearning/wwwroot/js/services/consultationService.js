@@ -16,7 +16,11 @@ function consultationService($http) {
             $http({
                 url: "/api/consultation/createConsultation",
                 method: "POST",
-                data: consultation
+                data: JSON.stringify(consultation),
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }).then(
                 function successCallback(response) {
                     callback(response.data);

@@ -11,13 +11,13 @@ function ProfileImageLoaderController($scope, $mdDialog, $mdToast, FileUploader)
         onSuccessItem: function (item, response) {
             if (response == "Uploaded") {
                 $mdToast.show($mdToast.simple().textContent("Загружено").position('bottom right').hideDelay(3000));
-            } else if (response == "Incorrect file extension") {
+            } else if (response == "Invalid file extension") {
                 $mdToast.show($mdToast.simple().textContent("Некорректный формат файла").position('bottom right').hideDelay(3000));
             } else {
                 $mdToast.show($mdToast.simple().textContent("При загрузке произошла ошибка").position('bottom right').hideDelay(3000));
             }
         },
-        onErrorItem: function (item, response) {
+        onErrorItem: function () {
             $mdToast.show($mdToast.simple().textContent("При загрузке произошла ошибка").position('bottom right').hideDelay(3000));
         }
     });

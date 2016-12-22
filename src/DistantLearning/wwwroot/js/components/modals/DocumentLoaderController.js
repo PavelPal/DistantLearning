@@ -14,9 +14,14 @@ function DocumentLoaderController($scope, $mdDialog, $mdToast, FileUploader) {
                     .textContent("Загружено")
                     .position('bottom right')
                     .hideDelay(3000));
-            } else {
+            } else if (response == "Error") {
                 $mdToast.show($mdToast.simple()
                     .textContent("При загрузке произошла ошибка")
+                    .position('bottom right')
+                    .hideDelay(3000));
+            } else if (response == "Not found") {
+                $mdToast.show($mdToast.simple()
+                    .textContent("Пользователь не найден")
                     .position('bottom right')
                     .hideDelay(3000));
             }

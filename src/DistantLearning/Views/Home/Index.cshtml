@@ -116,6 +116,13 @@
                         <p>Помощь</p>
                     </div>
                 </md-list-item>
+                <md-divider ng-show="isAdmin()"></md-divider>
+                <md-list-item ng-click="close()" ng-show="isAdmin()" ui-sref="admin">
+                    <md-icon class="fa fa-dashboard"></md-icon>
+                    <div class="md-list-item-text" layout="column" flex>
+                        <p>Админ</p>
+                    </div>
+                </md-list-item>
             </md-list>
         </md-content>
     </md-sidenav>

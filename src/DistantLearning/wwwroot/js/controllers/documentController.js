@@ -5,6 +5,7 @@ function documentController($scope, documentService, ngProgressFactory) {
     $scope.progressbar.setParent(document.querySelector('.search-input-block'));
     $scope.progressbar.setAbsolute();
     $scope.progressbar.start();
+
     $scope.documents = [];
     $scope.isLoading = true;
     $scope.canGetElements = true;

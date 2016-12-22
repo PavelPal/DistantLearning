@@ -23,10 +23,9 @@ function signupController($scope, $state, $element, authService, disciplineServi
         $scope.searchTerm = "";
     };
 
-    $element.find("input").on("keydown",
-        function (e) {
-            e.stopPropagation();
-        });
+    $element.find("input").on("keydown", function (e) {
+        e.stopPropagation();
+    });
 
     $scope.registration = {
         firstName: "",

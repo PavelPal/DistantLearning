@@ -8,13 +8,15 @@ namespace Domain.Model
         {
         }
 
-        public Group(string name)
+        public Group(int prefix, string postfix)
         {
-            Name = name;
+            Prefix = prefix;
+            Postfix = postfix;
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        public int Prefix { get; set; }
+        public string Postfix { get; set; }
 
         public List<UserStudent> Students { get; set; }
         public List<Journal> Journals { get; set; }

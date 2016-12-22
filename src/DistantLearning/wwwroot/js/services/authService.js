@@ -43,7 +43,7 @@ function authService($http, $cookies, localStorageService) {
             }
         }).then(
             function successCallback(response) {
-                if (response.data != "Incorrect data" && response.data != "Incorrect type" && response.data != "Error with registration" && response.data != "Error with adding role") {
+                if (response.data != "Invalid data" && response.data != "Invalid type" && response.data != "Error with registration" && response.data != "Error with adding to role") {
                     $cookies.put("access_token", response.data.email);
                     localStorageService.set("authorizationData", {
                         token: response.access_token,
@@ -78,7 +78,7 @@ function authService($http, $cookies, localStorageService) {
             }
         }).then(
             function successCallback(response) {
-                if (response.data != "Incorrect data" && response.data != "Error with login") {
+                if (response.data != "Invalid data" && response.data != "Error with login") {
                     $cookies.put("access_token", response.data.email);
                     localStorageService.set("authorizationData", {
                         token: response.access_token,

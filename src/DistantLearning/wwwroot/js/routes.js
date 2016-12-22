@@ -3,7 +3,7 @@ app.config(routes);
 function routes($stateProvider, $httpProvider, $urlRouterProvider) {
     $httpProvider.interceptors.push("authInterceptorService");
 
-    var Auth = function ($q, authService) {
+    var auth = function ($q, authService) {
         authService.fillAuthData();
         if (authService.authentication.isAuth) {
             return $q.when(authService.authentication);
@@ -36,7 +36,7 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
             templateUrl: "../app/profile.html",
             controller: "profileController",
             resolve: {
-                auth: Auth
+                auth: auth
             }
         })
         .state("users", {
@@ -44,28 +44,28 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
             templateUrl: "../app/users.html",
             controller: "userController",
             resolve: {
-                auth: Auth
+                auth: auth
             }
         })
         .state("tests", {
             url: "/tests",
             templateUrl: "../app/tests.html",
             resolve: {
-                auth: Auth
+                auth: auth
             }
         })
         .state("journal", {
             url: "/journal",
             templateUrl: "../app/journal.html",
             resolve: {
-                auth: Auth
+                auth: auth
             }
         })
         .state("results", {
             url: "/results",
             templateUrl: "../app/results.html",
             resolve: {
-                auth: Auth
+                auth: auth
             }
         })
         .state("documents", {
@@ -73,21 +73,29 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
             templateUrl: "../app/documents.html",
             controller: "documentController",
             resolve: {
-                auth: Auth
+                auth: auth
             }
         })
         .state("settings", {
             url: "/settings",
             templateUrl: "../app/settings.html",
             resolve: {
-                auth: Auth
+                auth: auth
             }
         })
         .state("help", {
             url: "/help",
             templateUrl: "../app/help.html",
             resolve: {
-                auth: Auth
+                auth: auth
+            }
+        })
+        .state("admin", {
+            url: "/admin",
+            templateUrl: "../app/admin.html",
+            controller: "adminController",
+            resolve: {
+                auth: auth
             }
         });
 }
