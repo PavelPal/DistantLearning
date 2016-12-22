@@ -4,20 +4,6 @@
             <md-card-title>
                 <md-card-title-text flex layout="row">
                     <span class="md-title" flex>Группы</span>
-                    <md-menu md-position-mode="target-right target">
-                        <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <md-icon md-menu-origin><i class="fa fa-ellipsis-v"></i></md-icon>
-                        </md-button>
-                        <md-menu-content width="4">
-                            <md-menu-item>
-                                <md-button ng-click="createGroupModal($event)">
-                                    <div layout="row" flex>
-                                        <p flex>Создать</p>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content class="overflow" layout="column">
@@ -34,9 +20,9 @@
                                 <md-icon layout="column" layout-align="center center">
                                     <i class="fa fa-users"></i>
                                 </md-icon>
-                                <p flex>{{group.name}}</p>
+                                <p flex>{{group.prefix}}{{group.postfix}}</p>
                                 <md-button class="md-icon-button md-secondary" aria-label="Delete group">
-                                    <md-tooltip md-direction="left">Удалить группу</md-tooltip>
+                                    <md-tooltip md-direction="bottom">Удалить группу</md-tooltip>
                                     <md-icon layout="column" layout-align="center center">
                                         <i class="fa fa-trash"></i>
                                     </md-icon>
@@ -46,25 +32,24 @@
                     </div>
                 </section>
             </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-input-container class="md-block" flex>
+                    <label>цифра</label>
+                    <md-select ng-model="newGroup.prefix">
+                        <md-option ng-repeat="prefix in numbers" value="{{prefix}}">{{prefix}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <input ng-model="newGroup.postfix" placeholder="буква">
+                </md-input-container>
+                <md-button ng-click="createGroup(newGroup)">Создать</md-button>
+            </md-card-actions>
         </md-card>
+
         <md-card flex>
             <md-card-title>
                 <md-card-title-text flex layout="row">
                     <span class="md-title" flex="">Дисциплины</span>
-                    <md-menu md-position-mode="target-right target">
-                        <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <md-icon md-menu-origin><i class="fa fa-ellipsis-v"></i></md-icon>
-                        </md-button>
-                        <md-menu-content width="4">
-                            <md-menu-item>
-                                <md-button ng-click="createDisciplineModal($event)">
-                                    <div layout="row" flex>
-                                        <p flex>Создать</p>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content class="overflow" layout="column">
@@ -83,7 +68,7 @@
                                 </md-icon>
                                 <p flex>{{discipline.name}}</p>
                                 <md-button class="md-icon-button md-secondary" aria-label="Delete discipline">
-                                    <md-tooltip md-direction="left">Удалить дисциплину</md-tooltip>
+                                    <md-tooltip md-direction="bottom">Удалить дисциплину</md-tooltip>
                                     <md-icon layout="column" layout-align="center center">
                                         <i class="fa fa-trash"></i>
                                     </md-icon>
@@ -93,6 +78,58 @@
                     </div>
                 </section>
             </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-input-container class="md-block" flex>
+                    <input ng-model="newDiscipline" placeholder="название">
+                </md-input-container>
+                <md-button ng-click="createDiscipline(newDiscipline)">Создать</md-button>
+            </md-card-actions>
+        </md-card>
+
+        <md-card flex>
+            <md-card-title>
+                <md-card-title-text flex layout="row">
+                    <span class="md-title" flex="">Заблокированные пользователи</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content class="overflow" layout="column">
+                <section layout="column">
+                    <md-progress-circular ng-show="isLoadingUsers" ng-disabled="!isLoadingUsers"
+                                          md-diameter="40px"
+                                          md-mode="indeterminate"></md-progress-circular>
+                    <div class="info-message" ng-hide="notApprovedUsers.length > 0 || isLoadingUsers">
+                        <i class="fa fa-info-circle"></i> Нет пользователей
+                    </div>
+                    <div layout="row">
+                        <md-list class="small-list" flex ng-cloak>
+                            <md-list-item ng-click="goToUser(user.id)" ng-repeat="user in notApprovedUsers">
+                                <md-icon layout="column" layout-align="center center">
+                                    <i class="fa fa-user"></i>
+                                </md-icon>
+                                <p flex>{{user.firstName}} {{user.lastName}}</p>
+                                <md-button class="md-icon-button md-secondary" ng-click="approveUser($index)" aria-label="Approve user">
+                                    <md-tooltip md-direction="bottom">Одобрить пользователя</md-tooltip>
+                                    <md-icon layout="column" layout-align="center center">
+                                        <i class="fa fa-check"></i>
+                                    </md-icon>
+                                </md-button>
+                                <md-button class="md-icon-button md-secondary" aria-label="Delete user">
+                                    <md-tooltip md-direction="bottom">Удалить пользователя</md-tooltip>
+                                    <md-icon layout="column" layout-align="center center">
+                                        <i class="fa fa-trash"></i>
+                                    </md-icon>
+                                </md-button>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </section>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-input-container class="md-block" flex>
+                    <input ng-model="searchParams.searchString" placeholder="поиск">
+                </md-input-container>
+                <md-button ng-click="findUsers()">Найти</md-button>
+            </md-card-actions>
         </md-card>
     </div>
 </div>

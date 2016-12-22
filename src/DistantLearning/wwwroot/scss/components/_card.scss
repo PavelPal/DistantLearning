@@ -21,6 +21,16 @@ md-card {
       overflow: auto;
     }
   }
+
+  md-card-actions {
+    md-input-container {
+      margin: 0;
+
+      .md-errors-spacer {
+        display: none;
+      }
+    }
+  }
 }
 
 .profile-card-wrap {

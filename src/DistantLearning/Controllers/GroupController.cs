@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccessProvider;
+using DistantLearning.Models;
 using Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,20 +42,21 @@ namespace DistantLearning.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("createGroup")]
-        public async Task<object> CreateGroup([FromBody] int? prefix, [FromBody] string postfix)
+        public async Task<object> CreateGroup([FromBody] GroupViewModel group)
         {
-            if (string.IsNullOrEmpty(postfix) || prefix == null)
+            if (string.IsNullOrEmpty(group?.Postfix) || group.Prefix == 0)
                 return "Invalid data";
-            if (await _context.Groups.FirstOrDefaultAsync(g => g.Prefix == prefix.Value && g.Postfix.Equals(postfix)) !=
-                null)
+            if (
+                await _context.Groups.FirstOrDefaultAsync(
+                    g => g.Prefix == group.Prefix && g.Postfix.ToLower().Equals(group.Postfix.ToLower())) != null)
                 return "Exist";
-            var group = new Group(prefix.Value, postfix);
-            _context.Groups.Add(group);
+            var newGroup = new Group(group.Prefix, group.Postfix);
+            _context.Groups.Add(newGroup);
             await _context.SaveChangesAsync();
             return new
             {
                 Message = "Created",
-                group.Id
+                newGroup.Id
             };
         }
 
@@ -67,6 +69,10 @@ namespace DistantLearning.Controllers
             var dbGroup = await _context.Groups.FirstOrDefaultAsync(g => g.Id == group.Id);
             if (dbGroup == null)
                 return "Not found";
+            if (
+                await _context.Groups.FirstOrDefaultAsync(
+                    g => g.Prefix == group.Prefix && g.Postfix.ToLower().Equals(group.Postfix.ToLower())) != null)
+                return "Exist";
             dbGroup.Prefix = group.Prefix;
             dbGroup.Postfix = group.Postfix;
             _context.ChangeTracker.DetectChanges();

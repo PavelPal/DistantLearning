@@ -45,7 +45,8 @@ namespace DistantLearning.Controllers
         {
             if (string.IsNullOrEmpty(disciplineName))
                 return "Invalid data";
-            if (await _context.Disciplines.FirstOrDefaultAsync(d => d.Name.Equals(disciplineName)) != null)
+            if (await _context.Disciplines.FirstOrDefaultAsync(d => d.Name.ToLower().Equals(disciplineName.ToLower())) !=
+                null)
                 return "Exist";
             var discipline = new Discipline(disciplineName);
             _context.Disciplines.Add(discipline);
@@ -66,6 +67,9 @@ namespace DistantLearning.Controllers
             var dbDiscipline = await _context.Disciplines.FirstOrDefaultAsync(d => d.Id == discipline.Id);
             if (dbDiscipline == null)
                 return "Not found";
+            if (await _context.Disciplines.FirstOrDefaultAsync(d => d.Name.ToLower().Equals(discipline.Name.ToLower())) !=
+                null)
+                return "Exist";
             dbDiscipline.Name = discipline.Name;
             _context.ChangeTracker.DetectChanges();
             await _context.SaveChangesAsync();

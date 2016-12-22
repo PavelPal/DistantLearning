@@ -1,11 +1,24 @@
 app.controller("adminController", adminController);
 
-function adminController($scope, $mdDialog, $mdToast, disciplineService, groupService) {
+function adminController($scope, $state, $mdToast, disciplineService, groupService, userService) {
     $scope.groups = [];
+    $scope.notApprovedUsers = [];
     $scope.disciplines = [];
-
+    $scope.newGroup = {
+        prefix: 0,
+        postfix: ''
+    };
+    $scope.newDiscipline = '';
+    $scope.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    $scope.searchParams = {
+        searchString: null,
+        skip: 0,
+        take: 20
+    };
     $scope.isLoadingGroups = true;
     $scope.isLoadingDisciplines = true;
+    $scope.isLoadingUsers = true;
+    $scope.canGetUsers = true;
 
     disciplineService.getDisciplines(function (data) {
         $scope.disciplines = data;
@@ -17,61 +30,99 @@ function adminController($scope, $mdDialog, $mdToast, disciplineService, groupSe
         $scope.isLoadingGroups = false;
     });
 
-    // todo change model view
+    userService.getNotApprovedUsers($scope.searchParams, function (data) {
+        $scope.notApprovedUsers = data;
+        $scope.isLoadingUsers = false;
+    });
 
-    $scope.createGroupModal = function (ev) {
-        var confirm = $mdDialog.prompt()
-            .title('Создание новой группы')
-            .textContent('Введите название группы.')
-            .placeholder('Название')
-            .ariaLabel('Название')
-            .targetEvent(ev)
-            .ok('Создать')
-            .cancel('Отмена');
-
-        $mdDialog.show(confirm).then(function (result) {
-            groupService.createGroup(result, function (data) {
-                if (data == "Created") {
+    $scope.createGroup = function (group) {
+        if (group == undefined || group.prefix == 0 || group.postfix == '') {
+            $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
+        } else {
+            groupService.createGroup(group, function (data) {
+                if (data == "Invalid data") {
+                    $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
+                } else if (data == "Exist") {
+                    $mdToast.show($mdToast.simple().textContent("Группа была создана ранее").position('bottom right').hideDelay(3000));
+                } else if (data.message == "Created") {
                     $scope.groups.push({
                         id: 0,
-                        name: result
+                        prefix: group.prefix,
+                        postfix: group.postfix
                     });
+                    $scope.newGroup = {
+                        prefix: 0,
+                        postfix: ''
+                    };
                     $mdToast.show($mdToast.simple().textContent("Группа успешно создана").position('bottom right').hideDelay(3000));
-                } else {
-                    $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
                 }
             });
-        }, function () {
-            $mdToast.show($mdToast.simple().textContent("Операция была отменена").position('bottom right').hideDelay(3000));
-        });
+        }
     };
 
-    // todo change model view
-
-    $scope.createDisciplineModal = function (ev) {
-        var confirm = $mdDialog.prompt()
-            .title('Создание новой дисциплины')
-            .textContent('Введите название дисциплины.')
-            .placeholder('Название')
-            .ariaLabel('Название')
-            .targetEvent(ev)
-            .ok('Создать')
-            .cancel('Отмена');
-
-        $mdDialog.show(confirm).then(function (result) {
-            disciplineService.createDiscipline(result, function (data) {
-                if (data == "Created") {
+    $scope.createDiscipline = function (name) {
+        if (name == undefined || name == '' || name == null) {
+            $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
+        } else {
+            disciplineService.createDiscipline(name, function (data) {
+                if (data == "Invalid data") {
+                    $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
+                } else if (data == "Exist") {
+                    $mdToast.show($mdToast.simple().textContent("Дисциплина была создана ранее").position('bottom right').hideDelay(3000));
+                } else if (data.message == "Created") {
                     $scope.disciplines.push({
-                        id: 0,
-                        name: result
+                        id: data.id,
+                        name: name
                     });
+                    $scope.newDiscipline = '';
                     $mdToast.show($mdToast.simple().textContent("Дисциплина успешно создана").position('bottom right').hideDelay(3000));
-                } else {
-                    $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
                 }
             });
-        }, function () {
-            $mdToast.show($mdToast.simple().textContent("Операция была отменена").position('bottom right').hideDelay(3000));
+        }
+    };
+
+    $scope.findUsers = function () {
+        if ($scope.isLoadingUsers)
+            return;
+        $scope.isLoadingUsers = true;
+        $scope.searchParams.skip = 0;
+        userService.getNotApprovedUsers($scope.searchParams, function (data) {
+            $scope.notApprovedUsers = data;
+            $scope.isLoadingUsers = false;
         });
     };
+
+    $scope.goToUser = function (id) {
+        var url = $state.href('profile', {'profileId': id});
+        window.open(url, '_blank');
+    };
+
+    $scope.getMoreUsers = function () {
+        if ($scope.isLoadingUsers) return;
+        $scope.isLoadingUsers = true;
+        $scope.searchParams.skip += $scope.searchParams.take;
+        if ($scope.canGetUsers) {
+            userService.getUsers($scope.searchParams, function (data) {
+                if (data.length < 20) $scope.canGetUsers = false;
+                angular.forEach(data, function (element) {
+                    $scope.notApprovedUsers.push(element);
+                });
+            });
+        }
+        $scope.isLoadingUsers = false;
+    };
+
+    $scope.approveUser = function (index) {
+        var userId = $scope.notApprovedUsers[index].id;
+        userService.approveUser(userId, function (data) {
+            if (data == "Invalid id") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный ID").position('bottom right').hideDelay(3000));
+            } else if (data == "Not found") {
+                $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
+            } else if (data == "Approved") {
+                $scope.notApprovedUsers.splice(index, 1);
+                $mdToast.show($mdToast.simple().textContent("Пользователь одобрен").position('bottom right').hideDelay(3000));
+            }
+        });
+    }
 }

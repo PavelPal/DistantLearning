@@ -22,12 +22,12 @@ function groupService($http) {
                     }
                 );
         },
-        createGroup: function (groupName, callback) {
+        createGroup: function (group, callback) {
             $http({
                 url: "/api/group/createGroup",
                 method: "POST",
                 dataType: "json",
-                data: JSON.stringify(groupName),
+                data: JSON.stringify(group),
                 headers: {
                     "Content-Type": "application/json"
                 }

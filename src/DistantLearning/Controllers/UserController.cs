@@ -95,8 +95,8 @@ namespace DistantLearning.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("approveUser")]
-        public async Task<string> ApproveUser(string id)
+        [HttpPost("approveUser")]
+        public async Task<string> ApproveUser([FromBody] string id)
         {
             if (string.IsNullOrEmpty(id))
                 return "Invalid id";
@@ -110,7 +110,7 @@ namespace DistantLearning.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("сonfirmСhanges")]
+        [HttpPost("сonfirmСhanges")]
         public async Task<string> СonfirmСhanges(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -148,7 +148,7 @@ namespace DistantLearning.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("blockUser")]
+        [HttpPost("blockUser")]
         public async Task<string> BlockUser(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -163,7 +163,7 @@ namespace DistantLearning.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("deleteUser")]
+        [HttpPost("deleteUser")]
         public async Task<string> DeleteUser(string id)
         {
             if (string.IsNullOrEmpty(id))
