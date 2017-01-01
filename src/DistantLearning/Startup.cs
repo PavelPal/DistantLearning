@@ -122,7 +122,9 @@ namespace DistantLearning
                 {
                     Email = adminEmail,
                     UserName = adminEmail,
-                    FirstName = "Администратор",
+                    FirstName = "Павел",
+                    LastName = "Павлющик",
+                    PhoneNumber = "+375295567449",
                     IsApproved = true
                 };
                 var result = await userManager.CreateAsync(admin, password);
