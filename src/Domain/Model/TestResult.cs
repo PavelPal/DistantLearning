@@ -8,7 +8,7 @@
         public int InComplete { get; set; }
 
         public Test Test { get; set; }
-        public int TestId { get; set; }
+        public int? TestId { get; set; }
         public UserStudent User { get; set; }
         public int UserId { get; set; }
     }
