@@ -3,6 +3,17 @@
 function mainController($scope, $mdSidenav, $state, authService) {
     $scope.title = "Дистанционное обучение";
     $scope.toggleSideNav = toggleSideNav("sideNav");
+    $scope.authentication = authService.authentication;
+
+    $scope.isInRole = function (role) {
+        var isInRole = false;
+        angular.forEach($scope.authentication, function (userRole) {
+            if (userRole == role) {
+                isInRole = true;
+            }
+        });
+        return isInRole;
+    };
 
     function toggleSideNav() {
         return function () {
@@ -19,17 +30,6 @@ function mainController($scope, $mdSidenav, $state, authService) {
         $mdSidenav('sideNav').close();
         authService.logOut();
         $state.go("login");
-    };
-
-    $scope.authentication = authService.authentication;
-
-    $scope.isAdmin = function () {
-        var isAdmin = false;
-        angular.forEach($scope.authentication.roles, function (role) {
-            if (role == "Admin")
-                isAdmin = true;
-        });
-        return isAdmin;
     };
 
     $scope.$on("$stateChangeError", function () {

@@ -18,7 +18,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
         if (data != "Not found") {
             $scope.profile = data;
             $scope.image = data.photo == null ? null : "data/profile_photos/" + data.photo;
-            if ($scope.isTeacher()) {
+            if ($scope.isInRole("Teacher")) {
                 disciplineService.getTeachersDisciplines(profileId, function (data) {
                     $scope.disciplines = data;
                 });
@@ -31,7 +31,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
                     $scope.documents = data;
                     $scope.documentsLoader = false;
                 });
-            } else if ($scope.isStudent()) {
+            } else if ($scope.isInRole("Student")) {
                 groupService.getStudentsGroup(profileId, function (data) {
                     $scope.group = data.prefix + data.postfix;
                 })
@@ -42,40 +42,14 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
         }
     });
 
-    // todo move to authService.js
-
-    $scope.isTeacher = function () {
-        var isTeacher = false;
-        angular.forEach($scope.profile.roles, function (role) {
-            if (role == "Teacher") {
-                isTeacher = true;
+    $scope.isInRole = function (role) {
+        var isInRole = false;
+        angular.forEach($scope.profile, function (userRole) {
+            if (userRole == role) {
+                isInRole = true;
             }
         });
-        return isTeacher;
-    };
-
-    // todo move to authService.js
-
-    $scope.isStudent = function () {
-        var isStudent = false;
-        angular.forEach($scope.profile.roles, function (role) {
-            if (role == "Student") {
-                isStudent = true;
-            }
-        });
-        return isStudent;
-    };
-
-    // todo move to authService.js
-
-    $scope.isParent = function () {
-        var isParent = false;
-        angular.forEach($scope.profile.roles, function (role) {
-            if (role == "Parent") {
-                isParent = true;
-            }
-        });
-        return isParent;
+        return isInRole;
     };
 
     $scope.isCurrent = function () {
@@ -93,18 +67,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
     };
 
     $scope.getRole = function (role) {
-        switch (role) {
-            case "Admin":
-                return "администратор";
-            case "Teacher":
-                return "учитель";
-            case "Student":
-                return "ученик";
-            case "Parent":
-                return "родитель";
-            case "Moderator":
-                return "модератор";
-        }
+        return authService.getRole(role);
     };
 
     $scope.showProfileImageModal = function (ev) {

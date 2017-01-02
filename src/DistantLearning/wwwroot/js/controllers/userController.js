@@ -1,6 +1,6 @@
 app.controller("userController", userController);
 
-function userController($scope, userService, ngProgressFactory) {
+function userController($scope, userService, authService, ngProgressFactory) {
     $scope.progressbar = ngProgressFactory.createInstance();
     $scope.progressbar.setParent(document.querySelector('.search-input-block'));
     $scope.progressbar.setAbsolute();
@@ -21,18 +21,7 @@ function userController($scope, userService, ngProgressFactory) {
     });
 
     $scope.getRole = function (role) {
-        switch (role) {
-            case "Admin":
-                return "администратор";
-            case "Teacher":
-                return "учитель";
-            case "Student":
-                return "ученик";
-            case "Parent":
-                return "родитель";
-            case "Moderator":
-                return "модератор";
-        }
+        return authService.getRole(role);
     };
 
     $scope.findUsers = function () {

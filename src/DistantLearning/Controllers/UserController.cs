@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccessProvider;
@@ -111,7 +112,7 @@ namespace DistantLearning.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("сonfirmСhanges")]
-        public async Task<string> СonfirmСhanges(string id)
+        public async Task<string> СonfirmСhanges([FromBody] string id)
         {
             if (string.IsNullOrEmpty(id))
                 return "Invalid id";
@@ -149,7 +150,7 @@ namespace DistantLearning.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("blockUser")]
-        public async Task<string> BlockUser(string id)
+        public async Task<string> BlockUser([FromBody] string id)
         {
             if (string.IsNullOrEmpty(id))
                 return "Invalid id";
@@ -164,15 +165,61 @@ namespace DistantLearning.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("deleteUser")]
-        public async Task<string> DeleteUser(string id)
+        public async Task<string> DeleteUser([FromBody] string id)
         {
             if (string.IsNullOrEmpty(id))
                 return "Invalid id";
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(id));
+            var user = _context.Users
+                .Include("PendingUserData")
+                .Include("UserSettings")
+                .Include("Comments")
+                .Include("Marks")
+                .FirstOrDefault(u => u.Id.Equals(id));
             if (user == null)
                 return "Not found";
-            var result = await _userManager.DeleteAsync(user);
-            return result.Succeeded ? "Deleted" : "Error";
+            try
+            {
+                if (await _userManager.IsInRoleAsync(user, "Teacher"))
+                {
+                    var teacherData = _context.UserTeachers
+                        .Include("Disciplines")
+                        .Include("Tests.Comments")
+                        .Include("Tests.Questions.Answers")
+                        .Include("Documents")
+                        .Include("Consultations")
+                        .Where(td => td.UserId.Equals(id))
+                        .ToList();
+                    _context.UserTeachers.RemoveRange(teacherData);
+                }
+                else if (await _userManager.IsInRoleAsync(user, "Student"))
+                {
+                    var studentData = _context.UserStudents
+                        .Include("Parents")
+                        .Include("TestResult")
+                        .Include("Tests.Questions.Answers")
+                        .Include("Documents")
+                        .Include("Consultations")
+                        .Where(td => td.UserId.Equals(id))
+                        .ToList();
+                    _context.UserStudents.RemoveRange(studentData);
+                }
+                else if (await _userManager.IsInRoleAsync(user, "Student"))
+                {
+                    var parentData = _context.UserParents
+                        .Include("Parent.Children")
+                        .Where(td => td.UserId.Equals(id))
+                        .ToList();
+                    _context.UserParents.RemoveRange(parentData);
+                }
+                _context.Users.Remove(user);
+                _context.ChangeTracker.DetectChanges();
+                _context.SaveChanges();
+                return "Deleted";
+            }
+            catch (Exception)
+            {
+                return "Error";
+            }
         }
     }
 }

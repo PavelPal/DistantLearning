@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace distantlearning.Migrations
 {
@@ -9,19 +7,19 @@ namespace distantlearning.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_TestResults_Tests_TestId",
-                table: "TestResults");
+                "FK_TestResults_Tests_TestId",
+                "TestResults");
 
             migrationBuilder.AlterColumn<int>(
-                name: "TestId",
-                table: "TestResults",
+                "TestId",
+                "TestResults",
                 nullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_TestResults_Tests_TestId",
-                table: "TestResults",
-                column: "TestId",
-                principalTable: "Tests",
+                "FK_TestResults_Tests_TestId",
+                "TestResults",
+                "TestId",
+                "Tests",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -29,19 +27,19 @@ namespace distantlearning.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_TestResults_Tests_TestId",
-                table: "TestResults");
+                "FK_TestResults_Tests_TestId",
+                "TestResults");
 
             migrationBuilder.AlterColumn<int>(
-                name: "TestId",
-                table: "TestResults",
+                "TestId",
+                "TestResults",
                 nullable: false);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_TestResults_Tests_TestId",
-                table: "TestResults",
-                column: "TestId",
-                principalTable: "Tests",
+                "FK_TestResults_Tests_TestId",
+                "TestResults",
+                "TestId",
+                "Tests",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

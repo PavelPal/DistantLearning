@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>{{title}}</title>
 
     <environment names="Development,Staging,Production">
         <link rel="stylesheet" href="~/lib/normalize-css/normalize.css"/>
@@ -116,8 +116,8 @@
                         <p>Помощь</p>
                     </div>
                 </md-list-item>
-                <md-divider ng-show="isAdmin()"></md-divider>
-                <md-list-item ng-click="close()" ng-show="isAdmin()" ui-sref="admin">
+                <md-divider ng-show="isInRole('Admin')"></md-divider>
+                <md-list-item ng-click="close()" ng-show="isInRole('Admin')" ng-disabled="!isInRole('Admin')" ui-sref="admin">
                     <md-icon class="fa fa-dashboard"></md-icon>
                     <div class="md-list-item-text" layout="column" flex>
                         <p>Админ</p>

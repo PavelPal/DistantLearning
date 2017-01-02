@@ -3,14 +3,14 @@
 function loginController($scope, $state, $mdToast, authService) {
     document.querySelector('#ngProgress-container').style.top = 0;
 
-    $scope.title = "Войти";
-    $scope.activeLoader = false;
-
     authService.logOut();
 
-    $scope.loginData = {
-        email: "",
-        password: ""
+    $scope.title = "Войти";
+    $scope.activeLoader = false;
+    $scope.loginData = {email: "", password: ""};
+    $scope.validation = {
+        email: /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/,
+        password: ''
     };
 
     $scope.login = function () {

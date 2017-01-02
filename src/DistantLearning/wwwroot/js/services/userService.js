@@ -52,6 +52,23 @@ function userService($http) {
                     console.error("Problem with getting not approved users from the server" + error);
                 }
             );
+        },
+        deleteUser: function (id, callback) {
+            $http({
+                url: "/api/user/deleteUser",
+                method: "POST",
+                data: JSON.stringify(id),
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(
+                function successCallback(response) {
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with getting not approved users from the server" + error);
+                }
+            );
         }
     };
 }

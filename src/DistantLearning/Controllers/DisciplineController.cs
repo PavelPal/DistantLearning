@@ -67,8 +67,9 @@ namespace DistantLearning.Controllers
             var dbDiscipline = await _context.Disciplines.FirstOrDefaultAsync(d => d.Id == discipline.Id);
             if (dbDiscipline == null)
                 return "Not found";
-            if (await _context.Disciplines.FirstOrDefaultAsync(d => d.Name.ToLower().Equals(discipline.Name.ToLower())) !=
-                null)
+            if (
+                await _context.Disciplines.FirstOrDefaultAsync(
+                    d => d.Id != discipline.Id && d.Name.ToLower().Equals(discipline.Name.ToLower())) != null)
                 return "Exist";
             dbDiscipline.Name = discipline.Name;
             _context.ChangeTracker.DetectChanges();

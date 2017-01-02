@@ -110,7 +110,7 @@
                                 <md-optgroup>
                                     <md-option ng-value="group.id"
                                                ng-repeat="group in groups | filter:searchTerm">
-                                        {{group.name}}
+                                        {{group.prefix}}{{group.postfix}}
                                     </md-option>
                                 </md-optgroup>
                             </md-select>

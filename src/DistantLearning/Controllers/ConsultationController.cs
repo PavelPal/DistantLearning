@@ -39,7 +39,7 @@ namespace DistantLearning.Controllers
                 return "Invalid data";
             var user =
                 await _context.Users.Include("Teacher.Consultations")
-                    .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
+                    .FirstOrDefaultAsync(u => u.IsApproved && u.UserName.Equals(User.Identity.Name));
             if (user == null)
                 return "Not found";
             if (user.Teacher.FirstOrDefault().Consultations == null)
