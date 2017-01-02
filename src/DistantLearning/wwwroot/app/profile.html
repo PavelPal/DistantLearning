@@ -63,8 +63,8 @@
             </md-card-content>
         </md-card>
     </div>
-    <div flex layout="column" class="profile-info-card-wrap">
-        <md-card class="profile-info-card" hide-xs>
+    <div flex layout="column" layout-gt-sm="row" layout-align-gt-sm=" start" class="profile-info-card-wrap" layout-wrap>
+        <md-card flex-gt-sm="100" class="profile-info-card" hide-xs>
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{{profile.firstName}} {{profile.lastName}}</span>
@@ -78,7 +78,8 @@
                 </md-card-title-text>
             </md-card-title>
         </md-card>
-        <md-card md-theme="dark-blue" md-theme-watch ng-show="isInRole('Admin')">
+
+        <md-card flex-gt-sm md-theme="dark-blue" md-theme-watch ng-show="isInRole('Admin')">
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-title">Помощь</span>
@@ -86,10 +87,25 @@
             </md-card-title>
             <md-card-content layout="column">
                 <i class="fa fa-question-circle large-card-icon"></i>
-                <p>Перейдя по <a ui-sref="help">ссылке</a> вы можете получить справочную информацию для использования данного сервиса.</p>
+                <p>Перейдя по <a ui-sref="help">ссылке</a> вы можете получить справочную информацию для использования
+                    данного сервиса.</p>
             </md-card-content>
         </md-card>
-        <md-card ng-show="isInRole('Teacher')">
+
+        <md-card flex-gt-sm md-theme="pink" md-theme-watch ng-show="isInRole('Admin')">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">Изменение пользовательских данных</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <i class="fa fa-gear large-card-icon"></i>
+                <p>При изменении пользовательских данных Вам необходимо подождать подтверждения информации
+                    администратором.</p>
+            </md-card-content>
+        </md-card>
+
+        <md-card flex-gt-sm ng-show="isInRole('Teacher')">
             <md-card-title id="consultations-header">
                 <md-card-title-text>
                     <span class="md-title">Консультации</span>
@@ -114,7 +130,8 @@
                 </section>
             </md-card-content>
         </md-card>
-        <md-card ng-show="isInRole('Teacher')">
+
+        <md-card flex-gt-sm ng-show="isInRole('Teacher')">
             <md-card-title id="documents-header">
                 <md-card-title-text flex layout="row">
                     <span class="md-title" flex>Документы</span>
