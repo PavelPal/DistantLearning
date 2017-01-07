@@ -190,6 +190,11 @@ md-input-container {
 .md-button:not([disabled=disabled]):hover md-icon {
   color: #0277bd; }
 
+.float-bottom-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; }
+
 .dl-select-header .dl-header-search-box {
   border: none;
   outline: none;

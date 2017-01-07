@@ -48,11 +48,23 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
             }
         })
         .state("tests", {
+            abstract: true,
             url: "/tests",
-            templateUrl: "../app/tests.html",
+            templateUrl: "../app/test/tests.html",
+            controller: "testController",
             resolve: {
                 auth: auth
             }
+        })
+        .state("tests.list", {
+            url: "/list",
+            templateUrl: "../app/test/list.html",
+            controller: "testListController"
+        })
+        .state("tests.create", {
+            url: "/create",
+            templateUrl: "../app/test/create.html",
+            controller: "testCreateController"
         })
         .state("journal", {
             url: "/journal",

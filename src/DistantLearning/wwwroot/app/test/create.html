@@ -1,0 +1,81 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-title">Новый тест</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div layout-gt-xs="row">
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>название</label>
+                <input ng-model="newTest.name">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <md-tooltip md-direction="top">
+                    заблокировать
+                </md-tooltip>
+                <md-checkbox ng-model="newTest.isLocked" aria-label="заблокировать"></md-checkbox>
+            </md-input-container>
+        </div>
+
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block dl-select" flex-gt-xs>
+                <label>дисциплина</label>
+                <md-select ng-model="newTest.disciplineId">
+                    <md-option ng-value="discipline.id"
+                               ng-repeat="discipline in disciplines">
+                        {{discipline.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container>
+                <label>дата сдачи</label>
+                <md-datepicker ng-model="newTest.closedDate"></md-datepicker>
+            </md-input-container>
+
+            <md-input-container>
+                <label>дата начала</label>
+                <md-datepicker ng-model="newTest.startedDate"></md-datepicker>
+            </md-input-container>
+        </div>
+    </md-card-content>
+</md-card>
+<md-card>
+    <md-card-title>
+        <md-card-title-text flex layout="row">
+            <span class="md-title" flex>Вопросы</span>
+            <md-button class="md-icon-button" ng-click="addQuestion()"
+                       aria-label="Add question">
+                <md-icon layout="column" layout-align="center center">
+                    <md-tooltip md-direction="left">добавить</md-tooltip>
+                    <i class="fa fa-plus"></i>
+                </md-icon>
+            </md-button>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="info-message" ng-hide="newTest.questions.length > 0">
+            <i class="fa fa-info-circle"></i> Вопросы еще не добавлены
+        </div>
+        <div layout-gt-xs="row" ng-repeat="question in newTest.questions">
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>название</label>
+                <input ng-model="question.body">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>время выполнения</label>
+                <input ng-model="question.seconds">
+            </md-input-container>
+            <md-button class="md-icon-button" ng-click="removeQuestion($index)"
+                       aria-label="Remove question">
+                <md-icon layout="column" layout-align="center center">
+                    <md-tooltip md-direction="left">удалить</md-tooltip>
+                    <i class="fa fa-close"></i>
+                </md-icon>
+            </md-button>
+        </div>
+    </md-card-content>
+</md-card>

@@ -26,4 +26,15 @@ namespace DistantLearning.Models
         public User Teacher { get; set; }
         public Discipline Discipline { get; set; }
     }
+
+    public class CreateTestViewModel
+    {
+        public CreateTestViewModel(Test test)
+        {
+            Name = test.Name;
+        }
+
+        public string Name { get; set; }
+
+    }
 }

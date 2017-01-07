@@ -6,6 +6,7 @@ using DistantLearning.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Domain.Model;
 
 namespace DistantLearning.Controllers
 {
@@ -39,6 +40,12 @@ namespace DistantLearning.Controllers
             var test = await _context.Tests.Include("Questions.Answers").FirstOrDefaultAsync(t => t.Id == id);
             if (test == null)
                 return "Not found";
+            return test;
+        }
+
+        [HttpGet("create")]
+        public async Task<object> CreateTest(Test test)
+        {
             return test;
         }
     }
