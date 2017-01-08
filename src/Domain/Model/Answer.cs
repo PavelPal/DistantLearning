@@ -7,6 +7,6 @@
         public bool IsCorrect { get; set; }
 
         public Question Question { get; set; }
-        public int QuestionId { get; set; }
+        public int? QuestionId { get; set; }
     }
 }

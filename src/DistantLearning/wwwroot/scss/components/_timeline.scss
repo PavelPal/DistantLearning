@@ -1,0 +1,52 @@
+timeline {
+  .timeline {
+    &:before {
+      left: 26px;
+    }
+  }
+
+  .timeline-event {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+
+    timeline-badge {
+      position: relative;
+      float: none;
+      top: 13px;
+      left: 0;
+      margin-left: 0;
+      flex-shrink: 0;
+      border: none;
+      box-shadow: none;
+
+      &.md-primary {
+        background-color: #0277bd;
+      }
+
+      &.md-accent {
+        background-color: #ee588b;
+      }
+    }
+
+    timeline-panel {
+      flex: 1;
+      float: none;
+      position: relative;
+      margin-left: 20px;
+      box-shadow: none;
+      border: none;
+      padding: 0 12px;
+
+      &:after, &:before {
+        content: none;
+      }
+
+      .timeline-panel {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+}

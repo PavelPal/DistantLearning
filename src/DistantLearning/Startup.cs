@@ -44,7 +44,7 @@ namespace DistantLearning
             services.AddDbContext<DomainModelContext>(options =>
                 options.UseSqlServer(
                     sqlConnectionString,
-                    b => b.MigrationsAssembly("distantlearning")
+                    b => b.MigrationsAssembly("DistantLearning")
                 )
             );
 
@@ -99,7 +99,7 @@ namespace DistantLearning
                     "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DatabaseInitialize(app.ApplicationServices).Wait();
+            // DatabaseInitialize(app.ApplicationServices).Wait();
         }
 
         private async Task DatabaseInitialize(IServiceProvider serviceProvider)

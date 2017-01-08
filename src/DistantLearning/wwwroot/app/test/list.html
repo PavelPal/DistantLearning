@@ -10,9 +10,9 @@
         </form>
     </md-card-title>
     <md-card-content>
-        <div class="info-message" ng-hide="tests.length > 0">
-            <i class="fa fa-info-circle"></i> По вашему запросу ничего не найдено
-        </div>
+        <md-subheader class="md-no-sticky" ng-hide="tests.length > 0">
+                        <i class="fa fa-info-circle"></i> Тесты еще не добавлены или не найдены
+                    </md-subheader>
         <md-list flex class="dl-multi-line-list" id="documents-list" infinite-scroll="getMoreTests()"
                  infinite-scroll-disabled="isLoading"
                  infinite-scroll-distance="1" infinite-scroll-container="'#parent-container'">

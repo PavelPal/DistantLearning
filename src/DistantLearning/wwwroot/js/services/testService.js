@@ -30,6 +30,23 @@ function testService($http) {
                     console.error("Problem with deleting test " + error);
                 }
             );
+        },
+        createTest: function (test, callback) {
+            $http({
+                url: "/api/test/create",
+                method: "POST",
+                data: JSON.stringify(test),
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(
+                function successCallback(response) {
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with creating test " + error);
+                }
+            );
         }
     };
 }

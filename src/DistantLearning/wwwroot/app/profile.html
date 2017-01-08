@@ -116,9 +116,9 @@
                     <md-progress-circular ng-show="consultationsLoader" ng-disabled="!consultationsLoader"
                                           md-diameter="40px"
                                           md-mode="indeterminate"></md-progress-circular>
-                    <div class="info-message" ng-hide="consultations.length > 0 || consultationsLoader">
-                        <i class="fa fa-info-circle"></i> Нет консультаций
-                    </div>
+                    <md-subheader class="md-no-sticky" ng-hide="consultations.length > 0 || consultationsLoader">
+                        <i class="fa fa-info-circle"></i> Консультации еще не добавлены
+                    </md-subheader>
                     <div layout="row">
                         <md-chips ng-show="consultations.length > 0">
                             <md-chip ng-repeat="consultation in consultations">
@@ -150,9 +150,10 @@
                 <section class="documents-section" layout="column">
                     <md-progress-circular ng-show="documentsLoader" ng-disabled="!documentsLoader" md-diameter="40px"
                                           md-mode="indeterminate"></md-progress-circular>
-                    <div class="info-message" ng-hide="documents.length > 0 || documentsLoader">
-                        <i class="fa fa-info-circle"></i> Нет документов
-                    </div>
+
+                    <md-subheader class="md-no-sticky" ng-hide="documents.length > 0 || documentsLoader">
+                        <i class="fa fa-info-circle"></i> Документы еще не добавлены
+                    </md-subheader>
                     <div layout="row">
                         <md-list class="small-list" flex ng-cloak>
                             <md-list-item ng-click="" ng-repeat="document in documents">

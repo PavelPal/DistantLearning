@@ -12,9 +12,9 @@
                 </form>
             </md-card-title>
             <md-card-content>
-                <div class="info-message" ng-hide="documents.length > 0">
-                    <i class="fa fa-info-circle"></i> По вашему запросу ничего не найдено
-                </div>
+                <md-subheader class="md-no-sticky" ng-hide="documents.length > 0">
+                        <i class="fa fa-info-circle"></i> Документы еще не добавлены или не найдены
+                    </md-subheader>
                 <md-list flex class="dl-multi-line-list" id="documents-list" infinite-scroll="getMoreDocuments()"
                          infinite-scroll-disabled="isLoading"
                          infinite-scroll-distance="1" infinite-scroll-container="'#parent-container'">

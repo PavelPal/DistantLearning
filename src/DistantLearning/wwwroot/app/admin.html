@@ -11,9 +11,9 @@
                     <md-progress-circular ng-show="isLoadingGroups" ng-disabled="!isLoadingGroups"
                                           md-diameter="40px"
                                           md-mode="indeterminate"></md-progress-circular>
-                    <div class="info-message" ng-hide="groups.length > 0 || isLoadingGroups">
-                        <i class="fa fa-info-circle"></i> Нет групп
-                    </div>
+                    <md-subheader class="md-no-sticky" ng-hide="groups.length > 0 || isLoadingGroups">
+                        <i class="fa fa-info-circle"></i> Группы еще не добавлены или не найдены
+                    </md-subheader>
                     <div layout="row">
                         <md-list class="small-list" flex ng-cloak>
                             <md-list-item ng-click="" ng-repeat="group in groups">
@@ -57,9 +57,9 @@
                     <md-progress-circular ng-show="isLoadingDisciplines" ng-disabled="!isLoadingDisciplines"
                                           md-diameter="40px"
                                           md-mode="indeterminate"></md-progress-circular>
-                    <div class="info-message" ng-hide="disciplines.length > 0 || isLoadingDisciplines">
-                        <i class="fa fa-info-circle"></i> Нет групп
-                    </div>
+                    <md-subheader class="md-no-sticky" ng-hide="disciplines.length > 0 || isLoadingDisciplines">
+                        <i class="fa fa-info-circle"></i> Дисциплины еще не добавлены или не найдены
+                    </md-subheader>
                     <div layout="row">
                         <md-list class="small-list" flex ng-cloak>
                             <md-list-item ng-click="" ng-repeat="discipline in disciplines">
@@ -97,9 +97,9 @@
                     <md-progress-circular ng-show="isLoadingUsers" ng-disabled="!isLoadingUsers"
                                           md-diameter="40px"
                                           md-mode="indeterminate"></md-progress-circular>
-                    <div class="info-message" ng-hide="notApprovedUsers.length > 0 || isLoadingUsers">
-                        <i class="fa fa-info-circle"></i> Нет пользователей
-                    </div>
+                    <md-subheader class="md-no-sticky" ng-hide="notApprovedUsers.length > 0 || isLoadingUsers">
+                        <i class="fa fa-info-circle"></i> Пользователи еще не добавлены или не найдены
+                    </md-subheader>
                     <div layout="row">
                         <md-list class="small-list" flex ng-cloak>
                             <md-list-item ng-click="goToUser(user.id)" ng-repeat="user in notApprovedUsers">

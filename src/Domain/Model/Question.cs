@@ -9,7 +9,7 @@ namespace Domain.Model
         public int Seconds { get; set; }
 
         public Test Test { get; set; }
-        public int TestId { get; set; }
+        public int? TestId { get; set; }
 
         public List<Answer> Answers { get; set; }
     }

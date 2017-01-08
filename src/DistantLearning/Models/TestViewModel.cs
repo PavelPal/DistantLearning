@@ -29,12 +29,24 @@ namespace DistantLearning.Models
 
     public class CreateTestViewModel
     {
-        public CreateTestViewModel(Test test)
-        {
-            Name = test.Name;
-        }
-
         public string Name { get; set; }
+        public bool IsLocked { get; set; }
+        public DateTime? StartedDate { get; set; }
+        public DateTime? ClosedDate { get; set; }
+        public int DisciplineId { get; set; }
+        public CreateTestQuestionViewModel[] Questions { get; set; }
+    }
 
+    public class CreateTestQuestionViewModel
+    {
+        public string Body { get; set; }
+        public int Seconds { get; set; }
+        public CreateTestAnswerViewModel[] Answers { get; set; }
+    }
+
+    public class CreateTestAnswerViewModel
+    {
+        public string Body { get; set; }
+        public bool IsCorrect { get; set; }
     }
 }

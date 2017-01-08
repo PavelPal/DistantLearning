@@ -141,12 +141,6 @@ md-toolbar {
 .center-align {
   text-align: center; }
 
-.info-message {
-  font-size: 14px;
-  color: #9e9e9e; }
-  .info-message i {
-    margin-right: 5px; }
-
 footer {
   padding: 15px 0 30px; }
   footer p {
@@ -160,6 +154,9 @@ md-input-container {
     color: #0277bd; }
   md-input-container md-icon {
     color: #858585; }
+  md-input-container textarea {
+    max-height: 150px;
+    min-height: 30px !important; }
 
 .search-input-block {
   margin: 0;
@@ -419,3 +416,38 @@ section md-progress-circular {
 
 md-menu-item > .md-button {
   font-size: 14px; }
+
+timeline .timeline:before {
+  left: 26px; }
+
+timeline .timeline-event {
+  position: relative;
+  display: flex;
+  flex-direction: row; }
+  timeline .timeline-event timeline-badge {
+    position: relative;
+    float: none;
+    top: 13px;
+    left: 0;
+    margin-left: 0;
+    flex-shrink: 0;
+    border: none;
+    box-shadow: none; }
+    timeline .timeline-event timeline-badge.md-primary {
+      background-color: #0277bd; }
+    timeline .timeline-event timeline-badge.md-accent {
+      background-color: #ee588b; }
+  timeline .timeline-event timeline-panel {
+    flex: 1;
+    float: none;
+    position: relative;
+    margin-left: 20px;
+    box-shadow: none;
+    border: none;
+    padding: 0 12px; }
+    timeline .timeline-event timeline-panel:after, timeline .timeline-event timeline-panel:before {
+      content: none; }
+    timeline .timeline-event timeline-panel .timeline-panel {
+      align-items: center;
+      display: flex;
+      flex-direction: row; }

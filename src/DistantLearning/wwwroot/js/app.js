@@ -9,5 +9,6 @@ var app = angular.module("distantLearning", [
     "ngCookies",
     "ngProgress",
     "angularFileUpload",
-    "infinite-scroll"
+    "infinite-scroll",
+    'angular-timeline'
 ]);
