@@ -56,4 +56,12 @@ function config($provide, $mdThemingProvider) {
             'default': "400"
         })
         .warnPalette("red");
+
+    $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
+    $mdThemingProvider.theme('pink').backgroundPalette('pink', {
+        'default': "500",
+        'hue-1': "500",
+        'hue-2': "500",
+        'hue-3': "500"
+    }).dark();
 }

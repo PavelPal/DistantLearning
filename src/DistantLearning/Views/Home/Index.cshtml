@@ -7,13 +7,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>{{title}}</title>
 
     <environment names="Development,Staging,Production">
         <link rel="stylesheet" href="~/lib/normalize-css/normalize.css"/>
         <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css"/>
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="~/lib/ngprogress/ngProgress.css"/>
+        <link rel="stylesheet" href="~/lib/angular-timeline/dist/angular-timeline.css"/>
         <link rel="stylesheet" href="~/css/main.min.css"/>
     </environment>
 </head>
@@ -33,6 +34,7 @@
     <script src="~/lib/ngprogress/build/ngprogress.min.js"></script>
     <script src="~/lib/angular-material/angular-material.min.js"></script>
     <script src="~/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="~/lib/angular-timeline/dist/angular-timeline.js"></script>
     <script src="~/lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
     <script src="~/js/site.min.js"></script>
 </environment>
@@ -72,7 +74,7 @@
                         <p>Пользователи</p>
                     </div>
                 </md-list-item>
-                <md-list-item ng-click="close()" ui-sref="tests">
+                <md-list-item ng-click="close()" ui-sref="tests.list">
                     <md-icon class="fa fa-flask"></md-icon>
                     <div class="md-list-item-text" layout="column" flex>
                         <p>Тесты</p>
@@ -116,8 +118,8 @@
                         <p>Помощь</p>
                     </div>
                 </md-list-item>
-                <md-divider ng-show="isAdmin()"></md-divider>
-                <md-list-item ng-click="close()" ng-show="isAdmin()" ui-sref="admin">
+                <md-divider ng-show="isInRole('Admin')"></md-divider>
+                <md-list-item ng-click="close()" ng-show="isInRole('Admin')" ng-disabled="!isInRole('Admin')" ui-sref="admin">
                     <md-icon class="fa fa-dashboard"></md-icon>
                     <div class="md-list-item-text" layout="column" flex>
                         <p>Админ</p>

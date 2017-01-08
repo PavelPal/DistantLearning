@@ -14,17 +14,20 @@
                     <span class="md-title">{{profile.firstName}} {{profile.lastName}}</span>
                     <span class="md-subhead">
                         <span ng-repeat="role in profile.roles">{{getRole(role)}}</span>
-                        <span ng-show="isTeacher()">(<span
+                        <span ng-show="isInRole('Teacher')">(<span
                                 ng-repeat="discipline in disciplines">{{discipline.name}}<span
                                 ng-if="$index + 1 < disciplines.length">, </span></span>)</span>
-                        <span ng-show="isStudent()">(<span>{{group}}</span>)</span>
+                        <span ng-show="isInRole('Student')">(<span>{{group}}</span>)</span>
                     </span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-actions ng-show="isCurrent()" ng-disabled="!isCurrent()">
                 <md-button>Редактировать</md-button>
-                <md-button aria-label="change photo button" ng-click="showProfileImageModal($event)">
-                    <i class="fa fa-photo"></i>
+                <md-button aria-label="change photo button" ng-disabled="!profile.isApproved"
+                           ng-click="showProfileImageModal($event)">
+                    <md-icon layout="column" layout-align="center center">
+                        <i class="fa fa-photo"></i>
+                    </md-icon>
                 </md-button>
             </md-card-actions>
         </md-card>
@@ -60,22 +63,49 @@
             </md-card-content>
         </md-card>
     </div>
-    <div flex layout="column" class="profile-info-card-wrap">
-        <md-card class="profile-info-card" hide-xs>
+    <div flex layout="column" layout-gt-sm="row" layout-align-gt-sm=" start" class="profile-info-card-wrap" layout-wrap>
+        <md-card flex-gt-sm="100" class="profile-info-card" hide-xs>
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{{profile.firstName}} {{profile.lastName}}</span>
                     <span class="md-subhead">
                         <span ng-repeat="role in profile.roles">{{getRole(role)}}</span>
-                        <span ng-show="isTeacher()">(<span
+                        <span ng-show="isInRole('Teacher')">(<span
                                 ng-repeat="discipline in disciplines">{{discipline.name}}<span
                                 ng-if="$index + 1 < disciplines.length">, </span></span>)</span>
-                        <span ng-show="isStudent()">(<span>{{group}}</span>)</span>
+                        <span ng-show="isInRole('Student')">(<span>{{group}}</span>)</span>
                     </span>
                 </md-card-title-text>
             </md-card-title>
         </md-card>
-        <md-card ng-show="isTeacher()">
+
+        <md-card flex-gt-sm md-theme="dark-blue" md-theme-watch ng-show="isInRole('Admin')">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">Помощь</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <i class="fa fa-question-circle large-card-icon"></i>
+                <p>Перейдя по <a ui-sref="help">ссылке</a> вы можете получить справочную информацию для использования
+                    данного сервиса.</p>
+            </md-card-content>
+        </md-card>
+
+        <md-card flex-gt-sm md-theme="pink" md-theme-watch ng-show="isInRole('Admin')">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">Изменение пользовательских данных</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <i class="fa fa-gear large-card-icon"></i>
+                <p>При изменении пользовательских данных Вам необходимо подождать подтверждения информации
+                    администратором.</p>
+            </md-card-content>
+        </md-card>
+
+        <md-card flex-gt-sm ng-show="isInRole('Teacher')">
             <md-card-title id="consultations-header">
                 <md-card-title-text>
                     <span class="md-title">Консультации</span>
@@ -86,9 +116,9 @@
                     <md-progress-circular ng-show="consultationsLoader" ng-disabled="!consultationsLoader"
                                           md-diameter="40px"
                                           md-mode="indeterminate"></md-progress-circular>
-                    <div class="info-message" ng-hide="consultations.length > 0 || consultationsLoader">
-                        <i class="fa fa-info-circle"></i> Нет консультаций
-                    </div>
+                    <md-subheader class="md-no-sticky" ng-hide="consultations.length > 0 || consultationsLoader">
+                        <i class="fa fa-info-circle"></i> Консультации еще не добавлены
+                    </md-subheader>
                     <div layout="row">
                         <md-chips ng-show="consultations.length > 0">
                             <md-chip ng-repeat="consultation in consultations">
@@ -100,15 +130,17 @@
                 </section>
             </md-card-content>
         </md-card>
-        <md-card ng-show="isTeacher()">
+
+        <md-card flex-gt-sm ng-show="isInRole('Teacher')">
             <md-card-title id="documents-header">
                 <md-card-title-text flex layout="row">
                     <span class="md-title" flex>Документы</span>
                     <md-button class="md-icon-button" ng-show="isCurrent()"
+                               ng-disabled="!profile.isApproved"
                                ng-click="showDocumentUploadingModal($event)"
                                aria-label="Upload document">
                         <md-icon layout="column" layout-align="center center">
-                            <md-tooltip md-direction="left">Загрузить</md-tooltip>
+                            <md-tooltip ng-show="profile.isApproved" md-direction="left">Загрузить</md-tooltip>
                             <i class="fa fa-upload"></i>
                         </md-icon>
                     </md-button>
@@ -118,9 +150,10 @@
                 <section class="documents-section" layout="column">
                     <md-progress-circular ng-show="documentsLoader" ng-disabled="!documentsLoader" md-diameter="40px"
                                           md-mode="indeterminate"></md-progress-circular>
-                    <div class="info-message" ng-hide="documents.length > 0 || documentsLoader">
-                        <i class="fa fa-info-circle"></i> Нет документов
-                    </div>
+
+                    <md-subheader class="md-no-sticky" ng-hide="documents.length > 0 || documentsLoader">
+                        <i class="fa fa-info-circle"></i> Документы еще не добавлены
+                    </md-subheader>
                     <div layout="row">
                         <md-list class="small-list" flex ng-cloak>
                             <md-list-item ng-click="" ng-repeat="document in documents">

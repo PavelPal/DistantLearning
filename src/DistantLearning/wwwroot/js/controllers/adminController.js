@@ -4,17 +4,10 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
     $scope.groups = [];
     $scope.notApprovedUsers = [];
     $scope.disciplines = [];
-    $scope.newGroup = {
-        prefix: 0,
-        postfix: ''
-    };
+    $scope.newGroup = {prefix: 0, postfix: ''};
     $scope.newDiscipline = '';
     $scope.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-    $scope.searchParams = {
-        searchString: null,
-        skip: 0,
-        take: 20
-    };
+    $scope.searchParams = {searchString: null, skip: 0, take: 20};
     $scope.isLoadingGroups = true;
     $scope.isLoadingDisciplines = true;
     $scope.isLoadingUsers = true;
@@ -31,6 +24,7 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
     });
 
     userService.getNotApprovedUsers($scope.searchParams, function (data) {
+        if (data.length < $scope.searchParams.take) $scope.canGetUsers = false;
         $scope.notApprovedUsers = data;
         $scope.isLoadingUsers = false;
     });
@@ -46,7 +40,7 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
                     $mdToast.show($mdToast.simple().textContent("Группа была создана ранее").position('bottom right').hideDelay(3000));
                 } else if (data.message == "Created") {
                     $scope.groups.push({
-                        id: 0,
+                        id: data.id,
                         prefix: group.prefix,
                         postfix: group.postfix
                     });
@@ -87,6 +81,7 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
         $scope.isLoadingUsers = true;
         $scope.searchParams.skip = 0;
         userService.getNotApprovedUsers($scope.searchParams, function (data) {
+            if (data.length < $scope.searchParams.take) $scope.canGetUsers = false;
             $scope.notApprovedUsers = data;
             $scope.isLoadingUsers = false;
         });
@@ -100,16 +95,16 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
     $scope.getMoreUsers = function () {
         if ($scope.isLoadingUsers) return;
         $scope.isLoadingUsers = true;
-        $scope.searchParams.skip += $scope.searchParams.take;
         if ($scope.canGetUsers) {
+            $scope.searchParams.skip += $scope.searchParams.take;
             userService.getUsers($scope.searchParams, function (data) {
-                if (data.length < 20) $scope.canGetUsers = false;
+                if (data.length < $scope.searchParams.take) $scope.canGetUsers = false;
                 angular.forEach(data, function (element) {
                     $scope.notApprovedUsers.push(element);
                 });
+                $scope.isLoadingUsers = false;
             });
         }
-        $scope.isLoadingUsers = false;
     };
 
     $scope.approveUser = function (index) {
@@ -120,8 +115,26 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
             } else if (data == "Not found") {
                 $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
             } else if (data == "Approved") {
+                $scope.canGetUsers = true;
                 $scope.notApprovedUsers.splice(index, 1);
                 $mdToast.show($mdToast.simple().textContent("Пользователь одобрен").position('bottom right').hideDelay(3000));
+            }
+        });
+    };
+
+    $scope.deleteUser = function (index) {
+        var userId = $scope.notApprovedUsers[index].id;
+        userService.deleteUser(userId, function (data) {
+            if (data == "Invalid id") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный ID").position('bottom right').hideDelay(3000));
+            } else if (data == "Not found") {
+                $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
+            } else if (data == "Deleted") {
+                $scope.canGetUsers = true;
+                $scope.notApprovedUsers.splice(index, 1);
+                $mdToast.show($mdToast.simple().textContent("Пользователь удален").position('bottom right').hideDelay(3000));
+            } else if (data == "Error") {
+                $mdToast.show($mdToast.simple().textContent("При удалении произошла ошибка").position('bottom right').hideDelay(3000));
             }
         });
     }

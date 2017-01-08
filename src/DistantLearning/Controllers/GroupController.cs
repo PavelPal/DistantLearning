@@ -71,7 +71,9 @@ namespace DistantLearning.Controllers
                 return "Not found";
             if (
                 await _context.Groups.FirstOrDefaultAsync(
-                    g => g.Prefix == group.Prefix && g.Postfix.ToLower().Equals(group.Postfix.ToLower())) != null)
+                    g =>
+                        g.Id != group.Id && g.Prefix == group.Prefix &&
+                        g.Postfix.ToLower().Equals(group.Postfix.ToLower())) != null)
                 return "Exist";
             dbGroup.Prefix = group.Prefix;
             dbGroup.Postfix = group.Postfix;

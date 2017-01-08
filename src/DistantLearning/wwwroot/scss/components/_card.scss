@@ -17,8 +17,22 @@ md-card {
 
   md-card-content {
     &.overflow {
-      max-height: 400px;
+      max-height: 300px;
       overflow: auto;
+    }
+
+    .large-card-icon {
+      font-size: 88px;
+      text-align: center;
+    }
+
+    p {
+      font-size: 14px;
+
+      a {
+        color: #ff4081;
+        text-decoration: none;
+      }
     }
   }
 

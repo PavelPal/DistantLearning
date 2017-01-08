@@ -75,7 +75,7 @@ namespace DistantLearning.Controllers
             if (file == null || file.Length <= 0) return "Error";
             var user = await
                 _context.Users.Include("Teacher.Documents")
-                    .FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
+                    .FirstOrDefaultAsync(u => u.IsApproved && u.UserName.Equals(User.Identity.Name));
             if (user == null) return "Not found";
             try
             {

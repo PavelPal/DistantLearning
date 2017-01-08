@@ -17,9 +17,15 @@
 }
 
 .md-button {
-  &:hover {
+  &:not([disabled=disabled]):hover {
     md-icon {
       color: #0277bd;
     }
   }
+}
+
+.float-bottom-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }

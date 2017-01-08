@@ -1,0 +1,126 @@
+<form name="testForm" novalidate>
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-title">Новый тест</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div layout-gt-xs="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>название</label>
+                    <input ng-model="newTest.name" required>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <md-tooltip md-direction="top">
+                        заблокировать
+                    </md-tooltip>
+                    <md-checkbox ng-model="newTest.isLocked" aria-label="заблокировать"></md-checkbox>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block dl-select" flex-gt-xs>
+                    <label>дисциплина</label>
+                    <md-select ng-model="newTest.disciplineId" required>
+                        <md-option ng-value="discipline.id"
+                                   ng-repeat="discipline in disciplines">
+                            {{discipline.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>дата сдачи</label>
+                    <md-datepicker md-min-date="minDate" ng-model="newTest.closedDate"></md-datepicker>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>дата начала</label>
+                    <md-datepicker md-min-date="minDate" ng-model="newTest.startedDate"></md-datepicker>
+                </md-input-container>
+            </div>
+        </md-card-content>
+    </md-card>
+
+    <md-subheader class="md-no-sticky" ng-hide="newTest.questions.length > 0">
+        <i class="fa fa-info-circle"></i> Вопросы еще не добавлены
+    </md-subheader>
+
+    <md-card ng-repeat="question in newTest.questions" flex>
+        <md-card-title>
+            <md-card-title-text flex layout="row">
+                <span class="md-title" flex>Вопрос: {{$index + 1}}</span>
+                <md-button class="md-icon-button" ng-click="removeQuestion($index)">
+                    <md-icon layout="column" layout-align="center center">
+                        <md-tooltip md-direction="left">удалить</md-tooltip>
+                        <i class="fa fa-close"></i>
+                    </md-icon>
+                </md-button>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div>
+                <div layout="column" flex>
+                    <div layout-gt-xs="row">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>содержание</label>
+                            <textarea ng-model="question.body" rows="1" md-select-on-focus required></textarea>
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label>время (сек.)</label>
+                            <input ng-model="question.seconds" ng-pattern="validation.seconds" required>
+                        </md-input-container>
+                    </div>
+                    <md-subheader class="md-no-sticky" ng-hide="question.answers.length > 0"><i
+                            class="fa fa-info-circle"></i> Ответы еще не добавлены
+                    </md-subheader>
+                    <timeline class="answer-list">
+                        <timeline-event ng-repeat="answer in question.answers" side="right">
+                            <timeline-badge ng-class="answer.isCorrect ? 'md-primary' : 'md-accent'">
+                                <i class="fa fa-check" ng-class="answer.isCorrect ? 'fa-check' : 'fa-close'"></i>
+                            </timeline-badge>
+                            <timeline-panel>
+                                <md-input-container class="md-block">
+                                    <md-checkbox ng-model="answer.isCorrect" aria-label="правильный"></md-checkbox>
+                                </md-input-container>
+
+                                <md-input-container class="md-block" flex-gt-xs>
+                                    <label>ответ</label>
+                                    <input ng-model="answer.body" required>
+                                </md-input-container>
+
+                                <md-button class="md-button" ng-click="removeAnswer(question, $index)"
+                                           aria-label="Remove answer">удалить
+                                </md-button>
+                            </timeline-panel>
+                        </timeline-event>
+                    </timeline>
+                    <md-button ng-click="addAnswer($index)">добавить ответ</md-button>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+
+    <div class="lock-size float-bottom-button" layout="row" layout-align="center center">
+        <md-fab-speed-dial md-open="false" md-direction="up" class="md-scale">
+            <md-fab-trigger>
+                <md-button aria-label="menu" class="md-fab">
+                    <i class="fa fa-bars"></i>
+                </md-button>
+            </md-fab-trigger>
+            <md-fab-actions>
+                <md-button ng-click="addQuestion()" aria-label="Add test" class="md-fab md-primary md-mini">
+                    <md-tooltip md-direction="left">Добавить вопрос</md-tooltip>
+                    <i class="fa fa-plus"></i>
+                </md-button>
+                <md-button ng-click="createTest(testForm)" aria-label="Add test" class="md-fab md-primary md-mini">
+                    <md-tooltip md-direction="left">Завершить</md-tooltip>
+                    <i class="fa fa-check"></i>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
+    </div>
+</form>

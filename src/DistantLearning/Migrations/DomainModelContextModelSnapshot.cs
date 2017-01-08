@@ -24,7 +24,7 @@ namespace distantlearning.Migrations
 
                 b.Property<bool>("IsCorrect");
 
-                b.Property<int>("QuestionId");
+                b.Property<int?>("QuestionId");
 
                 b.Property<DateTime>("UpdatedTimestamp");
 
@@ -261,7 +261,7 @@ namespace distantlearning.Migrations
 
                 b.Property<int>("Seconds");
 
-                b.Property<int>("TestId");
+                b.Property<int?>("TestId");
 
                 b.Property<DateTime>("UpdatedTimestamp");
 
@@ -328,7 +328,7 @@ namespace distantlearning.Migrations
 
                 b.Property<int>("InComplete");
 
-                b.Property<int>("TestId");
+                b.Property<int?>("TestId");
 
                 b.Property<DateTime>("UpdatedTimestamp");
 
@@ -606,8 +606,7 @@ namespace distantlearning.Migrations
             {
                 b.HasOne("Domain.Model.Question", "Question")
                     .WithMany("Answers")
-                    .HasForeignKey("QuestionId")
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey("QuestionId");
             });
 
             modelBuilder.Entity("Domain.Model.ChildParent", b =>
@@ -696,8 +695,7 @@ namespace distantlearning.Migrations
             {
                 b.HasOne("Domain.Model.Test", "Test")
                     .WithMany("Questions")
-                    .HasForeignKey("TestId")
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey("TestId");
             });
 
             modelBuilder.Entity("Domain.Model.TeacherDiscipline", b =>
@@ -730,8 +728,7 @@ namespace distantlearning.Migrations
             {
                 b.HasOne("Domain.Model.Test", "Test")
                     .WithMany("TestResults")
-                    .HasForeignKey("TestId")
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey("TestId");
 
                 b.HasOne("Domain.Model.UserStudent", "User")
                     .WithMany("TestResults")

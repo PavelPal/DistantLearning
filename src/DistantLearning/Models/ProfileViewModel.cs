@@ -19,6 +19,7 @@ namespace DistantLearning.Models
             PhoneNumber = user.PhoneNumber;
             PhoneNumberConfirmed = user.PhoneNumberConfirmed;
             Photo = user.PhotoPath;
+            IsApproved = user.IsApproved;
             Roles = roles;
         }
 
@@ -30,6 +31,7 @@ namespace DistantLearning.Models
         public string PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
         public string Photo { get; set; }
+        public bool IsApproved { get; set; }
         public IList<string> Roles { get; set; }
     }
 }

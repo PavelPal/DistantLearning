@@ -5,17 +5,13 @@ function documentController($scope, documentService, ngProgressFactory) {
     $scope.progressbar.setParent(document.querySelector('.search-input-block'));
     $scope.progressbar.setAbsolute();
     $scope.progressbar.start();
-
     $scope.documents = [];
     $scope.isLoading = true;
     $scope.canGetElements = true;
-    $scope.searchParams = {
-        searchString: null,
-        skip: 0,
-        take: 20
-    };
+    $scope.searchParams = {searchString: null, skip: 0, take: 20};
 
     documentService.getDocuments($scope.searchParams, function (data) {
+        if (data.length < $scope.searchParams.take) $scope.canGetElements = false;
         $scope.documents = data;
         $scope.isLoading = false;
         $scope.progressbar.complete();
@@ -28,6 +24,7 @@ function documentController($scope, documentService, ngProgressFactory) {
         $scope.progressbar.start();
         $scope.searchParams.skip = 0;
         documentService.getDocuments($scope.searchParams, function (data) {
+            if (data.length < $scope.searchParams.take) $scope.canGetElements = false;
             $scope.documents = data;
             $scope.isLoading = false;
             $scope.progressbar.complete();
@@ -41,7 +38,7 @@ function documentController($scope, documentService, ngProgressFactory) {
         $scope.searchParams.skip += $scope.searchParams.take;
         if ($scope.canGetElements) {
             documentService.getDocuments($scope.searchParams, function (data) {
-                if (data.length < 20) $scope.canGetElements = false;
+                if (data.length < $scope.searchParams.take) $scope.canGetElements = false;
                 angular.forEach(data, function (element) {
                     $scope.documents.push(element);
                 });

@@ -12,9 +12,9 @@
                 </form>
             </md-card-title>
             <md-card-content>
-                <div class="info-message" ng-hide="users.length > 0">
-                    <i class="fa fa-info-circle"></i> По вашему запросу ничего не найдено
-                </div>
+                <md-subheader class="md-no-sticky" ng-hide="users.length > 0">
+                        <i class="fa fa-info-circle"></i> Пользователи еще не добавлены или не найдены
+                    </md-subheader>
                 <md-list flex class="dl-multi-line-list" infinite-scroll="getMoreUsers()" infinite-scroll-disabled="isLoading"
                          infinite-scroll-distance="1" infinite-scroll-container="'#parent-container'">
                     <md-list-item class="md-2-line" ng-repeat="user in users">

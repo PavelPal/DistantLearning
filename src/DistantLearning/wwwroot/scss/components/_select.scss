@@ -23,15 +23,3 @@
     padding-top: 0;
   }
 }
-
-.dl-select {
-  .md-select-value {
-    & > span:first-child {
-      font-size: 14px;
-
-      * {
-        font-size: 16px;
-      }
-    }
-  }
-}

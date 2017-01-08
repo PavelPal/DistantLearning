@@ -112,11 +112,38 @@ function authService($http, $cookies, localStorageService) {
         }
     };
 
+    var isInRole = function (role) {
+        var isInRole = false;
+        angular.forEach(authentication.roles, function (authRole) {
+            if (authRole == role) {
+                isInRole = true;
+            }
+        });
+        return isInRole;
+    };
+
+    var getRole = function (role) {
+        switch (role) {
+            case "Admin":
+                return "администратор";
+            case "Teacher":
+                return "учитель";
+            case "Student":
+                return "ученик";
+            case "Parent":
+                return "родитель";
+            case "Moderator":
+                return "модератор";
+        }
+    };
+
     authServiceFactory.signUp = signUp;
     authServiceFactory.login = login;
     authServiceFactory.logOut = logOut;
     authServiceFactory.fillAuthData = fillAuthData;
     authServiceFactory.authentication = authentication;
+    authServiceFactory.isInRole = isInRole;
+    authServiceFactory.getRole = getRole;
 
     return authServiceFactory;
 }

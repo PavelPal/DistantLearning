@@ -27,8 +27,9 @@ namespace DistantLearning.Controllers
         public async Task<string> UploadProfileImage(IFormFile file)
         {
             if (file == null || file.Length <= 0) return "Error";
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName.Equals(User.Identity.Name));
-            if (user == null) return "Error";
+            var user =
+                await _context.Users.FirstOrDefaultAsync(u => u.IsApproved && u.UserName.Equals(User.Identity.Name));
+            if (user == null) return "Not found";
             var path = Path.Combine(_hostingEnvironment.WebRootPath,
                 "data" + Path.DirectorySeparatorChar + "profile_photos");
             try

@@ -1,10 +1,8 @@
 md-input-container {
+  max-width: 100%;
+
   &.md-block {
     margin-bottom: 0;
-
-    label {
-      font-size: 14px;
-    }
   }
 
   &:not(.md-input-invalid).md-input-focused {
@@ -15,6 +13,11 @@ md-input-container {
 
   md-icon {
     color: #858585;
+  }
+
+  textarea {
+    max-height: 150px;
+    min-height: 30px !important;
   }
 }
 

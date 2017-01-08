@@ -44,7 +44,7 @@ namespace DistantLearning
             services.AddDbContext<DomainModelContext>(options =>
                 options.UseSqlServer(
                     sqlConnectionString,
-                    b => b.MigrationsAssembly("distantlearning")
+                    b => b.MigrationsAssembly("DistantLearning")
                 )
             );
 
@@ -99,7 +99,7 @@ namespace DistantLearning
                     "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DatabaseInitialize(app.ApplicationServices).Wait();
+            // DatabaseInitialize(app.ApplicationServices).Wait();
         }
 
         private async Task DatabaseInitialize(IServiceProvider serviceProvider)
@@ -122,7 +122,9 @@ namespace DistantLearning
                 {
                     Email = adminEmail,
                     UserName = adminEmail,
-                    FirstName = "Администратор",
+                    FirstName = "Павел",
+                    LastName = "Павлющик",
+                    PhoneNumber = "+375295567449",
                     IsApproved = true
                 };
                 var result = await userManager.CreateAsync(admin, password);
