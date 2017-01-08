@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccessProvider;
+using DistantLearning.Models;
 using Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +35,7 @@ namespace DistantLearning.Controllers
         }
 
         [HttpPost("createConsultation")]
-        public async Task<object> CreateConsultation([FromBody] Consultation consultation)
+        public async Task<object> CreateConsultation([FromBody] CreateConsultationViewModel consultation)
         {
             if (consultation == null)
                 return "Invalid data";
@@ -44,10 +46,15 @@ namespace DistantLearning.Controllers
                 return "Not found";
             if (user.Teacher.FirstOrDefault().Consultations == null)
                 user.Teacher.FirstOrDefault().Consultations = new List<Consultation>();
-            user.Teacher.FirstOrDefault().Consultations.Add(consultation);
+            var newConsultation = new Consultation
+            {
+                DayOfWeek = (DayOfWeek) consultation.DayOfWeek,
+                Time = TimeSpan.FromHours(consultation.Hour) + TimeSpan.FromMinutes(consultation.Minutes)
+            };
+            user.Teacher.FirstOrDefault().Consultations.Add(newConsultation);
             _context.ChangeTracker.DetectChanges();
             await _context.SaveChangesAsync();
-            return "Created";
+            return new {Message = "Created", Consultation = newConsultation};
         }
     }
 }

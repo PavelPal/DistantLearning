@@ -107,8 +107,17 @@
 
         <md-card flex-gt-sm ng-show="isInRole('Teacher')">
             <md-card-title id="consultations-header">
-                <md-card-title-text>
-                    <span class="md-title">Консультации</span>
+                <md-card-title-text flex layout="row">
+                    <span class="md-title" flex>Консультации</span>
+                    <md-button class="md-icon-button" ng-show="isCurrent()"
+                               ng-disabled="!profile.isApproved"
+                               ng-click="showCreateConsultationModal($event)"
+                               aria-label="Create consultation">
+                        <md-icon layout="column" layout-align="center center">
+                            <md-tooltip ng-show="profile.isApproved" md-direction="left">Добавить</md-tooltip>
+                            <i class="fa fa-plus"></i>
+                        </md-icon>
+                    </md-button>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout="column">

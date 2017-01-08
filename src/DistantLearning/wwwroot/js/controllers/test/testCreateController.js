@@ -1,6 +1,6 @@
 app.controller("testCreateController", testCreateController);
 
-function testCreateController($scope, testService, disciplineService, authService, $mdToast) {
+function testCreateController($scope, $state, testService, disciplineService, authService, $mdToast) {
     var profileId = authService.authentication.id,
         currentDate = new Date();
 
@@ -81,7 +81,14 @@ function testCreateController($scope, testService, disciplineService, authServic
                     $mdToast.show($mdToast.simple().textContent(result).position('bottom right').hideDelay(3000));
                 } else if (isValid) {
                     testService.createTest($scope.newTest, function (data) {
-                        $mdToast.show($mdToast.simple().textContent("Тест успешно создан").position('bottom right').hideDelay(3000));
+                        if (data == "Invalid data") {
+                            $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
+                        } else if (data == "Invalid user") {
+                            $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
+                        } else if (data == "Created") {
+                            $state.go("tests.list");
+                            $mdToast.show($mdToast.simple().textContent("Тест успешно создан").position('bottom right').hideDelay(3000));
+                        }
                     });
                 }
             } else {

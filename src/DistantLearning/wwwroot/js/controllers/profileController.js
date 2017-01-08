@@ -88,7 +88,7 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
     };
 
     $scope.showDocumentUploadingModal = function (ev) {
-        if (!$scope.isTeacher) return;
+        if (!$scope.isInRole('Teacher')) return;
         $mdDialog.show({
             controller: 'DocumentLoaderController',
             templateUrl: '../app/partials/documentUploadingView.html',
@@ -103,6 +103,32 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
                     name: response.name,
                     date: Date.now(),
                     isLocked: false
+                });
+            },
+            function (response) {
+            });
+    };
+
+    $scope.showCreateConsultationModal = function (ev) {
+        if (!$scope.isInRole('Teacher')) return;
+        $mdDialog.show({
+            controller: 'CreateConsultationController',
+            templateUrl: '../app/partials/createConsultationView.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: false,
+            fullscreen: false
+        }).then(
+            function (response) {
+                consultationService.createConsultation(response, function (data) {
+                    if (data.message != undefined && data.message == "Created") {
+                        $scope.consultations.push(data.consultation);
+                        $mdToast.show($mdToast.simple().textContent("Консультация была добавлена").position('bottom right').hideDelay(3000));
+                    } else if (data == "Not found") {
+                        $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
+                    } else if (data == "Invalid data") {
+                        $mdToast.show($mdToast.simple().textContent("Введенные данные неверны").position('bottom right').hideDelay(3000));
+                    }
                 });
             },
             function (response) {

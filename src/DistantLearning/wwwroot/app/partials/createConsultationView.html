@@ -1,0 +1,59 @@
+<md-dialog aria-label="Добавить консультацию">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Добавить консультацию</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="Отмена" ng-click="cancel()">
+                    <i class="fa fa-close"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content file-upload-container" flex layout="row">
+
+                <md-input-container>
+                    <label>День недели</label>
+                    <md-select ng-model="consultation.dayOfWeek">
+                        <md-option ng-repeat="day in dayOfWeek" ng-value="$index">
+                            {{day}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Час</label>
+                    <input required type="number" step="1" ng-model="consultation.hour" min="8"
+                           max="20" ng-pattern="/^[0-9]{2}$/"/>
+                    <div ng-messages="consultation.hour.$error" multiple md-auto-hide="true">
+                        <div ng-message="required">Введите час</div>
+                        <div ng-message="min">Выбран слишком ранний час</div>
+                        <div ng-message="pattern">Должно содержать две цифры</div>
+                        <div ng-message="max">Выбран слишком позний час</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Минуты</label>
+                    <input required type="number" step="1" ng-model="consultation.minutes" min="0"
+                           max="59" ng-pattern="/^[0-9]{2}$/"/>
+                    <div ng-messages="consultation.minutes.$error" multiple md-auto-hide="true">
+                        <div ng-message="required">Введите минуты</div>
+                        <div ng-message="min">Минуты введены некорректно</div>
+                        <div ng-message="pattern">Должно содержать две цифры</div>
+                        <div ng-message="max">Минуты введены некорректно</div>
+                    </div>
+                </md-input-container>
+
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="cancel()">
+                Отмена
+            </md-button>
+            <md-button ng-disabled="uploader.queue.length == 0" ng-click="answer()">
+                Готово
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -5,7 +5,6 @@ using DataAccessProvider;
 using DistantLearning.Models;
 using Domain.Model;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,23 +15,39 @@ namespace DistantLearning.Controllers
     public class TestController : Controller
     {
         private readonly DomainModelContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public TestController(DomainModelContext context, UserManager<User> userManager)
+        public TestController(DomainModelContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         [HttpGet("")]
-        public async Task<List<TestViewModel>> Tests()
+        public async Task<List<TestViewModel>> Tests(string searchString, int skip, int take)
         {
-            return
-                await _context.Tests.Include("Discipline")
+            List<Test> dbTests;
+            if (string.IsNullOrEmpty(searchString))
+            {
+                dbTests = await _context.Tests.Include("Discipline")
                     .Include("Teacher.User")
                     .OrderByDescending(t => t.CreatedDate)
-                    .Select(test => new TestViewModel(test))
+                    .Skip(skip)
+                    .Take(take)
                     .ToListAsync();
+            }
+            else
+            {
+                var searchStringToLower = searchString.ToLower();
+                dbTests = await _context.Tests.Include("Discipline")
+                    .Include("Teacher.User")
+                    .Where(t =>
+                        t.Name.ToLower().Contains(searchStringToLower) ||
+                        searchStringToLower.Contains(t.Name.ToLower()))
+                    .OrderByDescending(t => t.CreatedDate)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
+            }
+            return dbTests.Select(t => new TestViewModel(t)).ToList();
         }
 
         [HttpGet("{id}")]
@@ -52,7 +67,9 @@ namespace DistantLearning.Controllers
         {
             if (test == null)
                 return "Invalid data";
-            var user = _context.Users.Include("Teacher").FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+            var user =
+                _context.Users.Include("Teacher")
+                    .FirstOrDefault(u => u.IsApproved && u.UserName.Equals(User.Identity.Name));
             if (user == null)
                 return "Invalid user";
             var newTest = new Test
@@ -71,7 +88,8 @@ namespace DistantLearning.Controllers
                                     Body = q.Body,
                                     Seconds = q.Seconds,
                                     Answers =
-                                        q.Answers.Select(a => new Answer {Body = a.Body, IsCorrect = a.IsCorrect}).ToList()
+                                        q.Answers.Select(a => new Answer {Body = a.Body, IsCorrect = a.IsCorrect})
+                                            .ToList()
                                 })
                         .ToList()
             };

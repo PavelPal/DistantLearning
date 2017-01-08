@@ -432,7 +432,8 @@ timeline .timeline-event {
     margin-left: 0;
     flex-shrink: 0;
     border: none;
-    box-shadow: none; }
+    box-shadow: none;
+    z-index: 0; }
     timeline .timeline-event timeline-badge.md-primary {
       background-color: #0277bd; }
     timeline .timeline-event timeline-badge.md-accent {

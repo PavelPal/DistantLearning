@@ -19,6 +19,7 @@ timeline {
       flex-shrink: 0;
       border: none;
       box-shadow: none;
+      z-index: 0;
 
       &.md-primary {
         background-color: #0277bd;
