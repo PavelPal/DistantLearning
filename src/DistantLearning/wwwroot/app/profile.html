@@ -133,6 +133,13 @@
                             <md-chip ng-repeat="consultation in consultations">
                                 {{dayOfWeekAsString(consultation.dayOfWeek)}} |
                                 {{getTime(consultation.time) | date:'HH:mm'}}
+                                <md-button class="md-icon-button" ng-show="isCurrent()"
+                                           ng-click="deleteConsultation($index)"
+                                           aria-label="Delete consultation">
+                                    <md-icon>
+                                        <i class="fa fa-close"></i>
+                                    </md-icon>
+                                </md-button>
                             </md-chip>
                         </md-chips>
                     </div>
@@ -170,16 +177,51 @@
                                     <i class="fa fa-file"></i>
                                 </md-icon>
                                 <p flex>{{document.name}}</p>
-                                <md-button class="md-icon-button md-secondary" aria-label="Download document">
+                                <md-button class="md-icon-button md-secondary" ng-disabled="!profile.isApproved"
+                                           ng-click="downloadDocument($index)" aria-label="Download document">
                                     <md-tooltip md-direction="left">Скачать</md-tooltip>
                                     <md-icon layout="column" layout-align="center center">
                                         <i class="fa fa-download"></i>
+                                    </md-icon>
+                                </md-button>
+                                <md-button class="md-icon-button md-secondary"
+                                           ng-show="isCurrent() || isInRole('Admin')"
+                                           ng-disabled="!profile.isApproved"
+                                           ng-click="deleteDocument($index)"
+                                           aria-label="Delete document">
+                                    <md-tooltip md-direction="bottom">Удалить дисциплину</md-tooltip>
+                                    <md-icon layout="column" layout-align="center center">
+                                        <i class="fa fa-trash"></i>
                                     </md-icon>
                                 </md-button>
                             </md-list-item>
                         </md-list>
                     </div>
                 </section>
+            </md-card-content>
+        </md-card>
+
+        <md-card flex-gt-sm="100" ng-show="isInRole('Student') && testResultsData.length > 0">
+            <md-card-title>
+                <md-card-title-text flex layout="row">
+                    <span class="md-title" flex>Усредненные результаты тестов по предметам</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <canvas class="chart chart-bar" chart-data="testResultsData"
+                        chart-labels="testResultsLabels"></canvas>
+            </md-card-content>
+        </md-card>
+
+        <md-card flex-gt-sm="100" ng-show="isInRole('Student')" ng-repeat="result in testResultsFullData">
+            <md-card-title>
+                <md-card-title-text flex layout="row">
+                    <span class="md-title" flex>Результаты по {{testResultsLabels[$index].toLowerCase()}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <canvas class="chart chart-bar" chart-data="result"
+                        chart-labels="testResultsFullDataLabels[$index]"></canvas>
             </md-card-content>
         </md-card>
     </div>

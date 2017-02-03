@@ -1,6 +1,6 @@
 ﻿{
   "ConnectionStrings": {
     "DistantLearningDb":
-      "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=DistantLearningDb;Integrated Security=True"
+      "Data Source=mssql3.gear.host;Initial Catalog=distantlearning;User ID=distantlearning;Password=Nu6m_-MB89Fn"
   }
 }

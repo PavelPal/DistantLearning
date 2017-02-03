@@ -6,6 +6,7 @@ namespace Domain.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Type { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
         public bool IsLocked { get; set; } = false;
         public string FileCode { get; set; }

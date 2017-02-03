@@ -10,5 +10,7 @@ var app = angular.module("distantLearning", [
     "ngProgress",
     "angularFileUpload",
     "infinite-scroll",
-    'angular-timeline'
+    'angular-timeline',
+    'timer',
+    'chart.js'
 ]);

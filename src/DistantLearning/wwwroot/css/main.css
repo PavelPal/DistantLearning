@@ -452,3 +452,12 @@ timeline .timeline-event {
       align-items: center;
       display: flex;
       flex-direction: row; }
+
+md-chip button.md-button.md-icon-button {
+  padding: 0;
+  height: 32px;
+  width: 32px;
+  max-height: 32px;
+  min-height: 32px;
+  top: -2px;
+  margin-right: -11px; }

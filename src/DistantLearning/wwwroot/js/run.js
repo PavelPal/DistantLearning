@@ -40,7 +40,7 @@ function run($rootScope, $window, $state, authService, ngProgressFactory) {
     authService.fillAuthData();
 }
 
-function config($provide, $mdThemingProvider) {
+function config($provide, $mdThemingProvider, ChartJsProvider) {
     $provide.decorator("$locale", function ($delegate) {
         return $delegate;
     });

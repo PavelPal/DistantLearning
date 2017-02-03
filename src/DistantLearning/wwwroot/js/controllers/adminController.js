@@ -54,6 +54,20 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
         }
     };
 
+    $scope.deleteGroup = function (index) {
+        var groupId = $scope.groups[index].id;
+        groupService.deleteGroup(groupId, function (data) {
+            if (data == "Invalid id") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный ID").position('bottom right').hideDelay(3000));
+            } else if (data == "Not found") {
+                $mdToast.show($mdToast.simple().textContent("Группа не найдена").position('bottom right').hideDelay(3000));
+            } else if (data == "Deleted") {
+                $scope.groups.splice(index, 1);
+                $mdToast.show($mdToast.simple().textContent("Группа удалена").position('bottom right').hideDelay(3000));
+            }
+        });
+    };
+
     $scope.createDiscipline = function (name) {
         if (name == undefined || name == '' || name == null) {
             $mdToast.show($mdToast.simple().textContent("Некорректные данные").position('bottom right').hideDelay(3000));
@@ -73,6 +87,20 @@ function adminController($scope, $state, $mdToast, disciplineService, groupServi
                 }
             });
         }
+    };
+
+    $scope.deleteDiscipline = function (index) {
+        var disciplineId = $scope.disciplines[index].id;
+        disciplineService.deleteDiscipline(disciplineId, function (data) {
+            if (data == "Invalid id") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный ID").position('bottom right').hideDelay(3000));
+            } else if (data == "Not found") {
+                $mdToast.show($mdToast.simple().textContent("Дисциплина не найдена").position('bottom right').hideDelay(3000));
+            } else if (data == "Deleted") {
+                $scope.disciplines.splice(index, 1);
+                $mdToast.show($mdToast.simple().textContent("Дисциплина удалена").position('bottom right').hideDelay(3000));
+            }
+        });
     };
 
     $scope.findUsers = function () {

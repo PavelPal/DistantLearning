@@ -64,6 +64,7 @@ namespace DistantLearning.Controllers
             {
                 id = user.Id,
                 email = user.Email,
+                isApproved = user.IsApproved,
                 roles = await _userManager.GetRolesAsync(user)
             };
         }
@@ -147,6 +148,7 @@ namespace DistantLearning.Controllers
             {
                 id = user.Id,
                 email = user.Email,
+                isApproved = user.IsApproved,
                 roles = await _userManager.GetRolesAsync(user)
             };
         }

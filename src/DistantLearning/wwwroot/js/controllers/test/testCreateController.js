@@ -43,10 +43,6 @@ function testCreateController($scope, $state, testService, disciplineService, au
         qestion.answers.splice(index, 1);
     };
 
-    $scope.isInRole = function (role) {
-        return authService.isInRole(role);
-    };
-
     $scope.createTest = function (testForm) {
         if (testForm.$valid) {
             if ($scope.newTest.questions.length > 0) {

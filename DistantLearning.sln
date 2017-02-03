@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{95979F84-9E07-475B-B879-103218BBA570}"
 EndProject
@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DistantLearning", "src\DistantLearning\DistantLearning.xproj", "{5067324C-66DA-499F-B2DD-CAD32469EFF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistantLearning", "src\DistantLearning\DistantLearning.csproj", "{5067324C-66DA-499F-B2DD-CAD32469EFF4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Domain", "src\Domain\Domain.xproj", "{8A76B6FB-CFA6-4BAC-8BED-9217D47A7D51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{8A76B6FB-CFA6-4BAC-8BED-9217D47A7D51}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DataAccessProvider", "src\DataAccessProvider\DataAccessProvider.xproj", "{67260945-1A24-4012-92AF-2E48568BFDCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessProvider", "src\DataAccessProvider\DataAccessProvider.csproj", "{67260945-1A24-4012-92AF-2E48568BFDCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

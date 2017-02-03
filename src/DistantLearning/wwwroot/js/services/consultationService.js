@@ -28,6 +28,18 @@ function consultationService($http) {
                     console.error("Problem with creating consultation " + error);
                 }
             );
+        },
+        deleteConsultation: function (id, callback) {
+            $http({
+                url: "/api/consultation/deleteConsultation/" + id,
+                method: "POST"
+            }).then(
+                function successCallback(response) {
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with deleting consultation " + error);
+                }
+            );
         }
     };
 }

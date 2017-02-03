@@ -22,6 +22,7 @@
 
 <environment names="Development,Staging,Production">
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/moment/moment.js"></script>
     <script src="~/lib/angular/angular.min.js"></script>
     <script src="~/lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
     <script src="~/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
@@ -36,6 +37,11 @@
     <script src="~/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <script src="~/lib/angular-timeline/dist/angular-timeline.js"></script>
     <script src="~/lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+    <script src="~/lib/file-saver/FileSaver.min.js"></script>
+    <script src="~/lib/angular-timer/dist/assets/js/angular-timer-all.min.js"></script>
+    <script src="~/lib/angular-timer/dist/assets/js/angular-timer-all.min.js"></script>
+    <script src="~/lib/chart.js/dist/Chart.min.js"></script>
+    <script src="~/lib/angular-chart.js/dist/angular-chart.min.js"></script>
     <script src="~/js/site.min.js"></script>
 </environment>
 
@@ -99,25 +105,25 @@
                     </div>
                 </md-list-item>
                 <md-divider></md-divider>
-                <md-list-item ng-click="close()" ui-sref="settings">
+                <!--<md-list-item ng-click="close()" ui-sref="settings">
                     <md-icon class="fa fa-gears"></md-icon>
                     <div class="md-list-item-text" layout="column" flex>
                         <p>Настройки</p>
                     </div>
-                </md-list-item>
+                </md-list-item>-->
                 <md-list-item ng-click="logOut()">
                     <md-icon class="fa fa-sign-out"></md-icon>
                     <div class="md-list-item-text" layout="column" flex>
                         <p>Выход</p>
                     </div>
                 </md-list-item>
-                <md-divider></md-divider>
+                <!--<md-divider></md-divider>
                 <md-list-item ng-click="close()" ui-sref="help">
                     <md-icon class="fa fa-question-circle"></md-icon>
                     <div class="md-list-item-text" layout="column" flex>
                         <p>Помощь</p>
                     </div>
-                </md-list-item>
+                </md-list-item>-->
                 <md-divider ng-show="isInRole('Admin')"></md-divider>
                 <md-list-item ng-click="close()" ng-show="isInRole('Admin')" ng-disabled="!isInRole('Admin')" ui-sref="admin">
                     <md-icon class="fa fa-dashboard"></md-icon>

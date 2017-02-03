@@ -57,7 +57,7 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
             }
         })
         .state("tests.list", {
-            url: "/list",
+            url: "/",
             templateUrl: "../app/test/list.html",
             controller: "testListController"
         })
@@ -65,6 +65,11 @@ function routes($stateProvider, $httpProvider, $urlRouterProvider) {
             url: "/create",
             templateUrl: "../app/test/create.html",
             controller: "testCreateController"
+        })
+        .state("tests.get", {
+            url: "/:testId",
+            templateUrl: "../app/test/get.html",
+            controller: "testGetController"
         })
         .state("journal", {
             url: "/journal",

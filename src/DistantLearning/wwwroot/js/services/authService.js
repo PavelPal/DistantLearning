@@ -7,6 +7,7 @@ function authService($http, $cookies, localStorageService) {
         id: "",
         isAuth: false,
         email: "",
+        isApproved: false,
         roles: []
     };
 
@@ -26,6 +27,7 @@ function authService($http, $cookies, localStorageService) {
         if (authentication.isAuth)
             logOutFromServer();
         authentication.isAuth = false;
+        authentication.isApproved = false;
         authentication.id = "";
         authentication.email = "";
         authentication.roles = [];
@@ -49,8 +51,10 @@ function authService($http, $cookies, localStorageService) {
                         token: response.access_token,
                         id: response.data.id,
                         email: response.data.email,
-                        roles: response.data.roles
+                        roles: response.data.roles,
+                        isApproved: response.data.isApproved
                     });
+                    authentication.isApproved = response.data.isApproved;
                     authentication.isAuth = true;
                     authentication.id = response.data.id;
                     authentication.email = response.data.email;
@@ -84,8 +88,10 @@ function authService($http, $cookies, localStorageService) {
                         token: response.access_token,
                         id: response.data.id,
                         email: response.data.email,
-                        roles: response.data.roles
+                        roles: response.data.roles,
+                        isApproved: response.data.isApproved
                     });
+                    authentication.isApproved = response.data.isApproved;
                     authentication.isAuth = true;
                     authentication.id = response.data.id;
                     authentication.email = response.data.email;
@@ -105,6 +111,7 @@ function authService($http, $cookies, localStorageService) {
         var authData = localStorageService.get("authorizationData");
         var authCookie = $cookies.get("access_token");
         if (authData && authCookie) {
+            authentication.isApproved = authData.isApproved;
             authentication.isAuth = true;
             authentication.id = authData.id;
             authentication.email = authData.email;
@@ -141,9 +148,9 @@ function authService($http, $cookies, localStorageService) {
     authServiceFactory.login = login;
     authServiceFactory.logOut = logOut;
     authServiceFactory.fillAuthData = fillAuthData;
-    authServiceFactory.authentication = authentication;
     authServiceFactory.isInRole = isInRole;
     authServiceFactory.getRole = getRole;
+    authServiceFactory.authentication = authentication;
 
     return authServiceFactory;
 }

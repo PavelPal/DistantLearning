@@ -21,7 +21,8 @@
                                     <i class="fa fa-users"></i>
                                 </md-icon>
                                 <p flex>{{group.prefix}}{{group.postfix}}</p>
-                                <md-button class="md-icon-button md-secondary" aria-label="Delete group">
+                                <md-button class="md-icon-button md-secondary" ng-click="deleteGroup($index)"
+                                           aria-label="Delete group">
                                     <md-tooltip md-direction="bottom">Удалить группу</md-tooltip>
                                     <md-icon layout="column" layout-align="center center">
                                         <i class="fa fa-trash"></i>
@@ -67,7 +68,8 @@
                                     <i class="fa fa-book"></i>
                                 </md-icon>
                                 <p flex>{{discipline.name}}</p>
-                                <md-button class="md-icon-button md-secondary" aria-label="Delete discipline">
+                                <md-button class="md-icon-button md-secondary" ng-click="deleteDiscipline($index)"
+                                           aria-label="Delete discipline">
                                     <md-tooltip md-direction="bottom">Удалить дисциплину</md-tooltip>
                                     <md-icon layout="column" layout-align="center center">
                                         <i class="fa fa-trash"></i>

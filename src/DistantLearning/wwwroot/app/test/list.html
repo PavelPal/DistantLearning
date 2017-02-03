@@ -11,8 +11,8 @@
     </md-card-title>
     <md-card-content>
         <md-subheader class="md-no-sticky" ng-hide="tests.length > 0">
-                        <i class="fa fa-info-circle"></i> Тесты еще не добавлены или не найдены
-                    </md-subheader>
+            <i class="fa fa-info-circle"></i> Тесты еще не добавлены или не найдены
+        </md-subheader>
         <md-list flex class="dl-multi-line-list" id="documents-list" infinite-scroll="getMoreTests()"
                  infinite-scroll-disabled="isLoading"
                  infinite-scroll-distance="1" infinite-scroll-container="'#parent-container'">
@@ -22,16 +22,26 @@
                 </div>
                 <div class="md-list-item-text">
                     <h3>
-                        <a>{{test.name}}</a>
+                        <a ui-sref="tests.get({testId: test.id})">{{test.name}}</a>
                         <p>{{test.teacher.firstName}} {{test.teacher.lastName}} ({{test.discipline.name}})</p>
                     </h3>
                 </div>
+                <md-button class="md-icon-button md-secondary"
+                           ng-show="(isCurrent(test.teacher.id) && isInRole('Teacher')) || isInRole('Admin')"
+                           ng-click="deleteTest($index)"
+                           aria-label="Delete test">
+                    <md-tooltip md-direction="bottom">Удалить тест</md-tooltip>
+                    <md-icon layout="column" layout-align="center center">
+                        <i class="fa fa-trash"></i>
+                    </md-icon>
+                </md-button>
             </md-list-item>
         </md-list>
     </md-card-content>
 </md-card>
 
-<div class="lock-size float-bottom-button" layout="row" layout-align="center center" ng-show="isInRole('Teacher')">
+<div class="lock-size float-bottom-button" layout="row" layout-align="center center"
+     ng-show="isInRole('Teacher') && isApproved()">
     <md-fab-speed-dial md-open="false" md-direction="up" class="md-scale">
         <md-fab-trigger>
             <md-button aria-label="menu" class="md-fab">

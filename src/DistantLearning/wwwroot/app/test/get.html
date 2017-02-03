@@ -1,0 +1,32 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-title">
+                <span ng-show="isLoading">Загрузка теста</span>
+                <span ng-show="isCompleting">Подсчет результатов</span>
+                <span ng-hide="isLoading">{{test.name}}</span>
+            </span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <md-progress-circular ng-show="isLoading || isCompleting" ng-disabled="!isLoading" md-diameter="40px"
+                              md-mode="indeterminate"></md-progress-circular>
+        <section ng-hide="isLoading || isCompleting">
+            <md-subheader class="md-no-sticky">
+                <p>{{test.questions[index].body}}</p>
+                <timer interval="1000" countdown="1" autostart="false">
+                    <md-progress-linear md-mode="determinate"
+                                        value="{{countdown}}"></md-progress-linear>
+                </timer>
+            </md-subheader>
+
+            <md-input-container class="md-block" ng-repeat="answer in test.questions[index].answers">
+                <md-checkbox ng-model="answer.isChecked" aria-label="Answer"></md-checkbox>
+                {{answer.body}}
+            </md-input-container>
+
+            <md-button ng-click="goToNext()">Следующий вопрос</md-button>
+        </section>
+    </md-card-content>
+</md-card>
+

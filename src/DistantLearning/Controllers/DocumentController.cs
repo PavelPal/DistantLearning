@@ -91,6 +91,7 @@ namespace DistantLearning.Controllers
                 user.Teacher.FirstOrDefault().Documents.Add(new Document
                 {
                     Name = file.FileName,
+                    Type = file.ContentType,
                     FileCode = base64FileRepresentation
                 });
                 _context.ChangeTracker.DetectChanges();

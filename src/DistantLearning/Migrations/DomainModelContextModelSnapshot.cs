@@ -121,6 +121,8 @@ namespace distantlearning.Migrations
 
                 b.Property<int>("TeacherId");
 
+                b.Property<string>("Type");
+
                 b.HasKey("Id");
 
                 b.HasIndex("Name");

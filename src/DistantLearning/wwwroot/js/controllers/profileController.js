@@ -1,6 +1,6 @@
 app.controller("profileController", profileController);
 
-function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, profileService, consultationService, documentService, authService, groupService, disciplineService) {
+function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, profileService, consultationService, documentService, authService, groupService, disciplineService, testService) {
     document.querySelector('#ngProgress-container').style.top = 48 + 'px';
 
     $scope.profile = {};
@@ -8,6 +8,10 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
     $scope.disciplines = [];
     $scope.consultations = [];
     $scope.documents = [];
+    $scope.testResultsData = [];
+    $scope.testResultsFullData = [];
+    $scope.testResultsFullDataLabels = [];
+    $scope.testResultsLabels = [];
     $scope.image = null;
     $scope.documentsLoader = false;
     $scope.consultationsLoader = false;
@@ -34,7 +38,19 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
             } else if ($scope.isInRole("Student")) {
                 groupService.getStudentsGroup(profileId, function (data) {
                     $scope.group = data.prefix + data.postfix;
-                })
+                });
+                testService.getResults(profileId, function (data) {
+                    angular.forEach(data, function (result) {
+                        $scope.testResultsData.push(result.avrPoint);
+                        $scope.testResultsFullData.push(result.points);
+                        var fullDataLbs = [];
+                        angular.forEach(result.points, function (point, index) {
+                            fullDataLbs.push(index);
+                        });
+                        $scope.testResultsFullDataLabels.push(fullDataLbs);
+                        $scope.testResultsLabels.push(result.discipline);
+                    });
+                });
             }
         } else {
             $state.go("users");
@@ -68,6 +84,55 @@ function profileController($scope, $state, $stateParams, $mdToast, $mdDialog, pr
 
     $scope.getRole = function (role) {
         return authService.getRole(role);
+    };
+
+    $scope.deleteDocument = function (index) {
+        var documentId = $scope.documents[index].id;
+        documentService.deleteDocument(documentId, function (data) {
+            if (data == "Invalid id") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный ID").position('bottom right').hideDelay(3000));
+            } else if (data == "Not found" || data == "Document not found") {
+                $mdToast.show($mdToast.simple().textContent("Документ не найден").position('bottom right').hideDelay(3000));
+            } else if (data == "User not found") {
+                $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
+            } else if (data == "Deleted") {
+                $scope.documents.splice(index, 1);
+                $mdToast.show($mdToast.simple().textContent("Документ удален").position('bottom right').hideDelay(3000));
+            }
+        });
+    };
+
+    $scope.downloadDocument = function (index) {
+        var documentId = $scope.documents[index].id;
+        documentService.downloadDocument(documentId, function (data) {
+            if (data == "Invalid id") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный ID").position('bottom right').hideDelay(3000));
+            } else if (data == "Not found") {
+                $mdToast.show($mdToast.simple().textContent("Консультация не найдена").position('bottom right').hideDelay(3000));
+            } else if (data == "User not found") {
+                $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
+            } else {
+                var file = new Blob([data], {type: $scope.documents[index].type});
+                saveAs(file, $scope.documents[index].name);
+                $mdToast.show($mdToast.simple().textContent("Консультация удалена").position('bottom right').hideDelay(3000));
+            }
+        });
+    };
+
+    $scope.deleteConsultation = function (index) {
+        var consultationId = $scope.consultations[index].id;
+        consultationService.deleteConsultation(consultationId, function (data) {
+            if (data == "Invalid id") {
+                $mdToast.show($mdToast.simple().textContent("Некорректный ID").position('bottom right').hideDelay(3000));
+            } else if (data == "Not found") {
+                $mdToast.show($mdToast.simple().textContent("Консультация не найдена").position('bottom right').hideDelay(3000));
+            } else if (data == "User not found") {
+                $mdToast.show($mdToast.simple().textContent("Пользователь не найден").position('bottom right').hideDelay(3000));
+            } else if (data == "Deleted") {
+                $scope.consultations.splice(index, 1);
+                $mdToast.show($mdToast.simple().textContent("Консультация удалена").position('bottom right').hideDelay(3000));
+            }
+        });
     };
 
     $scope.showProfileImageModal = function (ev) {

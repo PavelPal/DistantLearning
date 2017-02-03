@@ -40,6 +40,19 @@ function documentService($http) {
                     console.error("Problem with deleting document " + error);
                 }
             );
+        },
+        downloadDocument: function (id, callback) {
+            $http({
+                url: "/api/document/downloadDocument/" + id,
+                method: "GET",
+                dateType: 'application/json; charset=utf-8'
+            }).then(
+                function successCallback(response) {
+                    callback(response.data);
+                }, function errorCallback(error) {
+                    console.error("Problem with downloading document " + error);
+                }
+            );
         }
     };
 }
